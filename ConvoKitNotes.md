@@ -9,9 +9,12 @@ corpus_directory
       |-- index.json
 
 metadata and vectors for task-specific properties
+
 <mark class="hltr-purple">UtteranceNode:</mark> Wrapper class around Utterances to facilitate tree traversal operations
+
 <mark class="hltr-purple">.meta</mark>: can store any object as metadata value, the format is a dictionary
-- Immutable 
+- Immutable
+  
 <mark class="hltr-purple">{corpus-Object}-index:</mark> Don't need to load entire dataset, just get access to metadata.
  **Pickling** Making data into binary file, platform dependent.
 ## Basic Model 
