@@ -1,11 +1,13 @@
 ## Basic Directory Structure
 Corpus -> Conversation -> utterance -> speaker
 corpus_directory
+
       |-- utterances.jsonl
       |-- speakers.json
       |-- conversations.json
       |-- corpus.json
       |-- index.json
+
 metadata and vectors for task-specific properties
 <mark class="hltr-purple">UtteranceNode:</mark> Wrapper class around Utterances to facilitate tree traversal operations
 <mark class="hltr-purple">.meta</mark>: can store any object as metadata value, the format is a dictionary
