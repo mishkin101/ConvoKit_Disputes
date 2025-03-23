@@ -13,4 +13,5 @@ dependencies = [
     "ydata-profiling>=4.15.0",
     "bitsandbytes==0.42.0",
     "convokit>=3.1.0",
+    "tqdm>=4.67.1",
 ]
