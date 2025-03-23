@@ -66,6 +66,29 @@ class DataPreprocesser:
         """
         self.df.head()
 
+    def checkSubstring(self, col_name, row_idx, string_to_check):
+        """
+        Checks if the phrase 'Walk Away' appears in any value within the 'parsed_dialog' dictionary.
+
+        Parameters:
+        -----------
+        parsed_dialog : list of dict
+            A list of dictionaries representing structured dialogue.
+
+        Returns:
+        --------
+        bool
+            True if 'Walk Away' is found in any dictionary value, False otherwise.
+        """
+        if not isinstance(self.df[col_name].iloc[row_idx], list):  
+            return False  # Ensure it's a list before processing
+
+        for entry in self.df[col_name].iloc[row_idx]:
+            if isinstance(entry, dict):  
+                for value in entry.values():
+                    if isinstance(value, str) and string_to_check in value:
+                        return True
+        return False
 if __name__ == "__main__":
     filepath = "/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/alldyads.csv"
     data_preprocessor = DataPreprocesser(filepath)
