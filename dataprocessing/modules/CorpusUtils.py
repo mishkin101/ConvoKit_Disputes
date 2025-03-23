@@ -13,6 +13,23 @@ class CorpusUtils:
         self.conversation_headers = ["id", "name", "timestamp", "num_utterances"]
         self.conversation_metadata = ["num_turns", "dispute"]
     # intention: make dataframe object from a pre-processed dataframe with correct primary info and metadata info needed
+
+    def setUtteranceHeaders(self, headers):
+        self.utterance_headers = headers
+
+    def setSpeakerHeaders(self, headers):
+        self.speaker_metadata = headers
+    
+    def setConversationHeaders(self, headers):
+        self.conversation_headers = headers
+
+    def setConversationMetadata(self, metadata):
+        self.conversation_metadata = metadata   
+    
+    def setSpeakerMetadata(self, metadata):
+        self.speaker_metadata = metadata
+
+
     @staticmethod
     def buildspeakerID(df):
 

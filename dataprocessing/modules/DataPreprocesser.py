@@ -81,14 +81,32 @@ class DataPreprocesser:
             True if 'Walk Away' is found in any dictionary value, False otherwise.
         """
         if not isinstance(self.df[col_name].iloc[row_idx], list):  
+            
             return False  # Ensure it's a list before processing
 
         for entry in self.df[col_name].iloc[row_idx]:
             if isinstance(entry, dict):  
-                for value in entry.values():
-                    if isinstance(value, str) and string_to_check in value:
-                        return True
-        return False
+                message_value = entry["message"]
+                if message_value and isinstance(message_value, str) and string_to_check.lower() in message_value:
+                    print("Lower case match:")
+                    return entry
+                elif message_value and isinstance(message_value, str) and string_to_check in message_value:
+                    print("Exact case match:")
+                    return entry
+                elif message_value and isinstance(message_value, str) and string_to_check.lower() in message_value.lower():
+                    print("No case match:")
+                    return entry
+            return False
+    
+    # def filterCase(self, val_to_filter, col_idx):
+
+    # def checkDiff(self,val_to_filter, col_idx):
+
+    def getDataframe(self):
+        """
+        Returns the DataFrame object.
+        """
+        return self.df
 if __name__ == "__main__":
     filepath = "/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/alldyads.csv"
     data_preprocessor = DataPreprocesser(filepath)
