@@ -1,5 +1,6 @@
 from convokit import download, Corpus
 import pandas as pd
+import convokit
 
 class CorpusUtils:
     """
@@ -28,7 +29,10 @@ class CorpusUtils:
     
     def setSpeakerMetadata(self, metadata):
         self.speaker_metadata = metadata
-
+    
+    
+    @staticmethod
+    def buildCorpus():
 
     @staticmethod
     def buildspeakerID(df):
