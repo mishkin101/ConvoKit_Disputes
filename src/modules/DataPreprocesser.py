@@ -10,6 +10,7 @@ class DataPreprocesser:
         self.num_matches = {}
 
     def parseRow(self, row_idx, row_entry, col_name):
+        structured_dialog = []
         # Convert to string to avoid errors (NaN -> 'nan' -> we'll treat that like empty)
         if pd.isnull(row_entry):
             row_entry = ""  # or "No chat available"
@@ -24,7 +25,6 @@ class DataPreprocesser:
                             })
             return
         pattern = re.compile(r'^\s*(\d+|nan)?\s*(Buyer|Seller):\s*(.*)$', re.IGNORECASE)
-        structured_dialog = []
         
         for line in str(row_entry).split('\n'):
             line = line.strip()
