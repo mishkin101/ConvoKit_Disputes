@@ -10,3 +10,4 @@
 to get the craft repo: `git submodule sync` 
 
 https://blog.keras.io/a-ten-minute-introduction-to-sequence-to-sequence-learning-in-keras.html
+https://youtu.be/viZrOnJclY0?si=Gf0xfDvvmvTeFwUP
