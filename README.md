@@ -7,3 +7,4 @@
 - [X] Add ConvoKit Resources + personal notes (see [convokit notes](https://github.com/mishkin101/ConvoKit_Disputes/blob/main/ConvoKitNotes.md))
 
 
+to get the craft repo: `git submodule sync` 
