@@ -196,18 +196,19 @@ class DataPreprocesser:
         to_ret = []
         
         for key_val in key_list:
-            match_dict = self.text_matches[key_val]
-            speaker_counts = defaultdict(lambda: {"Buyer": 0, "Seller": 0}) 
-            for entry in match_dict:
-                case_type = entry.get("Case Match Type", "Unknown")
-                speaker = entry.get("speaker", "Unknown")
-                if speaker in ["Buyer", "Seller"]: 
-                    speaker_counts[case_type][speaker] += 1  
-            
-            to_ret.append({key_val: dict(speaker_counts)})
-        
-        return to_ret  # Convert defaultdict to regular dict
+            match_dict_by_idx = self.text_matches[key_val]  
+            speaker_counts = defaultdict(lambda: {"Buyer": 0, "Seller": 0})
 
+
+            for entry_list in match_dict_by_idx.values():  
+                for entry in entry_list: 
+                    if isinstance(entry, dict):  
+                        case_type = entry.get("Case Match Type", "Unknown")
+                        speaker = entry.get("speaker", "Unknown")
+                        if speaker in ["Buyer", "Seller"]:
+                            speaker_counts[case_type][speaker] += 1  
+            to_ret.append({key_val: dict(speaker_counts)})
+        return to_ret  
 
 
         
