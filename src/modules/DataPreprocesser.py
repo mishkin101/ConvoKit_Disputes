@@ -30,8 +30,8 @@ class DataPreprocesser:
 
         # Now, filter self.utterancesDF using these matched indices
         matched_utterances = self.utterancesDF.loc[matched_indices]
-        #df[["Case Match Type", "is_AI"]] = df[["Case Match Type", "is_AI"]].values
-
+        matched_utterances[["Case Match Type", "is_AI"]] = self.text_matches_new[key_val][2][["Case Match Type", "is_AI"]].values
+        matched_utterances["match_idx"] = True
         return matched_utterances
     
     def getMatchedConvoDF(self, key_val):
@@ -41,6 +41,7 @@ class DataPreprocesser:
         matched_row_idxs = match_idx_df.loc[match_idx_df['match_freq'] != 0, 'row_idx'].unique()
         # Filter self.getDataframe() where 'row_idx' is in matched_row_idxs
         matched_convos = df_main[df_main.index.isin(matched_row_idxs)]
+        matched_convos
         return matched_convos
 
     def checkAI(self, row_idx):
@@ -205,7 +206,7 @@ class DataPreprocesser:
             df.loc[mask, "Case Match Type"] = None
     
         # Filter matched utterances (keep same length as self.df
-        matched_df_utt = df[["row_idx", "match_idx", "Case Match Type", "convo_len"]]
+        matched_df_utt_mask = df[["row_idx", "match_idx", "Case Match Type", "convo_len"]]
        
         #changes filtered df to exclude the subset for the matched row statistics 
         if subset_to_exclude:
@@ -220,7 +221,7 @@ class DataPreprocesser:
         # Merge match_freq and convolen on row_idx to create the summary DataFrame
         convo_stats = pd.merge(match_freq, convolen, on="row_idx", how="left")   
         convo_stats.head() 
-        self.text_matches_new[value_to_check] = [matched_df_utt, convo_stats, utt_stats]
+        self.text_matches_new[value_to_check] = [matched_df_utt_mask, convo_stats, utt_stats]
         self.resetUtDF()
         self.normalizedRelativePos(value_to_check)
 
@@ -372,8 +373,9 @@ class DataPreprocesser:
         std_dev = df['match_freq'].std()
         num_conversations = len(df['match_freq'])
         # print(num_conversations)
-        # print(f_mean)
         juilland_d = 1 - (std_dev / (f_mean * np.sqrt(num_conversations)))
+        juilland_d = float(juilland_d)
+        print(f"The juilland's Dispersion for {key_val} across all conversations is:", juilland_d)
         return juilland_d
     #always matched
     def normalizedRelativePos(self, key_value):
@@ -384,9 +386,26 @@ class DataPreprocesser:
         df_2['relative_pos'] = pd.to_numeric(df_2["uttidx"] / (df_2["convo_len"] - 1))
         # self.text_matches_new[key_value][2] = df_2
     
-    def getUttStat(self, key_value, col_name):
-        return self.text_matches_new[key_value][2][col_name].to_frame()
-
+    def getUttStat(self, key_value, col_name, func=None):
+        df_stats = self.text_matches_new[key_value][2]
+        if func:
+            result = df_stats[col_name].agg(func)
+            func_name = getattr(func, '__name__', str(func))
+            print(f"\nThe '{func_name}' '{col_name}' for the phrase `{key_value}` is: {result}")
+            return result
+        else:
+            return df_stats[col_name]
+    
+    def getConvoStat(self, key_value, col_name, func =None):
+        df_stats = self.text_matches_new[key_value][1]
+        if func:
+            result = df_stats[col_name].agg(func)
+            func_name = getattr(func, '__name__', str(func))
+            print(f"\nThe '{func_name}' '{col_name}' for the phrase `{key_value}` is: {result}")
+            return result
+        else:
+            return df_stats[col_name]
+        
     def addUttStat(self,key_value, col_name, col):
         self.text_matches_new[key_value][2][col_name] = col
 
