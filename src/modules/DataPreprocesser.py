@@ -30,6 +30,7 @@ class DataPreprocesser:
 
         # Now, filter self.utterancesDF using these matched indices
         matched_utterances = self.utterancesDF.loc[matched_indices]
+        #df[["Case Match Type", "is_AI"]] = df[["Case Match Type", "is_AI"]].values
 
         return matched_utterances
     
@@ -43,27 +44,21 @@ class DataPreprocesser:
         return matched_convos
 
     def checkAI(self, row_idx):
-        return self.df["is_AI"].iloc[row_idx]
+        df = self.df
+        AI_seller_str = "Your sudden demand for a refund is unwarranted. Our product description is crystal clear, and we stand by our policy. Your behavior is disappointing, and your negative review is unfounded."
+        AI_Buyer_str = "Your response is utterly unacceptable. I bought the jersey for my nephew, a Kobe Bryant fan, based on your explicit representation. Your deceptive behavior is disgraceful."
+        # Check if AI_seller_str is in any row of formattedChat
+        # print(df["formattedChat"][row_idx])
+        AI_seller_match = AI_seller_str.lower() in df["formattedChat"][row_idx].lower()
+        AI_buyer_match = AI_Buyer_str.lower() in df["formattedChat"][row_idx].lower()
 
-    # def process_speaker_counts(self, key_list):
-        to_ret = []
-        for key_val in key_list:
-            match_dict_by_idx = self.text_matches[key_val]  # This is a dict with lists of dicts
-            speaker_counts = defaultdict(lambda: {"Buyer": 0, "Seller": 0})
-
-            # Iterate over the list of dictionaries, not the key itself
-            for entry_list in match_dict_by_idx.values():  
-                for entry in entry_list:  # Each entry is a dictionary
-                    if isinstance(entry, dict):  # Ensure it's a dictionary before processing
-                        case_type = entry.get("Case Match Type", "Unknown")
-                        speaker = entry.get("speaker", "Unknown")
-                        if speaker in ["Buyer", "Seller"]:
-                            speaker_counts[case_type][speaker] += 1  
-
-            to_ret.append({key_val: dict(speaker_counts)})
-
-        return to_ret  # Convert defaultdict to regular dict
-   
+        if AI_seller_match:
+            return "Seller"
+        elif AI_buyer_match:
+            return "Buyer"
+        else:
+            return None
+    
     def parsedtoDF(self):
         all_rows = []
         for row_idx, parsed_dialog in enumerate(self.df["parsed_dialog"]):
@@ -99,11 +94,17 @@ class DataPreprocesser:
                         'message': None,
                         'value': row_entry,
                         'uttidx': None,
-                        'speaker_id': spk+ '_'+str(row_idx)
+                        'speaker_id': spk+ '_'+str(row_idx),
+                        'is_AI':    None
                             })
             return
         pattern = re.compile(r'^\s*(\d+|nan)?\s*(Buyer|Seller):\s*(.*)$', re.IGNORECASE)
-        
+        lines = str(row_entry).split('\n')
+        # Determine if the first line indicates AI involvement
+        first_line = lines[0].strip() if lines else ""
+        # print("first line is:", first_line , "\n")
+        ai_speaker = self.checkAI(row_idx)  # "seller", "buyer", or None
+        # print("first speaker AI is:", ai_speaker , "\n")
         line_count =0
         for line in str(row_entry).split('\n'):
             line = line.strip()
@@ -114,14 +115,18 @@ class DataPreprocesser:
             if match:
                 timestamp_str, speaker, message = match.groups()
                 timestamp = int(timestamp_str) if timestamp_str.isdigit() else timestamp_str
-                
+                 # Determine if the current speaker is AI based on ai_speaker
+                is_AI = (str(ai_speaker).lower() == "seller" and str(speaker).lower() == "seller") or \
+                (str(ai_speaker).lower() == "buyer" and str(speaker).lower() == "buyer")
+                # print("is AI is:", is_AI , "\n")
                 structured_dialog.append({
                     'timestamp': timestamp,
                     'speaker': speaker,
                     'message': message.strip(),
                     'value': None,
                     'uttidx': line_count,
-                    'speaker_id': speaker + '_' + str(row_idx) if speaker is not None else None
+                    'speaker_id': speaker + '_' + str(row_idx) if speaker is not None else None,
+                    'is_AI': is_AI
 
                 })
                 line_count +=1
@@ -137,8 +142,8 @@ class DataPreprocesser:
                         'message': line,
                         'value': None,
                         'uttidx': line_count,
-                        'speaker_id': spk + '_' + str(row_idx) if spk is not None else None
-
+                        'speaker_id': spk + '_' + str(row_idx) if spk is not None else None,
+                        'is_AI': ai_speaker
                             })
                     line_count +=1
         return structured_dialog
@@ -163,6 +168,7 @@ class DataPreprocesser:
         self.df[col_to_add] = parsed_rows
         self.parsedtoDF()
    
+
     ''' Functions for matched key words'''
     def filterMatches(self, col_name, value_to_check, subset_to_exclude = None, case_in= None, case_ex= None):
         """
@@ -191,38 +197,24 @@ class DataPreprocesser:
         df.loc[lower_match, "Case Match Type"] = "Lower"
         df.loc[case_insensitive_match, "Case Match Type"] = "Case Insensitive"
         df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True 
-        # Assign match types
-        #df["Case Match Type"] = None  # Initialize column
+  
         if subset_to_exclude:
-            # Get included rows (NOT excluded rows)
             included_rows = self.filterRows(col_name, value_to_check, subset_to_exclude, case_in, case_ex)
-            # Create mask for included rows (i.e., rows that should be kept)
-            include_mask = df.index.isin(included_rows.index)
-            print("the number of included matches is", len(df[include_mask]))
-    
-            # Set match_idx to True where df_include is True, and False elsewhere
             df["match_idx"] = df.index.isin(included_rows.index)  # This sets match_idx True for rows in df_include, False elsewhere.
-            # Corrected Case Match Type Updates
             mask = ~df.index.isin(included_rows.index)
             df.loc[mask, "Case Match Type"] = None
-            #df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True
-
-            
-        
-        print("match sum is", df["match_idx"].sum())
-        
-
+    
         # Filter matched utterances (keep same length as self.df
         matched_df_utt = df[["row_idx", "match_idx", "Case Match Type", "convo_len"]]
        
         #changes filtered df to exclude the subset for the matched row statistics 
         if subset_to_exclude:
-            utt_stats = included_rows[included_rows["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len"]]
+            utt_stats = included_rows[included_rows["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len", "is_AI"]]
         else:
-            utt_stats = df[df["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len"]]
+            utt_stats = df[df["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len", "is_AI"]]
         # Copute match frequency (count matches per row_idx group)
         match_freq = df.groupby("row_idx")['Case Match Type'].apply(lambda x: x.isin(["Exact", "Lower", "Case Insensitive"]).sum()).reset_index(name="match_freq")
-        print(df["match_idx"].sum())
+
         # Compute conversation length per row_idx
         convolen = df.groupby("row_idx").size().reset_index(name='convo_len')
         # Merge match_freq and convolen on row_idx to create the summary DataFrame
@@ -237,6 +229,7 @@ class DataPreprocesser:
         df['Case Match Type'] = np.nan
         df['Case Match Type'] = df['Case Match Type'].astype('object')
         df['match_idx'] = False
+ 
     def getConvoMatchesByCase(self, value_key):
         df_utt = self.utterancesDF
         df_utt['Case Match Type'] = self.text_matches_new[value_key][2]['Case Match Type']
@@ -244,18 +237,36 @@ class DataPreprocesser:
         group = df_utt.groupby("row_idx")["Case Match Type"].value_counts().unstack(fill_value=0)
         df_utt['Case Match Type'] = np.nan
         df_utt['Case Match Type'] = df_utt['Case Match Type'].astype('object')
-        return group
+        print(f"\n'{value_key}` Total Number of Case Match Types Across Utterances")
+        return group.sum().to_frame(name="Total Count").reset_index()
 
-    def groupbyMatchUttStat(self, value_key, group_by, stat_col, agg_list):
-        df_utt = self.getMatchedUtterancesDF(value_key).copy()
-        df_utt.loc[:,stat_col] = self.text_matches_new[value_key][2][stat_col] # Assuming this exists
-        stat = df_utt.groupby(group_by)[stat_col].agg(agg_list)
+    def groupbyMatchUttStat(self, value_key, group_by, stat_cols, agg_list):
+        # df_utt = self.getMatchedUtterancesDF(value_key).copy()
+        # df_utt.loc[:,stat_col] = self.text_matches_new[value_key][2][stat_cols] # Assuming this exists
+        # stat = df_utt.groupby(group_by)[stat_cols].agg(agg_list)
+        # print(f"Key Value: {value_key}, Grouped by: {group_by}, Aggregated column: {stat_cosl}, Aggregations: {agg_list}")
+        """
+        This function groups by the given columns and applies aggregation functions to the provided statistic columns.
+        """
+        df_utt = self.getMatchedUtterancesDF(value_key)
+        df_utt.loc[:,stat_cols] = self.text_matches_new[value_key][2][stat_cols]
+         # Build the aggregation dictionary using the original column names
+        agg_dict = {col: agg_list[i] for i, col in enumerate(stat_cols)}
+        stat = df_utt.groupby(group_by).agg(agg_dict)
+        rename_dict = {col: f"{agg_list[i]}_{col}" for i, col in enumerate(stat_cols)}
+        stat.rename(columns=rename_dict, inplace=True)
+        print(f"Key Value: {value_key}, Grouped by: {group_by}, Aggregated columns: {stat_cols}, Aggregations: {agg_dict}")
         return stat
     
-    def groupbyMatchConvoStat(self, value_key, group_by, stat_col, agg_list):
-        df_convo = self.getMatchedConvoDF(value_key).copy()
-        df_convo.loc[:,stat_col] = self.text_matches_new[value_key][1][stat_col]  # Assuming this exists
-        stat = df_convo.groupby(group_by)[stat_col].agg(agg_list)
+    def groupbyMatchConvoStat(self, value_key, group_by, stat_cols, agg_list):
+        df_convo = self.getMatchedConvoDF(value_key)
+        df_convo.loc[:,stat_cols] = self.text_matches_new[value_key][1][stat_cols]  # Assuming this exists
+        # Build the aggregation dictionary using the original column names
+        agg_dict = {col: agg_list[i] for i, col in enumerate(stat_cols)}
+        stat = df_convo.groupby(group_by).agg(agg_dict)
+        rename_dict = {col: f"{agg_list[i]}_{col}" for i, col in enumerate(stat_cols)}
+        stat.rename(columns=rename_dict, inplace=True)
+        print(f"Key Value: {value_key}, Grouped by: {group_by}, Aggregated column: {stat_cols}, Aggregations: {agg_list}")
         return stat
     
     def filterRows(self, column, include_val=None , exclude_val=None, case_in=None, case_ex=None):
@@ -308,17 +319,15 @@ class DataPreprocesser:
         self.df = self.df.dropna(subset=["formattedChat"]).reset_index(drop=True)
 
     def getSpeakerFromCol(self, col_name, row_idx):
-            if self.checkAI(row_idx):
-                spk = "AI"
-            else:
                 if col_name.lower().startswith("b"):
                     spk = "Buyer"
                 elif col_name.lower().startswith("s"):
                     spk = "Seller"
                 else:
                     spk = None
-            return spk
-        
+                return spk
+
+
     ''' All statistics for words'''
     # def speakerPhrase(self):
     def getTTR(self, key_value, matched):
@@ -353,7 +362,7 @@ class DataPreprocesser:
         phrase_entropy = entropy(phrase_probs, base=2)
         return phrase_entropy
 
-    #dmeasures whether a phrase or feature is uniformly distributed
+    #measures whether a phrase or feature is uniformly distributed
     #across conversations or if it is concentrated in a few conversations
     def getStandardizedDispersion(self, key_val, matched):
         df = self.text_matches_new[key_val][1]     
@@ -362,11 +371,10 @@ class DataPreprocesser:
         f_mean  = df['match_freq'].mean()
         std_dev = df['match_freq'].std()
         num_conversations = len(df['match_freq'])
-        print(num_conversations)
-        print(f_mean)
+        # print(num_conversations)
+        # print(f_mean)
         juilland_d = 1 - (std_dev / (f_mean * np.sqrt(num_conversations)))
         return juilland_d
-
     #always matched
     def normalizedRelativePos(self, key_value):
         #save this column to getMatchedUtterancesDF
@@ -379,7 +387,11 @@ class DataPreprocesser:
     def getUttStat(self, key_value, col_name):
         return self.text_matches_new[key_value][2][col_name].to_frame()
 
+    def addUttStat(self,key_value, col_name, col):
+        self.text_matches_new[key_value][2][col_name] = col
 
+    def addConvoStat(self,key_value, col_name, col):
+        self.text_matches_new[key_value][1][col_name] = col
 
 if __name__ == "__main__":
         filepath = "/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/alldyads.csv"
