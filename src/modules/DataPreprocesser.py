@@ -35,7 +35,7 @@ class DataPreprocesser:
     
     def getMatchedConvoDF(self, key_val):
         match_idx_df = self.text_matches_new[key_val][1]  # This contains 'row_idx' and 'matchfreq'
-        df_main = self.getDataframe()  # Main utterances dataframe
+        df_main = self.getDataframe()  # Main convo dataframe
         # Find unique 'row_idx' values where 'matchfreq' is nonzero
         matched_row_idxs = match_idx_df.loc[match_idx_df['match_freq'] != 0, 'row_idx'].unique()
         # Filter self.getDataframe() where 'row_idx' is in matched_row_idxs
@@ -187,42 +187,56 @@ class DataPreprocesser:
         exact_match = df[col_name].str.contains(value_to_check, na=False)
         lower_match = df[col_name].str.contains(r'\b' + re.escape(value_to_check.lower()) + r'\b', na=False) & ~exact_match
         case_insensitive_match = df[col_name].str.contains(r'\b' + re.escape(value_to_check) + r'\b', case=False, na=False) & ~exact_match & ~lower_match
-
-        # Assign match types
-        #df["Case Match Type"] = None  # Initialize column
         df.loc[exact_match, "Case Match Type"] = "Exact"
         df.loc[lower_match, "Case Match Type"] = "Lower"
         df.loc[case_insensitive_match, "Case Match Type"] = "Case Insensitive"
-        #df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True
-        
+        df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True 
+        # Assign match types
+        #df["Case Match Type"] = None  # Initialize column
         if subset_to_exclude:
-          df_include = self.filterRows(col_name, value_to_check, subset_to_exclude, case_in, case_ex)
-          # Set match_idx to True where df_include is True, and False elsewhere
-          df["match_idx"] = df.index.isin(df_include.index)  # This sets match_idx True for rows in df_include, False elsewhere.
-        else:
-            df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True
+            # Get included rows (NOT excluded rows)
+            included_rows = self.filterRows(col_name, value_to_check, subset_to_exclude, case_in, case_ex)
+            # Create mask for included rows (i.e., rows that should be kept)
+            include_mask = df.index.isin(included_rows.index)
+            print("the number of included matches is", len(df[include_mask]))
+    
+            # Set match_idx to True where df_include is True, and False elsewhere
+            df["match_idx"] = df.index.isin(included_rows.index)  # This sets match_idx True for rows in df_include, False elsewhere.
+            # Corrected Case Match Type Updates
+            mask = ~df.index.isin(included_rows.index)
+            df.loc[mask, "Case Match Type"] = None
+            #df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True
+
+            
+        
+        print("match sum is", df["match_idx"].sum())
         
 
         # Filter matched utterances (keep same length as self.df
         matched_df_utt = df[["row_idx", "match_idx", "Case Match Type", "convo_len"]]
        
-        #changes filtered df to exlucde the subset for the matched row statistics 
+        #changes filtered df to exclude the subset for the matched row statistics 
         if subset_to_exclude:
-            df = df_include
-        utt_stats = df[df["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len"]]
+            utt_stats = included_rows[included_rows["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len"]]
+        else:
+            utt_stats = df[df["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len"]]
         # Copute match frequency (count matches per row_idx group)
         match_freq = df.groupby("row_idx")['Case Match Type'].apply(lambda x: x.isin(["Exact", "Lower", "Case Insensitive"]).sum()).reset_index(name="match_freq")
+        print(df["match_idx"].sum())
         # Compute conversation length per row_idx
         convolen = df.groupby("row_idx").size().reset_index(name='convo_len')
         # Merge match_freq and convolen on row_idx to create the summary DataFrame
         convo_stats = pd.merge(match_freq, convolen, on="row_idx", how="left")   
         convo_stats.head() 
         self.text_matches_new[value_to_check] = [matched_df_utt, convo_stats, utt_stats]
-        df['Case Match Type'] = np.nan
-        df['Case Match Type'] = df['Case Match Type'].astype('object')
-
+        self.resetUtDF()
         self.normalizedRelativePos(value_to_check)
 
+    def resetUtDF(self):
+        df = self.utterancesDF
+        df['Case Match Type'] = np.nan
+        df['Case Match Type'] = df['Case Match Type'].astype('object')
+        df['match_idx'] = False
     def getConvoMatchesByCase(self, value_key):
         df_utt = self.utterancesDF
         df_utt['Case Match Type'] = self.text_matches_new[value_key][2]['Case Match Type']
@@ -339,6 +353,8 @@ class DataPreprocesser:
         phrase_entropy = entropy(phrase_probs, base=2)
         return phrase_entropy
 
+    #dmeasures whether a phrase or feature is uniformly distributed
+    #across conversations or if it is concentrated in a few conversations
     def getStandardizedDispersion(self, key_val, matched):
         df = self.text_matches_new[key_val][1]     
         if matched:
@@ -346,6 +362,8 @@ class DataPreprocesser:
         f_mean  = df['match_freq'].mean()
         std_dev = df['match_freq'].std()
         num_conversations = len(df['match_freq'])
+        print(num_conversations)
+        print(f_mean)
         juilland_d = 1 - (std_dev / (f_mean * np.sqrt(num_conversations)))
         return juilland_d
 
