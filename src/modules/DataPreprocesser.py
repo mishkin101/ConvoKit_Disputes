@@ -19,29 +19,36 @@ class DataPreprocesser:
     '''Match has: row_id, timestamp, speaker, message, value, utt_idx, speaker_id, case_match_type, match_idx'''
     '''Matched Convo has: match_freq, convo_len'''
 
-    def getMatchedUtterancesDF(self, key_val):
+    def getMatchedUtterancesDF(self, key_val, all = False):
         # Make sure both DataFrames have the same index for comparison
         match_idx_df = self.text_matches_new[key_val][0]
         if len(self.utterancesDF) != len(match_idx_df):
             raise ValueError("DataFrames must have the same number of rows for comparison.")
+        if all:
+             matched_utterances = self.utterancesDF.copy()
+             matched_utterances["match_idx", "Case Match Type", 'convo_len'] = self.text_matches_new[key_val][0]["match_idx", "Case Match Type" ,"convo_len"]
 
-        # Filter the rows where 'match_idx' is True in the match_idx column of the second DataFrame
-        matched_indices = match_idx_df[match_idx_df['match_idx'] == True].index
-
-        # Now, filter self.utterancesDF using these matched indices
-        matched_utterances = self.utterancesDF.loc[matched_indices]
-        matched_utterances[["Case Match Type", "is_AI"]] = self.text_matches_new[key_val][2][["Case Match Type", "is_AI"]].values
-        matched_utterances["match_idx"] = True
+        else:
+            # Filter the rows where 'match_idx' is True in the match_idx column of the second DataFrame
+            matched_indices = match_idx_df[match_idx_df['match_idx'] == True].index
+            # Now, filter self.utterancesDF using these matched indices
+            matched_utterances = self.utterancesDF.loc[matched_indices]
+            matched_utterances[["Case Match Type"]] = self.text_matches_new[key_val][2][["Case Match Type"]].values
+            matched_utterances["match_idx"] = True
         return matched_utterances
     
-    def getMatchedConvoDF(self, key_val):
+    def getMatchedConvoDF(self, key_val, all = False):
         match_idx_df = self.text_matches_new[key_val][1]  # This contains 'row_idx' and 'matchfreq'
-        df_main = self.getDataframe()  # Main convo dataframe
+        df_main = self.getDataframe().copy()  # Main convo dataframe
         # Find unique 'row_idx' values where 'matchfreq' is nonzero
-        matched_row_idxs = match_idx_df.loc[match_idx_df['match_freq'] != 0, 'row_idx'].unique()
+        if all:
+            df_main[["match_freq", "convo_len"]] = match_idx_df[["match_freq", "convo_len"]]
+            matched_convos = df_main
+        else:
+            matched_row_idxs = match_idx_df.loc[match_idx_df['match_freq'] != 0, 'row_idx'].unique()
         # Filter self.getDataframe() where 'row_idx' is in matched_row_idxs
-        matched_convos = df_main[df_main.index.isin(matched_row_idxs)]
-        matched_convos
+            matched_convos = df_main[df_main.index.isin(matched_row_idxs)]
+        #matched_convos[[["convo_len"]] 
         return matched_convos
 
     def checkAI(self, row_idx):
@@ -291,8 +298,10 @@ class DataPreprocesser:
         pandas.DataFrame
             The filtered DataFrame.
         """
-    
-        filtered_df = self.utterancesDF  # Start with the full DataFrame
+        if column not in self.utterancesDF.columns:
+            filtered_df = self.df
+        else:
+            filtered_df = self.utterancesDF  # Start with the full DataFrame
     
         # Handle inclusion filtering
         if include_val is not None:
@@ -404,7 +413,7 @@ class DataPreprocesser:
             print(f"\nThe '{func_name}' '{col_name}' for the phrase `{key_value}` is: {result}")
             return result
         else:
-            return df_stats[col_name]
+            return df_stats[col_name].to_frame()
         
     def addUttStat(self,key_value, col_name, col):
         self.text_matches_new[key_value][2][col_name] = col
