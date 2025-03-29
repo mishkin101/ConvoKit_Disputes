@@ -163,9 +163,8 @@ class DataPreprocesser:
         self.df[col_to_add] = parsed_rows
         self.parsedtoDF()
    
-
     ''' Functions for matched key words'''
-    def filterMatches(self, col_name, value_to_check):
+    def filterMatches(self, col_name, value_to_check, subset_to_exclude = None, case_in= None, case_ex= None):
         """
         Checks if the phrase 'string_to_check' appears in any value within the text for 'col_name' dictionary.
 
@@ -179,9 +178,9 @@ class DataPreprocesser:
         bool
             True if 'Walk Away' is found in any dictionary value, False otherwise.
         """
-        # Ensure the column is string type, replacing NaN values with empty strings
+        
         df = self.utterancesDF
-
+        # Ensure the column is string type, replacing NaN values with empty strings
         df[col_name] = df[col_name].fillna("").astype(str)
 
         # Create Boolean masks for each match type
@@ -194,14 +193,23 @@ class DataPreprocesser:
         df.loc[exact_match, "Case Match Type"] = "Exact"
         df.loc[lower_match, "Case Match Type"] = "Lower"
         df.loc[case_insensitive_match, "Case Match Type"] = "Case Insensitive"
-
-        df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True
+        #df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True
+        
+        if subset_to_exclude:
+          df_include = self.filterRows(col_name, value_to_check, subset_to_exclude, case_in, case_ex)
+          # Set match_idx to True where df_include is True, and False elsewhere
+          df["match_idx"] = df.index.isin(df_include.index)  # This sets match_idx True for rows in df_include, False elsewhere.
+        else:
+            df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True
         
 
-        # Filter matched utterances (keep same length)
+        # Filter matched utterances (keep same length as self.df
         matched_df_utt = df[["row_idx", "match_idx", "Case Match Type", "convo_len"]]
-
-        #row_matched = df[df["match_idx"] == True][["row_idx", "match_idx", "Case Match Type", "convo_len"]]
+       
+        #changes filtered df to exlucde the subset for the matched row statistics 
+        if subset_to_exclude:
+            df = df_include
+        utt_stats = df[df["match_idx"] == True][["row_idx", "uttidx", "Case Match Type", "convo_len"]]
         # Copute match frequency (count matches per row_idx group)
         match_freq = df.groupby("row_idx")['Case Match Type'].apply(lambda x: x.isin(["Exact", "Lower", "Case Insensitive"]).sum()).reset_index(name="match_freq")
         # Compute conversation length per row_idx
@@ -209,13 +217,15 @@ class DataPreprocesser:
         # Merge match_freq and convolen on row_idx to create the summary DataFrame
         convo_stats = pd.merge(match_freq, convolen, on="row_idx", how="left")   
         convo_stats.head() 
-        utt_stats = pd.DataFrame()
         self.text_matches_new[value_to_check] = [matched_df_utt, convo_stats, utt_stats]
+        df['Case Match Type'] = np.nan
+        df['Case Match Type'] = df['Case Match Type'].astype('object')
+
         self.normalizedRelativePos(value_to_check)
 
     def getConvoMatchesByCase(self, value_key):
         df_utt = self.utterancesDF
-        df_utt['Case Match Type'] = self.text_matches_new[value_key][0]['Case Match Type']
+        df_utt['Case Match Type'] = self.text_matches_new[value_key][2]['Case Match Type']
         # df_utt.groupby("row_idx")['Case Match Type'].apply(lambda x: x.isin(["Exact", "Lower", "Case Insensitive"]).sum())
         group = df_utt.groupby("row_idx")["Case Match Type"].value_counts().unstack(fill_value=0)
         df_utt['Case Match Type'] = np.nan
@@ -223,14 +233,14 @@ class DataPreprocesser:
         return group
 
     def groupbyMatchUttStat(self, value_key, group_by, stat_col, agg_list):
-        df_utt = self.getMatchedUtterancesDF(value_key)
-        df_utt[stat_col] = self.text_matches_new[value_key][2][stat_col] # Assuming this exists
+        df_utt = self.getMatchedUtterancesDF(value_key).copy()
+        df_utt.loc[:,stat_col] = self.text_matches_new[value_key][2][stat_col] # Assuming this exists
         stat = df_utt.groupby(group_by)[stat_col].agg(agg_list)
         return stat
     
     def groupbyMatchConvoStat(self, value_key, group_by, stat_col, agg_list):
-        df_convo = self.getMatchedConvoDF(value_key)
-        df_convo[stat_col] = self.text_matches_new[value_key][1][stat_col]  # Assuming this exists
+        df_convo = self.getMatchedConvoDF(value_key).copy()
+        df_convo.loc[:,stat_col] = self.text_matches_new[value_key][1][stat_col]  # Assuming this exists
         stat = df_convo.groupby(group_by)[stat_col].agg(agg_list)
         return stat
     
@@ -256,7 +266,7 @@ class DataPreprocesser:
             The filtered DataFrame.
         """
     
-        filtered_df = self.df  # Start with the full DataFrame
+        filtered_df = self.utterancesDF  # Start with the full DataFrame
     
         # Handle inclusion filtering
         if include_val is not None:
@@ -271,7 +281,7 @@ class DataPreprocesser:
                 filtered_df = filtered_df[filtered_df[column] != exclude_val]
             else:  # String case
                 filtered_df = filtered_df[~filtered_df[column].astype(str).str.contains(str(exclude_val), case=case_ex, na=False)]
-
+  
         return filtered_df
     
     def getDataframe(self):
@@ -294,50 +304,62 @@ class DataPreprocesser:
                 else:
                     spk = None
             return spk
-
         
     ''' All statistics for words'''
     # def speakerPhrase(self):
-    def getTTR(self, key_value):
+    def getTTR(self, key_value, matched):
         df = self.text_matches_new[key_value][1]
+        if matched:
+            df = df[df[['match_freq'] != 0]]
         convos_with_phrase = df['match_freq'].sum()
       
         return pd.to_numeric(convos_with_phrase/ (df.shape[0]))
         
-    def getDispersion(self, key_val):
+    def getDispersion(self, key_val, matched):
         #f_i  = frequency of phrase in conversation 
         #f_bar mean frequency across all conversations.
         df = self.text_matches_new[key_val][1]
+        if matched:
+            df = df[df['match_freq'] != 0]
+
         f_mean  = df['match_freq'].mean()
+        squared_dev = ((df['match_freq'] - f_mean) ** 2).sum()
+        print("f_mean is:", f_mean)
+        print(" squared dev is:", squared_dev)
         dispersion_index = ((df['match_freq'] - f_mean) ** 2).sum() / f_mean
         return dispersion_index
 
-    def getEntropy(self, key_val):
+    def getEntropy(self, key_val, matched):
         df = self.text_matches_new[key_val][1]
+   
+        if matched:
+            df = df[df[['match_freq'] != 0]]
         phrase_counts = df['match_freq']
         phrase_probs = phrase_counts / phrase_counts.sum()
         phrase_entropy = entropy(phrase_probs, base=2)
         return phrase_entropy
 
-    def getStandardizedDispersion(self, key_val):
-        df = self.text_matches_new[key_val][1]
+    def getStandardizedDispersion(self, key_val, matched):
+        df = self.text_matches_new[key_val][1]     
+        if matched:
+            df = df[df['match_freq'] != 0]
         f_mean  = df['match_freq'].mean()
         std_dev = df['match_freq'].std()
         num_conversations = len(df['match_freq'])
         juilland_d = 1 - (std_dev / (f_mean * np.sqrt(num_conversations)))
         return juilland_d
 
+    #always matched
     def normalizedRelativePos(self, key_value):
         #save this column to getMatchedUtterancesDF
         df = self.getMatchedUtterancesDF(key_value)
         df_2 = self.text_matches_new[key_value][2] #stats_df for matched cases
-        df_2['relative_pos'] = df["uttidx"] / df["convo_len"].replace(1, float('nan'))
-        df_2['relative_pos'] = pd.to_numeric(df["uttidx"] / (df["convo_len"] - 1))
+        df_2['relative_pos'] = df_2["uttidx"] / df_2["convo_len"].replace(1, float('nan'))
+        df_2['relative_pos'] = pd.to_numeric(df_2["uttidx"] / (df_2["convo_len"] - 1))
         # self.text_matches_new[key_value][2] = df_2
- 
-    def getSD(self, col_name, key_value):
-        df_col = self.getMatchedUtterancesDF['col name']
-        return np.std(df_col)
+    
+    def getUttStat(self, key_value, col_name):
+        return self.text_matches_new[key_value][2][col_name].to_frame()
 
 
 
