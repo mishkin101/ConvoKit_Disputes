@@ -8,16 +8,18 @@ class DataPreprocesser:
 
     def __init__(self, datafilepath):
         self.df = pd.read_csv(datafilepath)
-        self.text_matches= {} #dict of utterances and matched text | {[{},{}]}
         self.num_matches = {}
         self.metric_keys = ['timestamp', 'speaker', 'message', 'value', 'Case Match Type', 'matchidx', 'convolen', 'uttidx', 'matchfreq', 'speaker_id']
-        self.match_stats = {}
-        '''{{phrase_to_match: dataframe}, }'''
+        self.match_stats = {'relative_pos'}
+
+        '''{{phrase_to_match: [all_utt_mask, matched_convo_stats, matched_utt_stats]}, }'''
+        '''Match has: row_id, timestamp, speaker, message, value, utt_idx, speaker_id, case_match_type, match_idx'''
+        '''Matched Convo has: match_freq, convo_len'''
         self.text_matches_new = {} 
         self.utterancesDF = None
-
-    '''Match has: row_id, timestamp, speaker, message, value, utt_idx, speaker_id, case_match_type, match_idx'''
-    '''Matched Convo has: match_freq, convo_len'''
+        self.corpus_utt = None
+        self.corpus_convos = None
+        self.corpus_speakers =None
 
     def getMatchedUtterancesDF(self, key_val, all = False):
         # Make sure both DataFrames have the same index for comparison
@@ -175,7 +177,65 @@ class DataPreprocesser:
             parsed_rows.append(parsed_row)
         self.df[col_to_add] = parsed_rows
         self.parsedtoDF()
-   
+        self.df["flag_speaker"] = self.df["parsed_dialog"].apply(self.addDisputeOutcomesbySpeaker)
+        self.getDataframe()
+       
+    def addDisputeOutcomesbySpeaker(self, parsed_dialog):
+        flag_speaker = {
+            0: ['Buyer', 'I Walk Away.'], 
+            1: ['Buyer', 'Accept Deal'],
+            2: ['Seller', 'I Walk Away.'],
+            3: ['Seller', 'Accept Deal']
+        }
+        
+        if not isinstance(parsed_dialog, list) or len(parsed_dialog) == 0:
+            return None
+        # Get the last entry from the parsed_dialog list
+        last_entry = parsed_dialog[-1]
+        # Retrieve speaker and message; default to empty string if not present
+        speaker = last_entry.get("speaker", "")
+        message = last_entry.get("message", "")
+        # Check for an exact match (including case) in flag_speaker
+        for key, (expected_speaker, expected_message) in flag_speaker.items():
+            if speaker == expected_speaker and message == expected_message:
+                return key
+        return None
+    
+    def addDisputeOutcomes(self, parsed_dialog):
+        flag__general = {0: ['Accept Deal'],
+                        1: ['I Walk Away.']}
+        
+        if not isinstance(parsed_dialog, list) or len(parsed_dialog) == 0:
+            return None
+        for key, (expected_speaker, expected_message) in flag_general.items():
+            if message == expected_message:
+                    return key
+        return None
+        
+    def getOutcomesBySpeaker(self):
+
+        flag_speaker_map = {
+        0: "Buyer - I Walk Away",
+        1: "Buyer - Accept Deal",
+        2: "Seller - I Walk Away",
+        3: "Seller - Accept Deal"
+        }
+
+        final_success_df_counts.index = final_success_df_counts.index.map(flag_speaker_map)
+        print(final_success_df_counts)
+
+        # Apply mapping to final_reject_df_counts
+        final_reject_df_counts.index = final_reject_df_counts.index.map(flag_speaker_map)
+        display(final_reject_df_counts)
+
+    def filterValidOutcomes(self):
+        final_success_df = self.getMatchedConvoDF("Accept Deal")
+        final_success_df  = final_success_df[final_success_df["parsed_dialog"].apply(lambda lst: lst[-1]['message'] == "Accept Deal")]
+
+        final_reject_df = self.getMatchedConvoDF("I Walk Away")
+        final_reject_df  = final_reject_df[final_reject_df["parsed_dialog"].apply(lambda lst: "I Walk Away." == lst[-1]['message'])]
+        self.df = pd.concat([df1, df2])
+        
 
     ''' Functions for matched key words'''
     def filterMatches(self, col_name, value_to_check, subset_to_exclude = None, case_in= None, case_ex= None):
