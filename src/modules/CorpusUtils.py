@@ -5,15 +5,15 @@ class CorpusUtils:
     """
     Utility class for processing and building dataframes for conversations, speakers, and utterances.
     """
+    utterance_headers = ["id", "speaker", "conversation_id", "reply_to", "timestamp", "text"]
+    speaker_metadata = ["b_country", "s_country", "is_AI"]
+    conversation_headers = ["id", "name", "timestamp", "num_utterances"]
+    conversation_metadata = ["num_turns", "dispute"]
+   
     def __init__(self):
-        self.utterance_headers= ["id", "speaker", "conversation_id", "reply_to", "timestamp", "text"]
-        # TODO: add the rankings for each outcome later
-        self.speaker_metadata = ["b_country", "s_country", "is_AI"]
-
-        self.conversation_headers = ["id", "name", "timestamp", "num_utterances"]
-        self.conversation_metadata = ["num_turns", "dispute"]
-    # intention: make dataframe object from a pre-processed dataframe with correct primary info and metadata info needed
-
+        pass
+   
+    # intention: make dataframe object from a pre-processed dataframe with correct primary info and metadata info needed 
     def setUtteranceHeaders(self, headers):
         self.utterance_headers = headers
 
@@ -29,10 +29,9 @@ class CorpusUtils:
     def setSpeakerMetadata(self, metadata):
         self.speaker_metadata = metadata
 
-
-    # @staticmethod
-    # def buildspeakerID(df):
-
+    @staticmethod
+    '''return: Speaker DataFrame'''
+    def buildspeakerID(df):
     # @staticmethod
     # def buildconversationID(df):
 

@@ -3,11 +3,14 @@ import re
 from collections import defaultdict
 import numpy as np
 from scipy.stats import entropy
+import os
+import ast
+import json
+from IPython.display import display
 
 class DataPreprocesser:
 
-    def __init__(self, datafilepath):
-        self.df = pd.read_csv(datafilepath)
+    def __init__(self, filepath=None):
         self.num_matches = {}
         self.metric_keys = ['timestamp', 'speaker', 'message', 'value', 'Case Match Type', 'matchidx', 'convolen', 'uttidx', 'matchfreq', 'speaker_id']
         self.match_stats = {'relative_pos'}
@@ -20,6 +23,11 @@ class DataPreprocesser:
         self.corpus_utt = None
         self.corpus_convos = None
         self.corpus_speakers =None
+
+        self.df = None  # Ensure df exists even if loading fails
+        if filepath:
+            self.getFromCSV(filepath)
+
 
     def getMatchedUtterancesDF(self, key_val, all = False):
         # Make sure both DataFrames have the same index for comparison
@@ -69,22 +77,28 @@ class DataPreprocesser:
         else:
             return None
     
-    def parsedtoDF(self):
+    def parsedtoUtteranceDF(self):
         all_rows = []
         for row_idx, parsed_dialog in enumerate(self.df["parsed_dialog"]):
             for entry in parsed_dialog:
+                if not isinstance(entry, dict):
+                     print(f"Warning: Entry in row {row_idx} is not a dictionary: {entry}")
+                     continue  # Skip if entry is not a dict
+                #print(entry)
                 entry["row_idx"] = row_idx
                 entry["match_idx"] = False  # Boolean column
                 entry["Case Match Type"] = None  # Empty string
                 all_rows.append(entry)
 
-        
+        #print(all_rows)
         self.utterancesDF = pd.DataFrame(all_rows)
+
+
         self.utterancesDF["Case Match Type"] = self.utterancesDF["Case Match Type"].astype(object)
         # Compute conversation length per row_idx
-        convolen_ut = self.utterancesDF.groupby("row_idx").size().rename("convo_len")
+        convolen_utt = self.utterancesDF.groupby("row_idx").size().rename("convo_len")
         # Assign conversation length to each utterance in df
-        self.utterancesDF = self.utterancesDF.merge(convolen_ut, on="row_idx", how="right")
+        self.utterancesDF = self.utterancesDF.merge(convolen_utt, on="row_idx", how="right")
 
     def getUtterancesDF(self):
         return self.utterancesDF
@@ -176,9 +190,10 @@ class DataPreprocesser:
             parsed_row = self.parseRow(index, row_value, col_name)
             parsed_rows.append(parsed_row)
         self.df[col_to_add] = parsed_rows
-        self.parsedtoDF()
+        self.parsedtoUtteranceDF()
         self.df["flag_speaker"] = self.df["parsed_dialog"].apply(self.addDisputeOutcomesbySpeaker)
-        self.getDataframe()
+        self.df["dispute_outcome"] = self.df["parsed_dialog"].apply(self.addDisputeOutcomes)
+        #self.getDataframe()
        
     def addDisputeOutcomesbySpeaker(self, parsed_dialog):
         flag_speaker = {
@@ -202,25 +217,25 @@ class DataPreprocesser:
         return None
     
     def addDisputeOutcomes(self, parsed_dialog):
-        flag__general = {0: ['Accept Deal'],
-                        1: ['I Walk Away.']}
+        flag_general = {1: ['Accept Deal'],
+                        0: ['I Walk Away.']}
         
         if not isinstance(parsed_dialog, list) or len(parsed_dialog) == 0:
             return None
-        for key, (expected_speaker, expected_message) in flag_general.items():
-            if message == expected_message:
+        last_entry = parsed_dialog[-1]
+        message = last_entry.get("message", "").strip()
+        for key, expected_message in flag_general.items():
+            if message == expected_message[0]:
                     return key
         return None
         
     def getOutcomesBySpeaker(self):
-
         flag_speaker_map = {
         0: "Buyer - I Walk Away",
         1: "Buyer - Accept Deal",
         2: "Seller - I Walk Away",
         3: "Seller - Accept Deal"
         }
-
         final_success_df_counts.index = final_success_df_counts.index.map(flag_speaker_map)
         print(final_success_df_counts)
 
@@ -229,30 +244,76 @@ class DataPreprocesser:
         display(final_reject_df_counts)
 
     def filterValidOutcomes(self):
+        self.filterMatches("message", "Accept Deal")
         final_success_df = self.getMatchedConvoDF("Accept Deal")
         final_success_df  = final_success_df[final_success_df["parsed_dialog"].apply(lambda lst: lst[-1]['message'] == "Accept Deal")]
 
+        self.filterMatches("message", "I Walk Away")
         final_reject_df = self.getMatchedConvoDF("I Walk Away")
         final_reject_df  = final_reject_df[final_reject_df["parsed_dialog"].apply(lambda lst: "I Walk Away." == lst[-1]['message'])]
-        self.df = pd.concat([df1, df2])
-        
+        self.df = pd.concat([final_success_df, final_reject_df]).sort_index()
 
-    ''' Functions for matched key words'''
+    def saveToCSV(self, final_filepath):
+        os.makedirs(os.path.dirname(final_filepath), exist_ok=True)
+        self.df['parsed_dialog'] = self.df['parsed_dialog'].apply(self.listToString)
+        self.getDataframe().to_csv(final_filepath, index= True, index_label="Row_Index")
+        print(f"Data saved to {final_filepath}")
+  
+    def getFromCSV(self, filepath):
+        self.df = pd.read_csv(filepath)
+        if "Row_Index" in self.df.columns:
+                self.df.set_index("Row_Index", inplace=True)  # Set it as the index
+        else:
+            self.df = pd.read_csv(filepath)
+
+        if "parsed_dialog" not in self.df.columns:
+            print("not here")
+            self.addParsedTextColumn("formattedChat", "parsed_dialog")
+        else:
+            # Convert the 'parsed_dialog' column from string to list of dictionaries
+            self.df["parsed_dialog"] = self.df["parsed_dialog"].apply(ast.literal_eval)
+            # Verify the conversion
+            print(type(self.df["parsed_dialog"][0]))  # Should output <class 'list'>
+            print(self.df["parsed_dialog"][0])  # Should display the list of dictionaries properly
+            #self.df["parsed_dialog"] = self.df["parsed_dialog"].apply(self.str_to_dict)
+            print("here")
+            self.parsedtoUtteranceDF()
+
+    def str_to_dict(self, value):
+        if pd.isna(value):  
+            return None  
+
+        if isinstance(value, str):
+            value = value.strip()  # Remove leading/trailing whitespace
+            if value.startswith("'") and value.endswith("'"):
+                value = value[1:-1]  # Remove incorrect single quotes around JSON
+
+            try:
+                return json.loads(value)  
+            except json.JSONDecodeError:
+                print(f"⚠️ JSON Decode Error on value: {value}")  # Debugging line
+                return None  # Return None instead of broken data
+
+        return value
+
+   # Function to convert list of dictionaries into a string
+    def listToString(self, value):
+        return json.dumps(value)
+
+
+    '''Functions for matched key words''' 
     def filterMatches(self, col_name, value_to_check, subset_to_exclude = None, case_in= None, case_ex= None):
         """
         Checks if the phrase 'string_to_check' appears in any value within the text for 'col_name' dictionary.
-
         Parameters:
         -----------
         parsed_dialog : list of dict
             A list of dictionaries representing structured dialogue.
-
         Returns:
         --------
         bool
             True if 'Walk Away' is found in any dictionary value, False otherwise.
-        """
-        
+        """ 
         df = self.utterancesDF
         # Ensure the column is string type, replacing NaN values with empty strings
         df[col_name] = df[col_name].fillna("").astype(str)
@@ -389,13 +450,14 @@ class DataPreprocesser:
         self.df = self.df.dropna(subset=["formattedChat"]).reset_index(drop=True)
 
     def getSpeakerFromCol(self, col_name, row_idx):
-                if col_name.lower().startswith("b"):
-                    spk = "Buyer"
-                elif col_name.lower().startswith("s"):
-                    spk = "Seller"
-                else:
-                    spk = None
-                return spk
+        if col_name.lower().startswith("b"):
+            spk = "Buyer"
+        elif col_name.lower().startswith("s"):
+            spk = "Seller"
+        else:
+            spk = None
+        return spk
+
 
 
     ''' All statistics for words'''
@@ -432,8 +494,8 @@ class DataPreprocesser:
         phrase_entropy = entropy(phrase_probs, base=2)
         return phrase_entropy
 
-    #measures whether a phrase or feature is uniformly distributed
-    #across conversations or if it is concentrated in a few conversations
+    # measures whether a phrase or feature is uniformly distributed
+    # across conversations or if it is concentrated in a few conversations
     def getStandardizedDispersion(self, key_val, matched):
         df = self.text_matches_new[key_val][1]     
         if matched:
@@ -446,7 +508,8 @@ class DataPreprocesser:
         juilland_d = float(juilland_d)
         print(f"The juilland's Dispersion for {key_val} across all conversations is:", juilland_d)
         return juilland_d
-    #always matched
+    
+    # always matched
     def normalizedRelativePos(self, key_value):
         #save this column to getMatchedUtterancesDF
         df = self.getMatchedUtterancesDF(key_value)
@@ -486,72 +549,4 @@ if __name__ == "__main__":
         data_preprocessor = DataPreprocesser(filepath)
         #data_preprocessor.addParsedDialogColumn()
         data_preprocessor.show()
-
-  # def matchedWordtoDF(self, matched_dict, key_val):
-        # data = []
-        # convodata = []
-        # # print(matched_dict)
-        # for row_id, entries in matched_dict.items():
-        #     for entry in entries:
-
-        #         if 'message' in entry:  # Conversation details
-        #             data.append({
-        #                 'row_id': row_id,
-        #                 'timestamp': entry.get('timestamp'),
-        #                 'speaker': entry.get('speaker'),
-        #                 'message': entry.get('message'),
-        #                 'value': entry.get('value'),
-        #                 'uttidx': entry.get('uttidx'),
-        #                 'speaker_id': entry.get('speaker_id'),
-        #                 'Case Match Type': entry.get('Case Match Type'),
-        #                 # 'matchidx': entry.get('matchidx'),
-        #             })
-        #         else:  # Metadata details
-        #             convodata.append({
-        #                 'row_id': row_id,
-        #                 'convolen': entry.get('convolen'),
-        #                 'matchfreq': entry.get('matchfreq')
-        #             })
-        # df_conversations = pd.DataFrame(data)
-        # df_convodata = pd.DataFrame(convodata)
-        # self.text_matches_new[key_val] = [df_conversations, df_convodata]
-'''
-    if not (isinstance(value_to_check, (str))):
-            self.num_matches.append({})
-        
-        match_dict = {}
-        for row_idx in row_indices:
-            row_value = self.df.at[row_idx, col_name]
-            if isinstance(row_value , list):  
-                match_freq=0
-                matches =[]
-                for entry in self.df[col_name].iloc[row_idx]:
-                    copy_entry = entry.copy() 
-                    if isinstance(entry, dict):  
-                        message_value = entry["message"]
-                        if message_value and isinstance(message_value, str) and value_to_check in message_value:
-                            match_freq +=1
-                            copy_entry.update({"matchidx":entry.get("uttidx", "Unknown")})
-                            copy_entry.update({"Case Match Type":"Exact"})
-                            matches.append(copy_entry)
-                        elif message_value and isinstance(message_value, str) and value_to_check.lower() in message_value:
-                            match_freq +=1
-                            copy_entry.update({"matchidx":entry.get("uttidx", "Unknown")})
-                            copy_entry.update({"Case Match Type":"Lower"})
-                            matches.append(copy_entry)
-                        elif message_value and isinstance(message_value, str) and value_to_check.lower() in message_value.lower():
-                            match_freq +=1
-                            copy_entry.update({"matchidx":entry.get("uttidx", "Unknown")})
-                            copy_entry.update({"Case Match Type":"Case Insensitive"})
-                            matches.append(copy_entry)
-                        else:
-                            copy_entry.update({"Case Match Type":"No Match"})
-                #at end of each row, add {'convolen': len(entry), 'matchfreq': match_freq}
-            matches.append({'convolen': len(row_value), 'matchfreq': match_freq})
-            match_dict[str(row_idx)] = matches
-        
-        self.text_matches[str(value_to_check)] = match_dict
-        self.matchedWordtoDF(match_dict, value_to_check)
-        return match_dict
-    '''  
 

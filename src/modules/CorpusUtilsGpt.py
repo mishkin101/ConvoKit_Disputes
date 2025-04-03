@@ -5,8 +5,7 @@ import spacy
 
 def parse_conversations_from_dataframe(
     df: pd.DataFrame,
-    chat_col: str = 'formattedChat'
-):
+    chat_col: str = 'formattedChat'):
     """
     Parses each row in df[chat_col] as a separate conversation in ConvoKit format,
     ensuring that each Buyer or Seller in a row is *unique* to that row.
