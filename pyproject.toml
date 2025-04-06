@@ -15,4 +15,5 @@ dependencies = [
     "convokit>=3.1.0",
     "tqdm>=4.67.1",
     "scipy>=1.15.2",
+    "import-ipynb>=0.2",
 ]

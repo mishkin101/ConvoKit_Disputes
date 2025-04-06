@@ -92,6 +92,9 @@ class DataPreprocesser:
 
         #print(all_rows)
         self.utterancesDF = pd.DataFrame(all_rows)
+        self.utterancesDF.loc[13988, 'speaker']= 'Seller'
+        self.utterancesDF.loc[13988, 'speaker_id'] = 'Seller_1049'
+        self.utterancesDF.loc[13988, 'timestamp']= '1702723625'
 
 
         self.utterancesDF["Case Match Type"] = self.utterancesDF["Case Match Type"].astype(object)
@@ -105,7 +108,6 @@ class DataPreprocesser:
    
     def parseRow(self, row_idx, row_entry, col_name):
         structured_dialog = []
-        structured_dialog = []
         # Convert to string to avoid errors (NaN -> 'nan' -> we'll treat that like empty)
         if pd.isnull(row_entry):
             row_entry = ""  # or "No chat available"
@@ -116,7 +118,7 @@ class DataPreprocesser:
                         'timestamp': None,
                         'speaker': spk,
                         'message': None,
-                        'value': row_entry,
+                        #'value': row_entry,
                         'uttidx': None,
                         'speaker_id': spk+ '_'+str(row_idx),
                         'is_AI':    None
@@ -147,7 +149,7 @@ class DataPreprocesser:
                     'timestamp': timestamp,
                     'speaker': speaker,
                     'message': message.strip(),
-                    'value': None,
+                    #'value': None,
                     'uttidx': line_count,
                     'speaker_id': speaker + '_' + str(row_idx) if speaker is not None else None,
                     'is_AI': is_AI
@@ -164,7 +166,7 @@ class DataPreprocesser:
                         'timestamp': None,
                         'speaker': spk,
                         'message': line,
-                        'value': None,
+                        #'value': None,
                         'uttidx': line_count,
                         'speaker_id': spk + '_' + str(row_idx) if spk is not None else None,
                         'is_AI': ai_speaker
@@ -172,7 +174,7 @@ class DataPreprocesser:
                     line_count +=1
         return structured_dialog
 
-    def addParsedTextColumn(self, col_name, col_to_add):
+    def addParsedDialogue(self, col_name):
         # Convert all NaN to empty strings right in the DataFrame
         self.dropChatNA()
         print(len(self.df))
@@ -189,7 +191,7 @@ class DataPreprocesser:
             row_value = row[col_name]
             parsed_row = self.parseRow(index, row_value, col_name)
             parsed_rows.append(parsed_row)
-        self.df[col_to_add] = parsed_rows
+        self.df['parsed_dialog'] = parsed_rows
         self.parsedtoUtteranceDF()
         self.df["flag_speaker"] = self.df["parsed_dialog"].apply(self.addDisputeOutcomesbySpeaker)
         self.df["dispute_outcome"] = self.df["parsed_dialog"].apply(self.addDisputeOutcomes)
@@ -243,60 +245,53 @@ class DataPreprocesser:
         final_reject_df_counts.index = final_reject_df_counts.index.map(flag_speaker_map)
         display(final_reject_df_counts)
 
+    def is_accept_deal(self, lst):
+        if isinstance(lst, list) and len(lst) > 0:
+            last = lst[-1]
+            if isinstance(last, dict) and 'message' in last:
+                return last['message'] == "Accept Deal"
+        return False
+
+    def is_walk_away(self, lst):
+        if isinstance(lst, list) and len(lst) > 0:
+            last = lst[-1]
+            if isinstance(last, dict) and 'message' in last:
+                return last['message'] == "I Walk Away."
+        return False
+   
     def filterValidOutcomes(self):
+    
         self.filterMatches("message", "Accept Deal")
         final_success_df = self.getMatchedConvoDF("Accept Deal")
-        final_success_df  = final_success_df[final_success_df["parsed_dialog"].apply(lambda lst: lst[-1]['message'] == "Accept Deal")]
+        display(final_success_df)
+        print("Data type of parsed_dialog:", type(final_success_df["parsed_dialog"].iloc[0]))
+        final_success_df  = final_success_df[final_success_df["parsed_dialog"].apply(self.is_accept_deal)]
 
         self.filterMatches("message", "I Walk Away")
         final_reject_df = self.getMatchedConvoDF("I Walk Away")
-        final_reject_df  = final_reject_df[final_reject_df["parsed_dialog"].apply(lambda lst: "I Walk Away." == lst[-1]['message'])]
+        final_reject_df  = final_reject_df[final_reject_df["parsed_dialog"].apply(self.is_walk_away)]
         self.df = pd.concat([final_success_df, final_reject_df]).sort_index()
+
+
 
     def saveToCSV(self, final_filepath):
         os.makedirs(os.path.dirname(final_filepath), exist_ok=True)
-        self.df['parsed_dialog'] = self.df['parsed_dialog'].apply(self.listToString)
+        self.df.drop(columns=['parsed_dialog'], inplace =True)
         self.getDataframe().to_csv(final_filepath, index= True, index_label="Row_Index")
         print(f"Data saved to {final_filepath}")
-  
+
     def getFromCSV(self, filepath):
         self.df = pd.read_csv(filepath)
         if "Row_Index" in self.df.columns:
                 self.df.set_index("Row_Index", inplace=True)  # Set it as the index
         else:
             self.df = pd.read_csv(filepath)
-
         if "parsed_dialog" not in self.df.columns:
-            print("not here")
-            self.addParsedTextColumn("formattedChat", "parsed_dialog")
+            self.addParsedDialogue("formattedChat")
         else:
-            # Convert the 'parsed_dialog' column from string to list of dictionaries
             self.df["parsed_dialog"] = self.df["parsed_dialog"].apply(ast.literal_eval)
-            # Verify the conversion
-            print(type(self.df["parsed_dialog"][0]))  # Should output <class 'list'>
-            print(self.df["parsed_dialog"][0])  # Should display the list of dictionaries properly
-            #self.df["parsed_dialog"] = self.df["parsed_dialog"].apply(self.str_to_dict)
-            print("here")
             self.parsedtoUtteranceDF()
 
-    def str_to_dict(self, value):
-        if pd.isna(value):  
-            return None  
-
-        if isinstance(value, str):
-            value = value.strip()  # Remove leading/trailing whitespace
-            if value.startswith("'") and value.endswith("'"):
-                value = value[1:-1]  # Remove incorrect single quotes around JSON
-
-            try:
-                return json.loads(value)  
-            except json.JSONDecodeError:
-                print(f"⚠️ JSON Decode Error on value: {value}")  # Debugging line
-                return None  # Return None instead of broken data
-
-        return value
-
-   # Function to convert list of dictionaries into a string
     def listToString(self, value):
         return json.dumps(value)
 
@@ -316,19 +311,19 @@ class DataPreprocesser:
         """ 
         df = self.utterancesDF
         # Ensure the column is string type, replacing NaN values with empty strings
-        df[col_name] = df[col_name].fillna("").astype(str)
+        df["temp_col"] = df[col_name].fillna("").astype(str)
 
         # Create Boolean masks for each match type
-        exact_match = df[col_name].str.contains(value_to_check, na=False)
-        lower_match = df[col_name].str.contains(r'\b' + re.escape(value_to_check.lower()) + r'\b', na=False) & ~exact_match
-        case_insensitive_match = df[col_name].str.contains(r'\b' + re.escape(value_to_check) + r'\b', case=False, na=False) & ~exact_match & ~lower_match
+        exact_match = df["temp_col"].str.contains(value_to_check, na=False)
+        lower_match = df["temp_col"].str.contains(r'\b' + re.escape(value_to_check.lower()) + r'\b', na=False) & ~exact_match
+        case_insensitive_match = df["temp_col"].str.contains(r'\b' + re.escape(value_to_check) + r'\b', case=False, na=False) & ~exact_match & ~lower_match
         df.loc[exact_match, "Case Match Type"] = "Exact"
         df.loc[lower_match, "Case Match Type"] = "Lower"
         df.loc[case_insensitive_match, "Case Match Type"] = "Case Insensitive"
         df.loc[exact_match | lower_match | case_insensitive_match, "match_idx"] = True 
   
         if subset_to_exclude:
-            included_rows = self.filterRows(col_name, value_to_check, subset_to_exclude, case_in, case_ex)
+            included_rows = self.filterRows("temp_col", value_to_check, subset_to_exclude, case_in, case_ex)
             df["match_idx"] = df.index.isin(included_rows.index)  # This sets match_idx True for rows in df_include, False elsewhere.
             mask = ~df.index.isin(included_rows.index)
             df.loc[mask, "Case Match Type"] = None
@@ -351,14 +346,17 @@ class DataPreprocesser:
         convo_stats.head() 
         self.text_matches_new[value_to_check] = [matched_df_utt_mask, convo_stats, utt_stats]
         self.resetUtDF()
-        self.normalizedRelativePos(value_to_check)
+        self.normalizedRelativePos(value_to_check)# Optionally drop it
+        df.drop(columns=["temp_col"], inplace=True)
+
 
     def resetUtDF(self):
         df = self.utterancesDF
         df['Case Match Type'] = np.nan
         df['Case Match Type'] = df['Case Match Type'].astype('object')
         df['match_idx'] = False
- 
+        self.utterancesDF = df
+
     def getConvoMatchesByCase(self, value_key):
         df_utt = self.utterancesDF
         df_utt['Case Match Type'] = self.text_matches_new[value_key][2]['Case Match Type']
@@ -493,6 +491,7 @@ class DataPreprocesser:
         phrase_probs = phrase_counts / phrase_counts.sum()
         phrase_entropy = entropy(phrase_probs, base=2)
         return phrase_entropy
+
 
     # measures whether a phrase or feature is uniformly distributed
     # across conversations or if it is concentrated in a few conversations

@@ -619,6 +619,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "bitsandbytes" },
     { name = "convokit" },
+    { name = "import-ipynb" },
     { name = "nltk" },
     { name = "notebook" },
     { name = "pandas" },
@@ -633,6 +634,7 @@ dependencies = [
 requires-dist = [
     { name = "bitsandbytes", specifier = "==0.42.0" },
     { name = "convokit", specifier = ">=3.1.0" },
+    { name = "import-ipynb", specifier = ">=0.2" },
     { name = "nltk", specifier = ">=3.9.1" },
     { name = "notebook", specifier = ">=7.3.3" },
     { name = "pandas", specifier = ">=2.2.3" },
@@ -1104,6 +1106,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/6c/f4/9821fe373a4788bca43f00491b008f930de0b12a60ff631852d1f984b966/ImageHash-4.3.1.tar.gz", hash = "sha256:7038d1b7f9e0585beb3dd8c0a956f02b95a346c0b5f24a9e8cc03ebadaf0aa70", size = 296989 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2d/b4/19a746a986c6e38595fa5947c028b1b8e287773dcad766e648897ad2a4cf/ImageHash-4.3.1-py2.py3-none-any.whl", hash = "sha256:5ad9a5cde14fe255745a8245677293ac0d67f09c330986a351f34b614ba62fb5", size = 296543 },
+]
+
+[[package]]
+name = "import-ipynb"
+version = "0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "ipython" },
+    { name = "nbformat" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7d/5f/07f93b0e5a94b69a65eb108290ae0544210affeb24ec20cf219fe60b4e8e/import-ipynb-0.2.tar.gz", hash = "sha256:0a6db02db7973a35ed1bf007b837288b13374897282218e226d01a1eaecaff85", size = 5376 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ec/62/e0b830773060d2a390aa923dcc8afc680d798bdbdadb6394f760fac62517/import_ipynb-0.2-py3-none-any.whl", hash = "sha256:cb9e41c65dd81ebaa8e1e3e1b591276f910fbaac9238960d6798aad28d4c323f", size = 4005 },
 ]
 
 [[package]]
