@@ -37,7 +37,6 @@ def convertHeaders(df, corpus_type):
     if corpus_type.lower() == 'utterance':
         rename_map = {
         'speaker_id': 'speaker',
-        'row_idx': 'conversation_id',
         'timestamp': 'timestamp',
         'message': 'text'
         }
@@ -74,9 +73,9 @@ def convertHeaders(df, corpus_type):
         return df
 
 def setReplyTo(df):
-    df['reply_to'] = None
     df['reply_to'] = df['id'].shift(1)  # Set reply_to to the previous 'id'
     df.loc[df['uttidx'] == '0', 'reply_to'] = None
+    display()
     return df['reply_to']
 
 def prepend_meta(df, meta_list):
@@ -88,11 +87,12 @@ def prepend_meta(df, meta_list):
 def buildUtteranceDF(df):
     df = df.copy()
     df.drop('speaker', axis=1, inplace=True)
-    df[['row_idx', 'uttidx']].astype(str)
+    df[['row_idx', 'uttidx']]= df[['row_idx', 'uttidx']].astype(str)
     df['id'] = df.apply(lambda row: f"utt{row['uttidx']}_con{row['row_idx']}", axis=1)
-    df['reply_to'] =setReplyTo(df)
-    df.drop('uttidx', axis=1, inplace=True)
-    df =convertHeaders(df,'utterance')
+    df['reply_to'] = setReplyTo(df)
+    # df.drop('uttidx', axis=1, inplace=True)
+    df['conversation_id'] = df.groupby('row_idx')['id'].transform('first')
+    df = convertHeaders(df,'utterance')
     return df
 
 def buildSpeakerDF(df):
@@ -110,7 +110,6 @@ def corpusBuilder(data):
     utts =buildUtteranceDF(data.getUtterancesDF())
     speakers =buildSpeakerDF(data.getUtterancesDF())
     convos =buildConvoDF(data.getDataframe())
-    corp_utts = Utterance()
     data.corpus_utt, data.corpus_convos, data.corpus_speakers = utts, speakers, convos
     corpus_ob = Corpus.from_pandas(utterances_df=utts, speakers_df=speakers, conversations_df=convos)
     return corpus_ob
