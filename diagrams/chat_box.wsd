@@ -1,0 +1,103 @@
+@startuml
+skinparam dpi 300
+skinparam shadowing false
+left to right direction
+skinparam wrapWidth 200
+
+package "Dispute Conversation Example: Buyer vs. Seller"
+
+note left
+1699388451  
+**Buyer**:  
+Hi there! I believe I received the wrong jersey from you!  
+I was wondering if I could get a refund on my purchase?
+end note
+
+note right
+1699388553  
+**Seller**:  
+Good afternoon! I looked over your purchase record, and I'm afraid it looks like you bought the right item—it's advertised as a generic jersey...  
+Sorry for the inconvenience!
+end note
+
+note left
+1699388719  
+**Buyer**:  
+I appreciate your timely response!  
+There were two options on the site...  
+Is there anyway we could do a partial refund today?
+end note
+
+note right
+1699388896  
+**Seller**:  
+Of course! I'd be happy to get the correct item to you—how about we split the difference?  
+Also, about that review...
+end note
+
+note left
+1699389108  
+**Buyer**:  
+I can return the generic jersey, no problem!  
+I'll retract my review if you remove yours and apologize.
+end note
+
+note right
+1699389202  
+**Seller**:  
+That's a good idea.  
+Let's retract both reviews and give the full context.
+end note
+
+note left
+1699389315  
+**Buyer**:  
+This seems very reasonable.  
+Thank you for working with me on this.
+end note
+
+note right
+1699389355  
+**Seller**:  
+Agreed! I'm grateful for your time.
+end note
+
+note left
+1699389381  
+**Buyer**:  
+I believe there's a few things left to say!!
+end note
+
+note right
+1699389423  
+**Seller**:  
+Oh? I beg your pardon.  
+What can I do for you?
+end note
+
+note left
+1699389451  
+**Buyer**:  
+Just wanted to say—have a great rest of your day!
+end note
+
+note right
+1699389479  
+**Seller**:  
+Thank you, you too!
+end note
+
+note left
+1699389486  
+**Buyer**:  
+Submitted agreement: Buyer gets partial refund, both retracted reviews, both apologized.
+end note
+
+note right
+1699389501  
+**Seller**:  
+Accept Deal
+end note
+
+
+@enduml

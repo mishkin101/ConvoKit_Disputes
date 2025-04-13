@@ -1,0 +1,76 @@
+@startuml
+skinparam linetype ortho
+skinparam dpi 300
+skinparam shadowing false
+left to right direction
+
+!define COMMENT(x) <color:RoyalBlue>x</color>
+
+' -------------------------
+' Conversation + Utterances
+' -------------------------
+package "Corpus:KODIS"#lightgray {
+
+    package "Conversation: utt0_convo_1" #00298cb3 {
+        object utt0 {
+            + speaker: COMMENT(Buyer_0)
+            + timestamp: COMMENT(1699388451)
+            + text: COMMENT("Hi there! I believe I received...")
+            + conversation_id : COMMENT("utt0_con0")
+            + meta : COMMENT(dict)
+        }
+        object utt1 {
+            + speaker: COMMENT(Seller_0)
+            + timestamp: COMMENT(1699388553)
+            + text: COMMENT("Good afternoon! I looked over...")
+            + conversation_id : COMMENT("utt1_con0")
+            + meta : COMMENT(dict)
+        }
+
+        ' Ellipsis for skipped utterances
+        object "(...)" as skipped
+    
+
+        object utt13 {
+            + speaker: COMMENT(Seller_0)
+            + timestamp: COMMENT(1699389501)
+            + text: COMMENT("Accept Deal")
+            + conversation_id : COMMENT("utt13_con0")
+            + meta : COMMENT(dict)
+        }
+    }
+
+}
+
+' --------------------
+' Metadata Notes
+' --------------------
+note top of "Corpus:KODIS"
+  <b>Corpus Info:</b>
+  - Number of Speakers: <color:RoyalBlue>4214</color>
+  - Number of Utterances: <color:RoyalBlue>27498</color>
+  - Number of Conversations: <color:RoyalBlue>2107</color>
+end note
+
+
+note top of "Conversation: utt0_convo_1"
+ <b>Dispute 1 Metadata</b>
+- convo_len: <color:RoyalBlue>14</color>
+- dispute_outcome: <color:RoyalBlue>1 (Accept Deal)</color>
+end note
+
+
+note top of "utt1"
+ <b>Utterance Metadata</b>
+- CRAFT_Tokenization: <color:RoyalBlue>Tokenized Utterance</color>
+- dispute_outcome: <color:RoyalBlue>1 (Accept Deal)</color>
+end note
+
+' --------------------
+' Reply Links
+' --------------------
+utt1 --> utt0
+skipped --> utt1
+utt13 --> skipped
+
+@enduml

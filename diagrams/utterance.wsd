@@ -5,20 +5,20 @@ skinparam dpi 300
 allow_mixing
 top to bottom direction
 !theme carbon-gray
-
+!define COMMENT(x) <color:RoyalBlue>x</color>
 
 ' === Core Classes ===
 
 package "Conversation" {
 
     class Utterance {
-    +id 
-    +text 
-    +timestamp 
-    +reply_to 
-    +conversation_id 
-    +meta: dict
+        +id COMMENT(Unique identifier)
+        +text COMMENT(The content of the utterance)
+        +timestamp COMMENT(When the utterance was made)
+        +reply_to COMMENT(ID of the utterance this replies to)
+        +speaker COMMENT(Reference to the Speaker who said it)
+        +conversation_id  COMMENT(Which Conversation this belongs to)
+        +meta COMMENT(task-specifc information)
     }
 }
-
 @enduml

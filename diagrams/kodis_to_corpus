@@ -1,0 +1,68 @@
+@startuml
+skinparam linetype ortho
+skinparam dpi 200
+
+title Corpus Diagram — Example with Dispute Conversation
+
+!define COMMENT(x) <color:RoyalBlue>x</color>
+
+' === Core Classes ===
+class Corpus {
+  +id : COMMENT("KODIS")
+  +meta :
+  --
+  +num_speakers: COMMENT("4214")
+  +num_utterances: COMMENT("27498")
+  +num_conversations: COMMENT("2107")
+}
+
+class Conversation {
+  +id: COMMENT("utt0_con0")
+  +meta: COMMENT("Dictionary of Conversation-level metadata")
+  --
+  +convo_len : COMMENT(14)
+  +dispute_outcome : COMMENT("Accept Deal")
+}
+
+class Speaker_0 {
+  +id : COMMENT("Seller_0")
+  +meta : COMMENT("Dictionary of Speaker-level metadata")
+}
+
+class Speaker_1 {
+  +id : COMMENT("Buyer_0")
+  +meta : COMMENT("Dictionary of Speaker-level metadata")
+}
+
+class Utterance_0 {
+  +id : COMMENT("utt0_con0")
+  +speaker : COMMENT("Buyer_0")
+  +conversation_id : COMMENT("utt0_con0")
+  +reply_to : COMMENT("None")
+  +timestamp : COMMENT("1699388451.0")
+  +text : COMMENT("Hi there! I believe I received...")
+  +meta : COMMENT("Utterance-level metadata")
+}
+
+class Utterance_1 {
+  +id : COMMENT("utt1_con0")
+  +speaker : COMMENT("Seller_0")
+  +conversation_id : COMMENT("utt0_con0")
+  +reply_to : COMMENT("utt0_con0")
+  +timestamp : COMMENT("1699388553.0")
+  +text : COMMENT("Good afternoon! I looked over...")
+  +meta : COMMENT("Utterance-level metadata")
+}
+
+' === Relationships ===
+
+
+Conversation o-- Utterance_0
+Conversation o-- Utterance_1
+
+Utterance_0 --> Speaker_1
+Utterance_1 --> Speaker_0
+
+
+
+@enduml

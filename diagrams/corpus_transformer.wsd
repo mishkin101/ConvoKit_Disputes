@@ -1,0 +1,43 @@
+@startuml
+skinparam dpi 300
+left to right direction
+
+' Core Corpus class
+class Corpus {
+}
+
+' Abstract Transformer
+abstract class Transformer {
+  +fit(corpus: Corpus)
+  +transform(corpus: Corpus) : Corpus
+}
+
+' ConvoKit-specific transformers
+class TextParser
+class BoWTransformer
+
+' sklearn compatibility
+class SklearnTransformer {
+  +fit(data)
+  +transform(data)
+}
+
+package "scikit-learn" {
+  class Pipeline {
+    +fit(data)
+    +transform(data)
+  }
+}
+
+' Inheritance
+TextParser --|> Transformer
+BoWTransformer --|> Transformer
+
+' Transformer relationships
+Transformer --> Corpus : modifies
+
+' Interoperability
+BoWTransformer --> SklearnTransformer : outputs DataFrame/Array
+SklearnTransformer --> Pipeline : compatible with
+
+@enduml
