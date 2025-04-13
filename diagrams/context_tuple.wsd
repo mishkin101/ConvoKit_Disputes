@@ -1,0 +1,35 @@
+@startuml
+skinparam linetype ortho
+skinparam dpi 300
+left to right direction
+!theme carbon-gray
+
+' Core Tuple structure
+class ContextTuple {
+  +conversation_id : string
+}
+
+
+
+' Components of the context tuple
+package "Training Phase Only" {
+  class FutureContext {
+    +utterances : List<Utterance>
+  }
+}
+
+class Context {
+  +utterances : List<Utterance>
+}
+
+class CurrentUtterance {
+  +utterance : Utterance
+}
+
+' Relationships
+ContextTuple --> Context : past + current
+ContextTuple --> CurrentUtterance
+ContextTuple --> FutureContext : \nfuture (training only)
+
+
+@enduml

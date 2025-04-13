@@ -2,24 +2,33 @@
 skinparam linetype ortho
 skinparam dpi 300
 !theme carbon-gray
+
 ' Core Classes
-
-class Corpus{
-      + meta 
+class Corpus {
+    + meta
 }
+
 class Speaker {
-         + meta 
-}
-class Utterance{
-   + meta 
-}
-class Conversation{
-    + meta 
+    + meta
+    + vector
 }
 
+class Utterance {
+    + meta
+    + vector
+}
+
+class Conversation {
+    + meta
+    + vector
+}
+
+' Relationships
 Corpus *-- Conversation
 Corpus *-- Utterance
-Conversation o-- Utterance
 Corpus *-- Speaker
+
+Conversation o-- Utterance
 Utterance <-- Utterance : \nreplies to
+
 @enduml
