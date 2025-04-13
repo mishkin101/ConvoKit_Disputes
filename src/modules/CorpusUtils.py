@@ -105,12 +105,35 @@ def buildConvoDF(df):
     df = df.copy()
     df =convertHeaders(df,'conversation')
     return df[['id']].drop_duplicates().reset_index(drop=True)
-    
+
+def is_valid_timestamp(val):
+    try:
+        return val is not None and str(val).lower() != 'nan' and pd.notnull(val)
+    except:
+        return False
+
+def clean_corpus_timestamps(data, utts, speakers, convos):
+    # Filter utterances with valid timestamps
+    utts = utts[utts["timestamp"].apply(is_valid_timestamp)].copy()
+    utts["timestamp"] = utts["timestamp"].astype(int)
+
+    # Match speakers and conversations to cleaned utterances
+    used_speakers = set(utts["speaker"].unique())
+    used_convos = set(utts["conversation_id"].unique())
+
+    speakers = speakers[speakers["id"].isin(used_speakers)].reset_index(drop=True)
+    convos = convos[convos["id"].isin(used_convos)].reset_index(drop=True)
+
+    return utts, speakers, convos
+
+
+
+   
 def corpusBuilder(data):
     utts =buildUtteranceDF(data.getUtterancesDF())
     speakers =buildSpeakerDF(data.getUtterancesDF())
     convos =buildConvoDF(data.getDataframe())
-    data.corpus_utt, data.corpus_convos, data.corpus_speakers = utts, speakers, convos
+    utts, speakers, convos = clean_corpus_timestamps(data, utts, speakers, convos)
     corpus_ob = Corpus.from_pandas(utterances_df=utts, speakers_df=speakers, conversations_df=convos)
     return corpus_ob
 

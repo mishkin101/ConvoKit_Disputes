@@ -1,0 +1,24 @@
+@startuml
+
+skinparam linetype ortho
+skinparam dpi 300
+allow_mixing
+top to bottom direction
+!theme carbon-gray
+
+
+' === Core Classes ===
+
+package "Conversation" {
+
+    class Utterance {
+    +id 
+    +text 
+    +timestamp 
+    +reply_to 
+    +conversation_id 
+    +meta: dict
+    }
+}
+
+@enduml

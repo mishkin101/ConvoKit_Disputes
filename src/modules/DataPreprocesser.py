@@ -263,6 +263,7 @@ class DataPreprocesser:
     
         self.filterMatches("message", "Accept Deal")
         final_success_df = self.getMatchedConvoDF("Accept Deal")
+        final_success_df = final_success_df[final_success_df["is_AI"] != True]
         display(final_success_df)
         print("Data type of parsed_dialog:", type(final_success_df["parsed_dialog"].iloc[0]))
         final_success_df  = final_success_df[final_success_df["parsed_dialog"].apply(self.is_accept_deal)]
@@ -270,8 +271,8 @@ class DataPreprocesser:
         self.filterMatches("message", "I Walk Away")
         final_reject_df = self.getMatchedConvoDF("I Walk Away")
         final_reject_df  = final_reject_df[final_reject_df["parsed_dialog"].apply(self.is_walk_away)]
+        final_reject_df = final_reject_df[final_reject_df["is_AI"] != True]
         self.df = pd.concat([final_success_df, final_reject_df]).sort_index()
-
 
 
     def saveToCSV(self, final_filepath):
@@ -294,6 +295,7 @@ class DataPreprocesser:
 
     def listToString(self, value):
         return json.dumps(value)
+
 
 
     '''Functions for matched key words''' 
