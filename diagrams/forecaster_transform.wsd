@@ -1,0 +1,35 @@
+@startuml
+skinparam dpi 300
+skinparam linetype ortho
+left to right direction
+
+
+
+!define COMMENT(x) <color:RoyalBlue>x</color>
+
+' Classes
+class Forecaster {
+  +transform(corpus)
+  +_create_context_iterator()
+}
+
+
+Abstract class ForecasterModel {
+  +transform(contexts, attr_name, prob_name)
+}
+class Utterance {
+ +meta :
+--
+  <b>COMMENT(Prediciton)</b>
+  <b>COMMENT(Probability)</b>
+}
+
+' Relationships
+Forecaster ---> ForecasterModel
+ForecasterModel ---> Utterance
+
+
+
+
+
+@enduml

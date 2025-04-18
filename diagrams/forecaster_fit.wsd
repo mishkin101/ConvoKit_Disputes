@@ -1,0 +1,26 @@
+@startuml
+skinparam dpi 300
+skinparam linetype ortho
+
+
+left to right direction
+!define COMMENT(x) <color:RoyalBlue>x</color>
+
+
+
+class Forecaster {
+  +fit(corpus)
+  +_create_context_iterator()
+}
+
+object ContextTuple 
+
+abstract class ForecasterModel {
+  +fit(contexts, val_contexts)
+}
+
+Forecaster --> ContextTuple 
+ContextTuple --> ForecasterModel:\nCOMMENT(iterator passed in)
+ForecasterModel --> Forecaster :\nCOMMENT("trained model")
+note right of ForecasterModel : Implements actual training logic \n (e.g. CRAFT, BERT, etc.)
+@enduml

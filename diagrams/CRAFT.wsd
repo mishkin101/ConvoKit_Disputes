@@ -1,0 +1,65 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam dpi 300
+left to right direction
+skinparam linetype ortho
+
+' Token constants
+class Tokens {
+  +PAD = 0
+  +SOS = 1
+  +EOS = 2
+  +UNK = 3
+}
+
+' Vocabulary handler
+class Voc {
+  - word2index : dict
+  - index2word : dict
+  - word2count : dict
+  - num_words : int
+  + addSentence(sentence)
+  + addWord(word)
+  + trim(min_count)
+}
+
+' Tokenization and preprocessing
+class Tokenizer {
+  +unicodeToAscii(text) : str
+  +tokenize(voc, text) : List[str]
+  +indexesFromSentence(voc, sentence) : List[int]
+}
+
+class ContextProcessor {
+  +processContext(voc, context, is_attack) : List[dict]
+}
+
+' Padding and batching
+class PaddingUtils {
+  +zeroPadding(l)
+  +binaryMatrix(l)
+  +inputVar(l, voc)
+  +outputVar(l, voc)
+}
+
+class Batching {
+  +dialogBatch2UtteranceBatch(dialog_batch)
+  +batch2TrainData(voc, pair_batch, already_sorted)
+  +batchIterator(voc, source_data, batch_size, shuffle)
+}
+
+' Data sources
+class PrecomputedLoader {
+  +loadPrecomputedVoc(corpus_name, word2index_path, index2word_path) : Voc
+}
+
+' Relationships
+Tokenizer --> Voc : uses
+ContextProcessor --> Tokenizer : uses
+PaddingUtils --> Tokenizer : uses
+Batching --> PaddingUtils : uses
+Batching --> Tokenizer : uses
+Batching --> Voc : uses
+PrecomputedLoader --> Voc : creates
+
+@enduml

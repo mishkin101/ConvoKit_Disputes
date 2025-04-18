@@ -1,6 +1,6 @@
 @startuml
 skinparam linetype ortho
-skinparam dpi 300
+skinparam dpi 400
 skinparam shadowing false
 left to right direction
 

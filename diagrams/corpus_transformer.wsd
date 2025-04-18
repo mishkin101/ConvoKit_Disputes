@@ -3,7 +3,7 @@
 skinparam dpi 300
 left to right direction
 !define COMMENT(x) <color:RoyalBlue>x</color>
-!theme carbon-gray
+
 ' Core Corpus class
 class Corpus {
 }
@@ -14,10 +14,11 @@ abstract class Transformer {
   +transform(corpus: Corpus) : Corpus
 }
 
+package "   ConvoKit" {
 ' ConvoKit-specific transformers
 class TextParser{}
 class BoWTransformer
-
+}
 ' sklearn compatibility
 class SklearnTransformer {
   +fit(data)
@@ -38,7 +39,7 @@ TextParser --|> Transformer
 BoWTransformer --|> Transformer
 
 ' Transformer relationships
-Transformer --> Corpus : modifies \nCOMMENT(SpaCy Doc object)\nCOMMENT(added by TextParser)
+Transformer --> Corpus 
 
 ' Interoperability
 BoWTransformer --> SklearnTransformer : outputs DataFrame/Array

@@ -2,34 +2,39 @@
 skinparam linetype ortho
 skinparam dpi 300
 left to right direction
-!theme carbon-gray
-
+!define COMMENT(x) <b><color:RoyalBlue>x</color></b>
 ' Core Tuple structure
-class ContextTuple {
-  +conversation_id : string
-}
 
 
-
-' Components of the context tuple
-package "Training Phase Only" {
-  class FutureContext {
+package "Context Tuple" {
+    ' Components of the context tuple
+  
+     object Context {
     +utterances : List<Utterance>
-  }
+        --
+        COMMENT(past + current)
+    }
+
+    object CurrentUtterance {
+    +utterance : Utterance
+    -- 
+    COMMENT(prediciton)
+    }
+
+    package "Training Phase Only"#00298cb3 {
+        object FutureContext {
+        +utterances : List<Utterance>
+        --
+        COMMENT(future) 
+        }   
+
+    }
+
 }
 
-class Context {
-  +utterances : List<Utterance>
-}
-
-class CurrentUtterance {
-  +utterance : Utterance
-}
-
-' Relationships
-ContextTuple --> Context : past + current
-ContextTuple --> CurrentUtterance
-ContextTuple --> FutureContext : \nfuture (training only)
+' --- Hidden links to enforce vertical order ---
+    Context -[hidden]-> CurrentUtterance
+    CurrentUtterance -[hidden]-> FutureContext
 
 
 @enduml
