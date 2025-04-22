@@ -1174,10 +1174,10 @@ summary_meta         → []</code></pre>
 <span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>conv_df2, metrics2 <span class="op">=</span> forecaster_cmv.summarize(corp_test_cmv,  <span class="kw">lambda</span> c: c.meta[<span class="st">'split'</span>] <span class="op">==</span> <span class="st">"test"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="18a415a4" class="cell" data-execution_count="40">
+<div id="18a415a4" class="cell" data-execution_count="45">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>lengths_cmv <span class="op">=</span> [</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span>(convo.get_utterance_ids())</span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corp_test_cmv.iter_conversations()</span>
@@ -1219,6 +1219,58 @@ summary_meta         → []</code></pre>
 <span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
 <span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average conversation length in test WIKI is: 7.17 utterances
+Average conversation length in test CMV is: 6.28 utterances
+
+-------------------
+OVERALL STATS FOR TEST SET PREDICTIONS 
+ -------------------</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Accuracy</th>
+<th data-quarto-table-cell-role="th">Precision</th>
+<th data-quarto-table-cell-role="th">Recall</th>
+<th data-quarto-table-cell-role="th">FPR</th>
+<th data-quarto-table-cell-role="th">F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">corp_wiki_test</td>
+<td>0.704762</td>
+<td>0.638264</td>
+<td>0.945238</td>
+<td>0.535714</td>
+<td>0.761996</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">copr_cmv_test</td>
+<td>0.620614</td>
+<td>0.589967</td>
+<td>0.790936</td>
+<td>0.549708</td>
+<td>0.675828</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-26-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
 </div>
 
 
