@@ -3,7 +3,7 @@ title: "Current Updates"
 format:
   html:
     execute:
-      echo: true
+      echo: false
 ---
 
 {{< include src/Forcaster_Explorer.ipynb >}}
