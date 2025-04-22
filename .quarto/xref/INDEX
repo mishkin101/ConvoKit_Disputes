@@ -49,5 +49,20 @@
   },
   "src/data_preprocessing.ipynb": {
     "data_preprocessing.html": "879cdb13"
+  },
+  "convokit_notebooks/Conversations_Gone_Awry_Prediction.ipynb": {
+    "Conversations_Gone_Awry_Prediction.html": "ce4a2ebc"
+  },
+  "convokit_notebooks/craft_demo_new.ipynb": {
+    "craft_demo_new.html": "b6352d6a"
+  },
+  "convokit_notebooks/wiki_awry_demo.ipynb": {
+    "wiki_awry_demo.html": "6f7d39b4"
+  },
+  "convokit_notebooks/fine_tuning_demo.ipynb": {
+    "fine_tuning_demo.html": "96b2feff"
+  },
+  "convokit_notebooks/CRAFT_fine_tuning_demo_using_ConvoKit.ipynb": {
+    "CRAFT_fine_tuning_demo_using_ConvoKit.html": "2ebbc533"
   }
 }

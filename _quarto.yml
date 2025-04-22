@@ -1,10 +1,14 @@
 project:
   type: website
   output-dir: docs    # ← GitHub Pages will serve from docs/
+  render:
+    - "!CRAFT/"
+    - "!convokit_notebooks/"
+    - "src/"
 
 site-lib-dir: docs/site-libs   # ← here
 website:
-  title: "My Forecaster Explorer"
+  title: "Weekly ConvoKit Updates"
   navbar:
     right:
       - text: Home

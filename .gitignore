@@ -177,6 +177,6 @@ cython_debug/
 .vscode/settings.json
 
 dataprocessing/data_explore_files/*
-/data/conversations-gone-awry-corpus/conversations-gone-awry-cmv-corpus
+/data/convokit_datasets/*
 
 /.quarto/

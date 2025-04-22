@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>craft_corpus_explorer – My Forecaster Explorer</title>
+<title>craft_corpus_explorer – Weekly ConvoKit Updates</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -112,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">My Forecaster Explorer</span>
+    <span class="navbar-title">Weekly ConvoKit Updates</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -143,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="cell-0" class="cell" data-execution_count="3">
+<div id="cell-0" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -153,27 +153,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-1" class="cell" data-execution_count="2">
+<div id="cell-1" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the corpus</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> Corpus(filename<span class="op">=</span>download(<span class="st">"conversations-gone-awry-cmv-corpus"</span>))</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> Corpus(filename<span class="op">=</span>download(<span class="st">"conversations-gone-awry-corpus"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, download</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>wiki_path <span class="op">=</span> download(<span class="st">"conversations-gone-awry-corpus"</span>, data_dir <span class="op">=</span> <span class="st">"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>cmv_path  <span class="op">=</span> download(<span class="st">"conversations-gone-awry-cmv-corpus"</span>, data_dir<span class="op">=</span> <span class="st">"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>corpus_w <span class="op">=</span> Corpus(wiki_path)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>corpus_cmv <span class="op">=</span> Corpus(cmv_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Dataset already exists at /Users/mishkin/.convokit/saved-corpora/conversations-gone-awry-cmv-corpus
-Dataset already exists at /Users/mishkin/.convokit/saved-corpora/conversations-gone-awry-corpus</code></pre>
+<pre><code>Dataset already exists at /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus
+Dataset already exists at /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus/conversations-gone-awry-cmv-corpus</code></pre>
 </div>
-</div>
-<div id="cell-2" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>kodis_corp <span class="op">=</span> corpus_converter.test_corp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[4]</span><span class="ansi-green-fg">, line 1</span>
-<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">1</span> kodis_corp = <span class="ansi-yellow-bg">corpus_converter</span>.test_corp
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[3]</span><span class="ansi-green-fg">, line 6</span>
+<span class="ansi-green-fg">      4</span> wiki_path = download(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">conversations-gone-awry-corpus</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">      5</span> cmv_path  = download(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">conversations-gone-awry-cmv-corpus</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">6</span> corpus_w = <span class="ansi-yellow-bg">Corpus</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">wiki_path</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">      7</span> corpus_cmv = Corpus(cmv_path)
 
-<span class="ansi-red-fg">NameError</span>: name 'corpus_converter' is not defined</pre>
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/Desktop/Research/Convo_Kit/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/convokit/model/corpus.py:172</span>, in <span class="ansi-cyan-fg">Corpus.__init__</span><span class="ansi-blue-fg">(self, filename, utterances, db_collection_prefix, db_host, preload_vectors, utterance_start_index, utterance_end_index, merge_lines, exclude_utterance_meta, exclude_conversation_meta, exclude_speaker_meta, exclude_overall_meta, disable_type_check, backend, backend_mapper)</span>
+<span class="ansi-green-fg">    170</span>     speakers_data = defaultdict(<span style="color:rgb(0,135,0)">dict</span>)
+<span class="ansi-green-fg">    171</span>     convos_data = defaultdict(<span style="color:rgb(0,135,0)">dict</span>)
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">172</span>     utterances = <span class="ansi-yellow-bg">load_from_utterance_file</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    173</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">filename</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">utterance_start_index</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">utterance_end_index</span>
+<span class="ansi-green-fg">    174</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    176</span> <span style="color:rgb(0,135,0)">self</span>.utterances = <span style="color:rgb(0,135,0)">dict</span>()
+<span class="ansi-green-fg">    177</span> <span style="color:rgb(0,135,0)">self</span>.speakers = <span style="color:rgb(0,135,0)">dict</span>()
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/Desktop/Research/Convo_Kit/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/convokit/model/corpus_helpers.py:313</span>, in <span class="ansi-cyan-fg">load_from_utterance_file</span><span class="ansi-blue-fg">(filename, utterance_start_index, utterance_end_index)</span>
+<span class="ansi-green-fg">    309</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">load_from_utterance_file</span>(filename, utterance_start_index, utterance_end_index):
+<span class="ansi-green-fg">    310</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""</span>
+<span class="ansi-green-fg">    311</span> <span style="font-style:italic" class="ansi-yellow-fg">    where filename is "utterances.json" or "utterances.jsonl" for example</span>
+<span class="ansi-green-fg">    312</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">313</span>     <span style="font-weight:bold;color:rgb(0,135,0)">with</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">open</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">filename</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">r</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">)</span> <span style="font-weight:bold;color:rgb(0,135,0)">as</span> f:
+<span class="ansi-green-fg">    314</span>         <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">    315</span>             ext = filename.split(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">.</span><span class="ansi-yellow-fg">"</span>)[-<span class="ansi-green-fg">1</span>]
+
+<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: '/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus'</pre>
 </div>
 </div>
+</div>
+<div id="cell-2" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>kodis_corp <span class="op">=</span> corpus_converter.test_corp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-3" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic stats</span></span>
@@ -197,201 +223,138 @@ Dataset already exists at /Users/mishkin/.convokit/saved-corpora/conversations-g
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.xticks([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="st">"Not Removed"</span>, <span class="st">"Removed"</span>], rotation<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of Conversations"</span>)</span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Speakers: 9548
-Conversations: 6842
-Utterances: 42964</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="CRAFT_Corpus_Explorer_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="CRAFT_Corpus_Explorer_files/figure-html/cell-5-output-3.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <div id="cell-4" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the number of utterances per conversation</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>conversation_lengths <span class="op">=</span> [<span class="bu">len</span>(<span class="bu">list</span>(convo.iter_utterances())) <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations()]</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute average, median, and max</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>average_length <span class="op">=</span> np.mean(conversation_lengths)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>median_length <span class="op">=</span> np.median(conversation_lengths)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>max_length <span class="op">=</span> np.<span class="bu">max</span>(conversation_lengths)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample a few conversation structures</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>sample_structures <span class="op">=</span> {}</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, convo <span class="kw">in</span> <span class="bu">enumerate</span>(corpus.iter_conversations()):</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">3</span>: <span class="cf">break</span>  <span class="co"># Just look at 3 examples</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    utt_structure <span class="op">=</span> [(utt.<span class="bu">id</span>, utt.reply_to) <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances()]</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    sample_structures[convo.<span class="bu">id</span>] <span class="op">=</span> utt_structure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the number of utterances per conversation</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>conversation_lengths <span class="op">=</span> [<span class="bu">len</span>(<span class="bu">list</span>(convo.iter_utterances())) <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations()]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute average, median, and max</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>average_length <span class="op">=</span> np.mean(conversation_lengths)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>median_length <span class="op">=</span> np.median(conversation_lengths)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>max_length <span class="op">=</span> np.<span class="bu">max</span>(conversation_lengths)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample a few conversation structures</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>sample_structures <span class="op">=</span> {}</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, convo <span class="kw">in</span> <span class="bu">enumerate</span>(corpus.iter_conversations()):</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">3</span>: <span class="cf">break</span>  <span class="co"># Just look at 3 examples</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    utt_structure <span class="op">=</span> [(utt.<span class="bu">id</span>, utt.reply_to) <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances()]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    sample_structures[convo.<span class="bu">id</span>] <span class="op">=</span> utt_structure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-5" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>display(average_length, median_length, max_length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<pre><code>np.float64(6.279450453083894)</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre><code>np.float64(6.0)</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre><code>np.int64(22)</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>display(average_length, median_length, max_length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-6" class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count number of conversations by number of unique speakers</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>speaker_count_distribution <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    speaker_ids <span class="op">=</span> {utt.speaker.<span class="bu">id</span> <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances()}</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    speaker_count_distribution[<span class="bu">len</span>(speaker_ids)] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort for plotting</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>sorted_counts <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">sorted</span>(speaker_count_distribution.items()))</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the distribution</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.bar(sorted_counts.keys(), sorted_counts.values(), color<span class="op">=</span><span class="st">"blue"</span>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of Unique Speakers in Conversation"</span>)</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of Conversations"</span>)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution of Conversations by Number of Unique Speakers"</span>)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">list</span>(sorted_counts.keys()))</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">"y"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="CRAFT_Corpus_Explorer_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count number of conversations by number of unique speakers</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>speaker_count_distribution <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    speaker_ids <span class="op">=</span> {utt.speaker.<span class="bu">id</span> <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances()}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    speaker_count_distribution[<span class="bu">len</span>(speaker_ids)] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort for plotting</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>sorted_counts <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">sorted</span>(speaker_count_distribution.items()))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the distribution</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>plt.bar(sorted_counts.keys(), sorted_counts.values(), color<span class="op">=</span><span class="st">"blue"</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of Unique Speakers in Conversation"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of Conversations"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution of Conversations by Number of Unique Speakers"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">list</span>(sorted_counts.keys()))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">"y"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-7" class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store lengths of derailed conversations</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>derailed_lengths <span class="op">=</span> []</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo.meta.get(<span class="st">"has_removed_comment"</span>) <span class="op">==</span> <span class="va">True</span>:</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        num_utts <span class="op">=</span> <span class="bu">len</span>(<span class="bu">list</span>(convo.iter_utterances()))</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        derailed_lengths.append(num_utts)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute average length before derailment</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>average_derailment_length <span class="op">=</span> np.mean(derailed_lengths)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot histogram of lengths</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>plt.hist(derailed_lengths, bins<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">max</span>(derailed_lengths)<span class="op">+</span><span class="dv">1</span>), color<span class="op">=</span><span class="st">"tomato"</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution of Conversation Lengths Before Derailment (CGA-CMV)"</span>)</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of Utterances"</span>)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of Derailed Conversations"</span>)</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">"y"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>average_derailment_length</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="CRAFT_Corpus_Explorer_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>np.float64(6.60479391990646)</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store lengths of derailed conversations</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>derailed_lengths <span class="op">=</span> []</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo.meta.get(<span class="st">"has_removed_comment"</span>) <span class="op">==</span> <span class="va">True</span>:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        num_utts <span class="op">=</span> <span class="bu">len</span>(<span class="bu">list</span>(convo.iter_utterances()))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        derailed_lengths.append(num_utts)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute average length before derailment</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>average_derailment_length <span class="op">=</span> np.mean(derailed_lengths)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot histogram of lengths</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>plt.hist(derailed_lengths, bins<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">max</span>(derailed_lengths)<span class="op">+</span><span class="dv">1</span>), color<span class="op">=</span><span class="st">"tomato"</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Distribution of Conversation Lengths Before Derailment (CGA-CMV)"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of Utterances"</span>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Number of Derailed Conversations"</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">"y"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>average_derailment_length</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-8" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, download</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group all corpora</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>corpora <span class="op">=</span> {</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGA-CMV"</span>: cmv_corpus,</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGA-WIKI"</span>: wiki_corpus,</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Test Corpus"</span>: test_corp</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="bu">len</span>(corpora), <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">12</span>))</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"Conversational Characteristics Across Corpora"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (label, corpus) <span class="kw">in</span> <span class="bu">enumerate</span>(corpora.items()):</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 1: Distribution of Utterances per Conversation ---</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    utterance_counts <span class="op">=</span> [<span class="bu">len</span>(<span class="bu">list</span>(c.iter_utterances())) <span class="cf">for</span> c <span class="kw">in</span> corpus.iter_conversations()]</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].hist(utterance_counts, bins<span class="op">=</span><span class="dv">30</span>, color<span class="op">=</span><span class="st">"skyblue"</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>)</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Utterances per Conversation"</span>)</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].set_xlabel(<span class="st">"Utterances"</span>)</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].set_ylabel(<span class="st">"Conversations"</span>)</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 2: Final Comment Moderation ---</span></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    removed <span class="op">=</span> [c.meta.get(<span class="st">"has_removed_comment"</span>, <span class="va">False</span>) <span class="cf">for</span> c <span class="kw">in</span> corpus.iter_conversations()]</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>    pd.Series(removed).value_counts().sort_index().plot(kind<span class="op">=</span><span class="st">"bar"</span>, ax<span class="op">=</span>axs[i, <span class="dv">1</span>], color<span class="op">=</span>[<span class="st">"gray"</span>, <span class="st">"red"</span>])</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Final Comment Moderation"</span>)</span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_xticklabels([<span class="st">"Not Removed"</span>, <span class="st">"Removed"</span>])</span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_ylabel(<span class="st">"Conversations"</span>)</span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 3: Unique Speakers per Conversation ---</span></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>    speaker_count_distribution <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>        speaker_ids <span class="op">=</span> {utt.speaker.<span class="bu">id</span> <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances()}</span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>        speaker_count_distribution[<span class="bu">len</span>(speaker_ids)] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    sorted_counts <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">sorted</span>(speaker_count_distribution.items()))</span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].bar(sorted_counts.keys(), sorted_counts.values(), color<span class="op">=</span><span class="st">"blue"</span>)</span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Speakers per Conversation"</span>)</span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].set_xlabel(<span class="st">"Unique Speakers"</span>)</span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].set_ylabel(<span class="st">"Conversations"</span>)</span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 4: Lengths of Derailed Conversations ---</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>    derailed_lengths <span class="op">=</span> [</span>
-<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>        <span class="bu">len</span>(<span class="bu">list</span>(convo.iter_utterances()))</span>
-<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations()</span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> convo.meta.get(<span class="st">"has_removed_comment"</span>) <span class="op">==</span> <span class="va">True</span></span>
-<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].hist(</span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>        derailed_lengths,</span>
-<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>        bins<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">max</span>(derailed_lengths) <span class="op">+</span> <span class="dv">1</span> <span class="cf">if</span> derailed_lengths <span class="cf">else</span> <span class="dv">2</span>),</span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">"tomato"</span>,</span>
-<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"black"</span></span>
-<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Length Before Derailment"</span>)</span>
-<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].set_xlabel(<span class="st">"Utterances"</span>)</span>
-<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].set_ylabel(<span class="st">"Derailed Conversations"</span>)</span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
-<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[22]</span><span class="ansi-green-fg">, line 11</span>
-<span class="ansi-green-fg">      5</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg ansi-bold">convokit</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Corpus, download
-<span class="ansi-green-fg">      9</span> <span style="font-style:italic;color:rgb(95,135,135)"># Group all corpora</span>
-<span class="ansi-green-fg">     10</span> corpora = {
-<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">11</span>     <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">CGA-CMV</span><span class="ansi-yellow-fg">"</span>: <span class="ansi-yellow-bg">cmv_corpus</span>,
-<span class="ansi-green-fg">     12</span>     <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">CGA-WIKI</span><span class="ansi-yellow-fg">"</span>: wiki_corpus,
-<span class="ansi-green-fg">     13</span>     <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Test Corpus</span><span class="ansi-yellow-fg">"</span>: test_corp
-<span class="ansi-green-fg">     14</span> }
-<span class="ansi-green-fg">     16</span> fig, axs = plt.subplots(<span style="color:rgb(0,135,0)">len</span>(corpora), <span class="ansi-green-fg">4</span>, figsize=(<span class="ansi-green-fg">20</span>, <span class="ansi-green-fg">12</span>))
-<span class="ansi-green-fg">     17</span> fig.suptitle(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Conversational Characteristics Across Corpora</span><span class="ansi-yellow-fg">"</span>, fontsize=<span class="ansi-green-fg">16</span>)
-
-<span class="ansi-red-fg">NameError</span>: name 'cmv_corpus' is not defined</pre>
-</div>
-</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, download</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group all corpora</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>corpora <span class="op">=</span> {</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGA-CMV"</span>: cmv_corpus,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CGA-WIKI"</span>: wiki_corpus,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Test Corpus"</span>: test_corp</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="bu">len</span>(corpora), <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">12</span>))</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"Conversational Characteristics Across Corpora"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (label, corpus) <span class="kw">in</span> <span class="bu">enumerate</span>(corpora.items()):</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 1: Distribution of Utterances per Conversation ---</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    utterance_counts <span class="op">=</span> [<span class="bu">len</span>(<span class="bu">list</span>(c.iter_utterances())) <span class="cf">for</span> c <span class="kw">in</span> corpus.iter_conversations()]</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].hist(utterance_counts, bins<span class="op">=</span><span class="dv">30</span>, color<span class="op">=</span><span class="st">"skyblue"</span>, edgecolor<span class="op">=</span><span class="st">"black"</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Utterances per Conversation"</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].set_xlabel(<span class="st">"Utterances"</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">0</span>].set_ylabel(<span class="st">"Conversations"</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 2: Final Comment Moderation ---</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    removed <span class="op">=</span> [c.meta.get(<span class="st">"has_removed_comment"</span>, <span class="va">False</span>) <span class="cf">for</span> c <span class="kw">in</span> corpus.iter_conversations()]</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    pd.Series(removed).value_counts().sort_index().plot(kind<span class="op">=</span><span class="st">"bar"</span>, ax<span class="op">=</span>axs[i, <span class="dv">1</span>], color<span class="op">=</span>[<span class="st">"gray"</span>, <span class="st">"red"</span>])</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Final Comment Moderation"</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_xticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_xticklabels([<span class="st">"Not Removed"</span>, <span class="st">"Removed"</span>])</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">1</span>].set_ylabel(<span class="st">"Conversations"</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 3: Unique Speakers per Conversation ---</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    speaker_count_distribution <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>        speaker_ids <span class="op">=</span> {utt.speaker.<span class="bu">id</span> <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances()}</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>        speaker_count_distribution[<span class="bu">len</span>(speaker_ids)] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    sorted_counts <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">sorted</span>(speaker_count_distribution.items()))</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].bar(sorted_counts.keys(), sorted_counts.values(), color<span class="op">=</span><span class="st">"blue"</span>)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Speakers per Conversation"</span>)</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].set_xlabel(<span class="st">"Unique Speakers"</span>)</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">2</span>].set_ylabel(<span class="st">"Conversations"</span>)</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- Plot 4: Lengths of Derailed Conversations ---</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    derailed_lengths <span class="op">=</span> [</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>        <span class="bu">len</span>(<span class="bu">list</span>(convo.iter_utterances()))</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations()</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> convo.meta.get(<span class="st">"has_removed_comment"</span>) <span class="op">==</span> <span class="va">True</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].hist(</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>        derailed_lengths,</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>        bins<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">max</span>(derailed_lengths) <span class="op">+</span> <span class="dv">1</span> <span class="cf">if</span> derailed_lengths <span class="cf">else</span> <span class="dv">2</span>),</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">"tomato"</span>,</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"black"</span></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].set_title(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ch">\n</span><span class="ss">Length Before Derailment"</span>)</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].set_xlabel(<span class="st">"Utterances"</span>)</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>    axs[i, <span class="dv">3</span>].set_ylabel(<span class="st">"Derailed Conversations"</span>)</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
