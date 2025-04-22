@@ -5,6 +5,7 @@ project:
     - "!CRAFT/"
     - "!convokit_notebooks/"
     - "src/"
+    - "!src/CRAFT_Corpus_Explorer.ipynb"
 
 site-lib-dir: docs/site-libs   # ← here
 website:

@@ -442,7 +442,7 @@ Mean = 9.723837209302326, Median = 9.0</code></pre>
 <pre><code>27498it [00:00, 68387.34it/s]</code></pre>
 </div>
 </div>
-<div id="b17dcab6" class="cell" data-execution_count="14">
+<div id="b17dcab6" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_utterance_selector(context_tuple):</span>
@@ -451,50 +451,11 @@ Mean = 9.723837209302326, Median = 9.0</code></pre>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>test_corp_classification <span class="op">=</span> forecaster.transform(test_corp2, last_utterance_selector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Processed 2107 context tuples for model evaluation
-Loading saved parameters...
-Building encoders, decoder, and classifier...
-Models built and ready to go!
-Iteration: 1; Percent complete: 3.0%
-Iteration: 2; Percent complete: 6.1%
-Iteration: 3; Percent complete: 9.1%
-Iteration: 4; Percent complete: 12.1%
-Iteration: 5; Percent complete: 15.2%
-Iteration: 6; Percent complete: 18.2%
-Iteration: 7; Percent complete: 21.2%
-Iteration: 8; Percent complete: 24.2%
-Iteration: 9; Percent complete: 27.3%
-Iteration: 10; Percent complete: 30.3%
-Iteration: 11; Percent complete: 33.3%
-Iteration: 12; Percent complete: 36.4%
-Iteration: 13; Percent complete: 39.4%
-Iteration: 14; Percent complete: 42.4%
-Iteration: 15; Percent complete: 45.5%
-Iteration: 16; Percent complete: 48.5%
-Iteration: 17; Percent complete: 51.5%
-Iteration: 18; Percent complete: 54.5%
-Iteration: 19; Percent complete: 57.6%
-Iteration: 20; Percent complete: 60.6%
-Iteration: 21; Percent complete: 63.6%
-Iteration: 22; Percent complete: 66.7%
-Iteration: 23; Percent complete: 69.7%
-Iteration: 24; Percent complete: 72.7%
-Iteration: 25; Percent complete: 75.8%
-Iteration: 26; Percent complete: 78.8%
-Iteration: 27; Percent complete: 81.8%
-Iteration: 28; Percent complete: 84.8%
-Iteration: 29; Percent complete: 87.9%
-Iteration: 30; Percent complete: 90.9%
-Iteration: 31; Percent complete: 93.9%
-Iteration: 32; Percent complete: 97.0%
-Iteration: 33; Percent complete: 100.0%</code></pre>
-</div>
 </div>
 <div id="fc0c12b4" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>convo_df, metrics <span class="op">=</span> forecaster.summarize(test_corp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>convo_df, metrics <span class="op">=</span> forecaster.summarize(test_corp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Accuracy     0.831989
@@ -525,12 +486,12 @@ Mean = 1.0, Median = 1.0</code></pre>
 <div id="72be63f8" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>test_corp3<span class="op">=</span> corp.corpusBuilder(final_data)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp3.conversations:</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        test_corp3.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>test_corp3<span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp3.conversations:</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        test_corp3.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>27498it [00:00, 40452.22it/s]</code></pre>
@@ -542,13 +503,13 @@ Mean = 1.0, Median = 1.0</code></pre>
 <div id="aad0e139" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>test_corp3 <span class="op">=</span> forecaster2.transform(test_corp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>test_corp3 <span class="op">=</span> forecaster2.transform(test_corp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div id="843f01c4" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>convo_df, metrics <span class="op">=</span> forecaster2.summarize(test_corp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>convo_df, metrics <span class="op">=</span> forecaster2.summarize(test_corp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Accuracy     0.240152
@@ -576,12 +537,12 @@ Mean = 10.006060606060606, Median = 9.0</code></pre>
 <div id="fca8a7e5" class="cell" data-execution_count="19">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>test_corp5<span class="op">=</span> corp.corpusBuilder(final_data)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp5.conversations:</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>        test_corp5.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>test_corp5<span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp5.conversations:</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>        test_corp5.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>27498it [00:00, 70147.58it/s]</code></pre>
@@ -590,11 +551,11 @@ Mean = 10.006060606060606, Median = 9.0</code></pre>
 <div id="d54da2fd" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_utterance_selector(context_tuple):</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    all_utts <span class="op">=</span> context_tuple.current_utterance.get_conversation().get_chronological_utterance_list()</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> context_tuple.current_utterance.<span class="bu">id</span> <span class="op">==</span> all_utts[<span class="op">-</span><span class="dv">1</span>].<span class="bu">id</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>test_corp_classification <span class="op">=</span> forecaster.transform(test_corp5, last_utterance_selector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_utterance_selector(context_tuple):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    all_utts <span class="op">=</span> context_tuple.current_utterance.get_conversation().get_chronological_utterance_list()</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> context_tuple.current_utterance.<span class="bu">id</span> <span class="op">==</span> all_utts[<span class="op">-</span><span class="dv">1</span>].<span class="bu">id</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>test_corp_classification <span class="op">=</span> forecaster.transform(test_corp5, last_utterance_selector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Processed 2107 context tuples for model evaluation
@@ -639,7 +600,7 @@ Iteration: 33; Percent complete: 100.0%</code></pre>
 <div id="5deacf8f" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>forecaster2.summarize(test_corp_classification)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>forecaster2.summarize(test_corp_classification)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Accuracy     0.831989
@@ -698,45 +659,45 @@ Mean = 1.0, Median = 1.0</code></pre>
 <div id="d4f125f8" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, accuracy_score, f1_score</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, Forecaster, CRAFTModel</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules.DataPreprocesser <span class="im">import</span> DataPreprocesser  <span class="co"># adjust imports to your project structure</span></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules <span class="im">import</span> CorpusUtils <span class="im">as</span> corp</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="co"># corpusBuilder should return a ConvoKit Corpus</span></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>corp1 <span class="op">=</span> corp.corpusBuilder(final_data)</span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>corp2 <span class="op">=</span> corp.corpusBuilder(final_data)</span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign conversation-level labels</span></span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]</span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> corp1.conversations:</span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>        corp1.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span>
-<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> corp2.conversations:</span>
-<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>        corp2.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span>
-<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Initialize two forecasters with different CRAFT weights</span></span>
-<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> <span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span></span>
-<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>craft_wiki <span class="op">=</span> CRAFTModel(<span class="st">"craft-wiki-finetuned"</span>, torch_device<span class="op">=</span>device)</span>
-<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>craft_cmv  <span class="op">=</span> CRAFTModel(<span class="st">"craft-cmv-finetuned"</span>,  torch_device<span class="op">=</span>device)</span>
-<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>forecaster1 <span class="op">=</span> Forecaster(craft_wiki, <span class="st">"label"</span>)</span>
-<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>forecaster2 <span class="op">=</span> Forecaster(craft_cmv,  <span class="st">"label"</span>)</span>
-<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Helper to apply transform and return utterance-level DataFrame</span></span>
-<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_forecast_df(forecaster, corpus, selector<span class="op">=</span><span class="kw">lambda</span> ctx: <span class="va">True</span>):</span>
-<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotate the corpus</span></span>
-<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a>    annotated <span class="op">=</span> forecaster.transform(corpus, selector)</span>
-<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract utterance-level DataFrame</span></span>
-<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> annotated</span>
-<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Transform both corpora</span></span>
-<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a>corp1 <span class="op">=</span> get_forecast_df(forecaster1, corp1)</span>
-<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a>corp2 <span class="op">=</span> get_forecast_df(forecaster2, corp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, accuracy_score, f1_score</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, Forecaster, CRAFTModel</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules.DataPreprocesser <span class="im">import</span> DataPreprocesser  <span class="co"># adjust imports to your project structure</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules <span class="im">import</span> CorpusUtils <span class="im">as</span> corp</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co"># corpusBuilder should return a ConvoKit Corpus</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>corp1 <span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>corp2 <span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign conversation-level labels</span></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> corp1.conversations:</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>        corp1.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> corp2.conversations:</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>        corp2.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Initialize two forecasters with different CRAFT weights</span></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> <span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>craft_wiki <span class="op">=</span> CRAFTModel(<span class="st">"craft-wiki-finetuned"</span>, torch_device<span class="op">=</span>device)</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>craft_cmv  <span class="op">=</span> CRAFTModel(<span class="st">"craft-cmv-finetuned"</span>,  torch_device<span class="op">=</span>device)</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>forecaster1 <span class="op">=</span> Forecaster(craft_wiki, <span class="st">"label"</span>)</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>forecaster2 <span class="op">=</span> Forecaster(craft_cmv,  <span class="st">"label"</span>)</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Helper to apply transform and return utterance-level DataFrame</span></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_forecast_df(forecaster, corpus, selector<span class="op">=</span><span class="kw">lambda</span> ctx: <span class="va">True</span>):</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotate the corpus</span></span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>    annotated <span class="op">=</span> forecaster.transform(corpus, selector)</span>
+<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract utterance-level DataFrame</span></span>
+<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> annotated</span>
+<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Transform both corpora</span></span>
+<span id="cb44-38"><a href="#cb44-38" aria-hidden="true" tabindex="-1"></a>corp1 <span class="op">=</span> get_forecast_df(forecaster1, corp1)</span>
+<span id="cb44-39"><a href="#cb44-39" aria-hidden="true" tabindex="-1"></a>corp2 <span class="op">=</span> get_forecast_df(forecaster2, corp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -756,36 +717,36 @@ Mean = 1.0, Median = 1.0</code></pre>
 <div id="b681cd9f" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, accuracy_score, f1_score</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) extract the utterance‑level DataFrames from the two corpora</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>utt_df1 <span class="op">=</span> corp1.get_utterances_dataframe()</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>utt_df2 <span class="op">=</span> corp2.get_utterances_dataframe()</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Keep only the forecast columns and drop NA</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>forecast_df1 <span class="op">=</span> utt_df1[[<span class="st">'meta.forecast'</span>, <span class="st">'meta.forecast_prob'</span>]].dropna()</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>forecast_df2 <span class="op">=</span> utt_df2[[<span class="st">'meta.forecast'</span>, <span class="st">'meta.forecast_prob'</span>]].dropna()</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Summary statistics</span></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean_prob'</span>:  [forecast_df1[<span class="st">'meta.forecast_prob'</span>].mean(),  forecast_df2[<span class="st">'meta.forecast_prob'</span>].mean()],</span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'std_prob'</span>:   [forecast_df1[<span class="st">'meta.forecast_prob'</span>].std(),   forecast_df2[<span class="st">'meta.forecast_prob'</span>].std()],</span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'median_prob'</span>:[forecast_df1[<span class="st">'meta.forecast_prob'</span>].median(),forecast_df2[<span class="st">'meta.forecast_prob'</span>].median()],</span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[<span class="st">'corp-wiki'</span>, <span class="st">'corp-cmv'</span>])</span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Summary statistics for forecast probabilities:"</span>)</span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary)</span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Plot histograms</span></span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">4</span>))</span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>plt.hist(forecast_df1[<span class="st">'meta.forecast_prob'</span>], bins<span class="op">=</span><span class="dv">50</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'craft-wiki'</span>)</span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>plt.hist(forecast_df2[<span class="st">'meta.forecast_prob'</span>], bins<span class="op">=</span><span class="dv">50</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'craft-cmv'</span>)</span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Forecast probability'</span>)</span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
-<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, accuracy_score, f1_score</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) extract the utterance‑level DataFrames from the two corpora</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>utt_df1 <span class="op">=</span> corp1.get_utterances_dataframe()</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>utt_df2 <span class="op">=</span> corp2.get_utterances_dataframe()</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Keep only the forecast columns and drop NA</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>forecast_df1 <span class="op">=</span> utt_df1[[<span class="st">'meta.forecast'</span>, <span class="st">'meta.forecast_prob'</span>]].dropna()</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>forecast_df2 <span class="op">=</span> utt_df2[[<span class="st">'meta.forecast'</span>, <span class="st">'meta.forecast_prob'</span>]].dropna()</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Summary statistics</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean_prob'</span>:  [forecast_df1[<span class="st">'meta.forecast_prob'</span>].mean(),  forecast_df2[<span class="st">'meta.forecast_prob'</span>].mean()],</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'std_prob'</span>:   [forecast_df1[<span class="st">'meta.forecast_prob'</span>].std(),   forecast_df2[<span class="st">'meta.forecast_prob'</span>].std()],</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'median_prob'</span>:[forecast_df1[<span class="st">'meta.forecast_prob'</span>].median(),forecast_df2[<span class="st">'meta.forecast_prob'</span>].median()],</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[<span class="st">'corp-wiki'</span>, <span class="st">'corp-cmv'</span>])</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Summary statistics for forecast probabilities:"</span>)</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary)</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Plot histograms</span></span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">4</span>))</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>plt.hist(forecast_df1[<span class="st">'meta.forecast_prob'</span>], bins<span class="op">=</span><span class="dv">50</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'craft-wiki'</span>)</span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>plt.hist(forecast_df2[<span class="st">'meta.forecast_prob'</span>], bins<span class="op">=</span><span class="dv">50</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'craft-cmv'</span>)</span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Forecast probability'</span>)</span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Summary statistics for forecast probabilities:
@@ -807,85 +768,99 @@ corp-cmv    0.541044  0.271951     0.528305</code></pre>
 <p>to create these plots, I looked at <a href="https://github.com/CornellNLP/ConvoKit/blob/master/convokit/forecaster/forecaster.py#L139">Forecasters</a> code for aggregating utternce-levele metrics on a conversation level where:</p>
 <ul>
 <li>np.max(forecast_scores) is highest probability the model ever assigned to any utterance in this conversation</li>
-<li>np.max(forecasts) is if the model ever cross its decision threshold and predict 1 (derailement) for thsi conversation ### Insights</li>
+<li>np.max(forecasts) is if the model ever cross its decision threshold and predict 1 (derailement) for thsi conversation</li>
+</ul>
+</section>
+<section id="insights-1" class="level3">
+<h3 class="anchored" data-anchor-id="insights-1"><strong>Insights</strong></h3>
+<ul>
 <li>baseline positive class rate (impasse dispute) for KODIS is 17.6% out of current 2107 disputes.</li>
 </ul>
-<p><strong>PR Curve</strong> - bottoms out at baseline accuracy with higher decision thresholds, so no presicion-accuracy trade-off. Essesntially, lower decision threshold -&gt; model is as good as baseline posititve rate, <strong>so it never actually predicts derailment</strong>. Probably due to high impassee/success class imbalance</p>
-<p><strong>AUC Curve</strong> - AUC still looks high for both bc of the class imbalance for derailement disputes I think– so this may be misleading currently - need to downsample and check if we do better than random</p>
+<p><strong>PR Curve</strong></p>
+<ul>
+<li>bottoms out at baseline accuracy with higher decision thresholds, so no presicion-accuracy trade-off. Essesntially, lower decision threshold -&gt; model is as good as baseline posititve rate, <strong>so it never actually predicts derailment</strong>. Probably due to high impassee/success class imbalance</li>
+</ul>
+<p><strong>AUC Curve</strong></p>
+<ul>
+<li><p>AUC still looks high for both bc of the class imbalance for derailement disputes I think– so this may be misleading currently</p>
+<ul>
+<li>need to downsample and check if we do better than random</li>
+</ul></li>
+</ul>
 <div id="bbd3d086" class="cell" data-execution_count="29">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, precision_recall_curve, auc</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_conv_level_scores(corpus):</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1) grab all utterances with a forecast</span></span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    utt <span class="op">=</span> (corpus</span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>            .get_utterances_dataframe()[[<span class="st">'conversation_id'</span>,<span class="st">'meta.forecast_prob'</span>]]</span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>            .dropna())</span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>    conv_scores <span class="op">=</span> utt.groupby(<span class="st">'conversation_id'</span>)[<span class="st">'meta.forecast_prob'</span>].<span class="bu">max</span>()</span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    conv_df <span class="op">=</span> corpus.get_conversations_dataframe()</span>
-<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>    conv_scores <span class="op">=</span> conv_scores.reindex(conv_df.index, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> conv_df[<span class="st">'meta.label'</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>    y_scores <span class="op">=</span> conv_scores.values</span>
-<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_true, y_scores</span>
-<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_baseline_accuracy(corpus, label_field<span class="op">=</span><span class="st">"label"</span>):</span>
-<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># pull out the conversation‑level labels</span></span>
-<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>    conv_df <span class="op">=</span> corpus.get_conversations_dataframe()[[<span class="ss">f"meta.</span><span class="sc">{</span>label_field<span class="sc">}</span><span class="ss">"</span>]]</span>
-<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># count each class</span></span>
-<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> conv_df[<span class="st">"meta.label"</span>].value_counts()</span>
-<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>    min_label <span class="op">=</span> counts.idxmin()    </span>
-<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>    min_count <span class="op">=</span> counts.<span class="bu">min</span>()      </span>
-<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>    total     <span class="op">=</span> counts.<span class="bu">sum</span>()</span>
-<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>    baseline_acc <span class="op">=</span> min_count <span class="op">/</span> total</span>
-<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Baseline accuracy (derailement): </span><span class="sc">{</span>baseline_acc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>conv_df <span class="op">=</span> corp1.get_conversations_dataframe()[[<span class="ss">f"meta.label"</span>]]</span>
-<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a>display(conv_df[<span class="st">"meta.label"</span>].value_counts())</span>
-<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a>y1, s1 <span class="op">=</span> get_conv_level_scores(corp1)</span>
-<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>y2, s2 <span class="op">=</span> get_conv_level_scores(corp2)</span>
-<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>positive_rate <span class="op">=</span> np.mean(y1)</span>
-<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Positive class rate (Derailement): </span><span class="sc">{</span>positive_rate<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
-<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a>print_baseline_accuracy(corp1)</span>
-<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a><span class="co"># compute ROC and PR metrics</span></span>
-<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a>fpr1, tpr1, _    <span class="op">=</span> roc_curve(y1, s1)</span>
-<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a>roc_auc1         <span class="op">=</span> auc(fpr1, tpr1)</span>
-<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a>fpr2, tpr2, _    <span class="op">=</span> roc_curve(y2, s2)</span>
-<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a>roc_auc2         <span class="op">=</span> auc(fpr2, tpr2)</span>
-<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a>prec1, rec1, _   <span class="op">=</span> precision_recall_curve(y1, s1)</span>
-<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>pr_auc1          <span class="op">=</span> auc(rec1, prec1)</span>
-<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a>prec2, rec2, _   <span class="op">=</span> precision_recall_curve(y2, s2)</span>
-<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>pr_auc2          <span class="op">=</span> auc(rec2, prec2)</span>
-<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a><span class="co"># plot side‑by‑side</span></span>
-<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a>fig, (ax_roc, ax_pr) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">5</span>))</span>
-<span id="cb48-53"><a href="#cb48-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-54"><a href="#cb48-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ROC panel</span></span>
-<span id="cb48-55"><a href="#cb48-55" aria-hidden="true" tabindex="-1"></a>ax_roc.plot(fpr1, tpr1, label<span class="op">=</span><span class="ss">f'corp-wiki (AUC=</span><span class="sc">{</span>roc_auc1<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
-<span id="cb48-56"><a href="#cb48-56" aria-hidden="true" tabindex="-1"></a>ax_roc.plot(fpr2, tpr2, label<span class="op">=</span><span class="ss">f'corp-cmv (AUC=</span><span class="sc">{</span>roc_auc2<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
-<span id="cb48-57"><a href="#cb48-57" aria-hidden="true" tabindex="-1"></a>ax_roc.set_xlabel(<span class="st">'False Positive Rate'</span>)</span>
-<span id="cb48-58"><a href="#cb48-58" aria-hidden="true" tabindex="-1"></a>ax_roc.set_ylabel(<span class="st">'True Positive Rate'</span>)</span>
-<span id="cb48-59"><a href="#cb48-59" aria-hidden="true" tabindex="-1"></a>ax_roc.set_title(<span class="st">'ROC Curves'</span>)</span>
-<span id="cb48-60"><a href="#cb48-60" aria-hidden="true" tabindex="-1"></a>ax_roc.legend()</span>
-<span id="cb48-61"><a href="#cb48-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-62"><a href="#cb48-62" aria-hidden="true" tabindex="-1"></a><span class="co"># PR panel</span></span>
-<span id="cb48-63"><a href="#cb48-63" aria-hidden="true" tabindex="-1"></a>ax_pr.plot(rec1, prec1, label<span class="op">=</span><span class="ss">f'corp-wiki (AUC=</span><span class="sc">{</span>pr_auc1<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
-<span id="cb48-64"><a href="#cb48-64" aria-hidden="true" tabindex="-1"></a>ax_pr.plot(rec2, prec2, label<span class="op">=</span><span class="ss">f'corp-cmv (AUC=</span><span class="sc">{</span>pr_auc2<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
-<span id="cb48-65"><a href="#cb48-65" aria-hidden="true" tabindex="-1"></a>ax_pr.set_xlabel(<span class="st">'Recall'</span>)</span>
-<span id="cb48-66"><a href="#cb48-66" aria-hidden="true" tabindex="-1"></a>ax_pr.set_ylabel(<span class="st">'Precision'</span>)</span>
-<span id="cb48-67"><a href="#cb48-67" aria-hidden="true" tabindex="-1"></a>ax_pr.set_title(<span class="st">'Precision–Recall Curves'</span>)</span>
-<span id="cb48-68"><a href="#cb48-68" aria-hidden="true" tabindex="-1"></a>ax_pr.legend()</span>
-<span id="cb48-69"><a href="#cb48-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-70"><a href="#cb48-70" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb48-71"><a href="#cb48-71" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, precision_recall_curve, auc</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_conv_level_scores(corpus):</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1) grab all utterances with a forecast</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    utt <span class="op">=</span> (corpus</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>            .get_utterances_dataframe()[[<span class="st">'conversation_id'</span>,<span class="st">'meta.forecast_prob'</span>]]</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>            .dropna())</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    conv_scores <span class="op">=</span> utt.groupby(<span class="st">'conversation_id'</span>)[<span class="st">'meta.forecast_prob'</span>].<span class="bu">max</span>()</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    conv_df <span class="op">=</span> corpus.get_conversations_dataframe()</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    conv_scores <span class="op">=</span> conv_scores.reindex(conv_df.index, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> conv_df[<span class="st">'meta.label'</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>    y_scores <span class="op">=</span> conv_scores.values</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_true, y_scores</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_baseline_accuracy(corpus, label_field<span class="op">=</span><span class="st">"label"</span>):</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># pull out the conversation‑level labels</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>    conv_df <span class="op">=</span> corpus.get_conversations_dataframe()[[<span class="ss">f"meta.</span><span class="sc">{</span>label_field<span class="sc">}</span><span class="ss">"</span>]]</span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># count each class</span></span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> conv_df[<span class="st">"meta.label"</span>].value_counts()</span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>    min_label <span class="op">=</span> counts.idxmin()    </span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>    min_count <span class="op">=</span> counts.<span class="bu">min</span>()      </span>
+<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>    total     <span class="op">=</span> counts.<span class="bu">sum</span>()</span>
+<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a>    baseline_acc <span class="op">=</span> min_count <span class="op">/</span> total</span>
+<span id="cb47-27"><a href="#cb47-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Baseline accuracy (derailement): </span><span class="sc">{</span>baseline_acc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb47-28"><a href="#cb47-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-29"><a href="#cb47-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-30"><a href="#cb47-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-31"><a href="#cb47-31" aria-hidden="true" tabindex="-1"></a>conv_df <span class="op">=</span> corp1.get_conversations_dataframe()[[<span class="ss">f"meta.label"</span>]]</span>
+<span id="cb47-32"><a href="#cb47-32" aria-hidden="true" tabindex="-1"></a>display(conv_df[<span class="st">"meta.label"</span>].value_counts())</span>
+<span id="cb47-33"><a href="#cb47-33" aria-hidden="true" tabindex="-1"></a>y1, s1 <span class="op">=</span> get_conv_level_scores(corp1)</span>
+<span id="cb47-34"><a href="#cb47-34" aria-hidden="true" tabindex="-1"></a>y2, s2 <span class="op">=</span> get_conv_level_scores(corp2)</span>
+<span id="cb47-35"><a href="#cb47-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-36"><a href="#cb47-36" aria-hidden="true" tabindex="-1"></a>positive_rate <span class="op">=</span> np.mean(y1)</span>
+<span id="cb47-37"><a href="#cb47-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Positive class rate (Derailement): </span><span class="sc">{</span>positive_rate<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
+<span id="cb47-38"><a href="#cb47-38" aria-hidden="true" tabindex="-1"></a>print_baseline_accuracy(corp1)</span>
+<span id="cb47-39"><a href="#cb47-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-40"><a href="#cb47-40" aria-hidden="true" tabindex="-1"></a><span class="co"># compute ROC and PR metrics</span></span>
+<span id="cb47-41"><a href="#cb47-41" aria-hidden="true" tabindex="-1"></a>fpr1, tpr1, _    <span class="op">=</span> roc_curve(y1, s1)</span>
+<span id="cb47-42"><a href="#cb47-42" aria-hidden="true" tabindex="-1"></a>roc_auc1         <span class="op">=</span> auc(fpr1, tpr1)</span>
+<span id="cb47-43"><a href="#cb47-43" aria-hidden="true" tabindex="-1"></a>fpr2, tpr2, _    <span class="op">=</span> roc_curve(y2, s2)</span>
+<span id="cb47-44"><a href="#cb47-44" aria-hidden="true" tabindex="-1"></a>roc_auc2         <span class="op">=</span> auc(fpr2, tpr2)</span>
+<span id="cb47-45"><a href="#cb47-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-46"><a href="#cb47-46" aria-hidden="true" tabindex="-1"></a>prec1, rec1, _   <span class="op">=</span> precision_recall_curve(y1, s1)</span>
+<span id="cb47-47"><a href="#cb47-47" aria-hidden="true" tabindex="-1"></a>pr_auc1          <span class="op">=</span> auc(rec1, prec1)</span>
+<span id="cb47-48"><a href="#cb47-48" aria-hidden="true" tabindex="-1"></a>prec2, rec2, _   <span class="op">=</span> precision_recall_curve(y2, s2)</span>
+<span id="cb47-49"><a href="#cb47-49" aria-hidden="true" tabindex="-1"></a>pr_auc2          <span class="op">=</span> auc(rec2, prec2)</span>
+<span id="cb47-50"><a href="#cb47-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-51"><a href="#cb47-51" aria-hidden="true" tabindex="-1"></a><span class="co"># plot side‑by‑side</span></span>
+<span id="cb47-52"><a href="#cb47-52" aria-hidden="true" tabindex="-1"></a>fig, (ax_roc, ax_pr) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">5</span>))</span>
+<span id="cb47-53"><a href="#cb47-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-54"><a href="#cb47-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ROC panel</span></span>
+<span id="cb47-55"><a href="#cb47-55" aria-hidden="true" tabindex="-1"></a>ax_roc.plot(fpr1, tpr1, label<span class="op">=</span><span class="ss">f'corp-wiki (AUC=</span><span class="sc">{</span>roc_auc1<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb47-56"><a href="#cb47-56" aria-hidden="true" tabindex="-1"></a>ax_roc.plot(fpr2, tpr2, label<span class="op">=</span><span class="ss">f'corp-cmv (AUC=</span><span class="sc">{</span>roc_auc2<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb47-57"><a href="#cb47-57" aria-hidden="true" tabindex="-1"></a>ax_roc.set_xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb47-58"><a href="#cb47-58" aria-hidden="true" tabindex="-1"></a>ax_roc.set_ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb47-59"><a href="#cb47-59" aria-hidden="true" tabindex="-1"></a>ax_roc.set_title(<span class="st">'ROC Curves'</span>)</span>
+<span id="cb47-60"><a href="#cb47-60" aria-hidden="true" tabindex="-1"></a>ax_roc.legend()</span>
+<span id="cb47-61"><a href="#cb47-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-62"><a href="#cb47-62" aria-hidden="true" tabindex="-1"></a><span class="co"># PR panel</span></span>
+<span id="cb47-63"><a href="#cb47-63" aria-hidden="true" tabindex="-1"></a>ax_pr.plot(rec1, prec1, label<span class="op">=</span><span class="ss">f'corp-wiki (AUC=</span><span class="sc">{</span>pr_auc1<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb47-64"><a href="#cb47-64" aria-hidden="true" tabindex="-1"></a>ax_pr.plot(rec2, prec2, label<span class="op">=</span><span class="ss">f'corp-cmv (AUC=</span><span class="sc">{</span>pr_auc2<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb47-65"><a href="#cb47-65" aria-hidden="true" tabindex="-1"></a>ax_pr.set_xlabel(<span class="st">'Recall'</span>)</span>
+<span id="cb47-66"><a href="#cb47-66" aria-hidden="true" tabindex="-1"></a>ax_pr.set_ylabel(<span class="st">'Precision'</span>)</span>
+<span id="cb47-67"><a href="#cb47-67" aria-hidden="true" tabindex="-1"></a>ax_pr.set_title(<span class="st">'Precision–Recall Curves'</span>)</span>
+<span id="cb47-68"><a href="#cb47-68" aria-hidden="true" tabindex="-1"></a>ax_pr.legend()</span>
+<span id="cb47-69"><a href="#cb47-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-70"><a href="#cb47-70" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb47-71"><a href="#cb47-71" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <pre><code>meta.label
@@ -919,36 +894,36 @@ Baseline accuracy (derailement): 0.176</code></pre>
 <div id="2593f142" class="cell" data-execution_count="34">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>lengths <span class="op">=</span> [</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span>(convo.get_utterance_ids())</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corp2.iter_conversations()</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>avg_len <span class="op">=</span> <span class="bu">sum</span>(lengths) <span class="op">/</span> <span class="bu">len</span>(lengths)</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average conversation length in pre-process KODIS: </span><span class="sc">{</span>avg_len<span class="sc">:.2f}</span><span class="ss"> utterances"</span>)</span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">-------------------"</span>)</span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stats for fine-tuned wiki model predicitons </span><span class="ch">\n</span><span class="st"> -------------------"</span>)</span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>conv_df1, metrics1 <span class="op">=</span> forecaster1.summarize(corp1)</span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">-------------------"</span>)</span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stats for fine-tuned cmv model predicitons  </span><span class="ch">\n</span><span class="st"> -------------------"</span>)</span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>conv_df2, metrics2 <span class="op">=</span> forecaster2.summarize(corp2)</span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>metrics_df <span class="op">=</span> pd.DataFrame([metrics1, metrics2], index<span class="op">=</span>[<span class="st">'corp1'</span>,<span class="st">'corp2'</span>])</span>
-<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Overall metrics ==="</span>)</span>
-<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>display(metrics_df)</span>
-<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Merge the two conversation‐level forecasts side by side</span></span>
-<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a><span class="co">#    rename so you can see which is which</span></span>
-<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>conv1 <span class="op">=</span> conv_df1.rename(columns<span class="op">=</span>{<span class="st">'label'</span>:<span class="st">'label'</span>,<span class="st">'score'</span>:<span class="st">'score_wiki'</span>,<span class="st">'forecast'</span>:<span class="st">'forecast_wiki'</span>})</span>
-<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>conv2 <span class="op">=</span> conv_df2.rename(columns<span class="op">=</span>{<span class="st">'score'</span>:<span class="st">'score_cmv'</span>,<span class="st">'forecast'</span>:<span class="st">'forecast_cmv'</span>})</span>
-<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a><span class="co"># join on conversation_id</span></span>
-<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> conv1.join(conv2[[<span class="st">'score_cmv'</span>,<span class="st">'forecast_cmv'</span>]], how<span class="op">=</span><span class="st">'inner'</span>)</span>
-<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Conversation‑level forecasts comparison ==="</span>)</span>
-<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>display(merged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>lengths <span class="op">=</span> [</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span>(convo.get_utterance_ids())</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corp2.iter_conversations()</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>avg_len <span class="op">=</span> <span class="bu">sum</span>(lengths) <span class="op">/</span> <span class="bu">len</span>(lengths)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average conversation length in pre-process KODIS: </span><span class="sc">{</span>avg_len<span class="sc">:.2f}</span><span class="ss"> utterances"</span>)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">-------------------"</span>)</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stats for fine-tuned wiki model predicitons </span><span class="ch">\n</span><span class="st"> -------------------"</span>)</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>conv_df1, metrics1 <span class="op">=</span> forecaster1.summarize(corp1)</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">-------------------"</span>)</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stats for fine-tuned cmv model predicitons  </span><span class="ch">\n</span><span class="st"> -------------------"</span>)</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>conv_df2, metrics2 <span class="op">=</span> forecaster2.summarize(corp2)</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>metrics_df <span class="op">=</span> pd.DataFrame([metrics1, metrics2], index<span class="op">=</span>[<span class="st">'corp1'</span>,<span class="st">'corp2'</span>])</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Overall metrics ==="</span>)</span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>display(metrics_df)</span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Merge the two conversation‐level forecasts side by side</span></span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a><span class="co">#    rename so you can see which is which</span></span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>conv1 <span class="op">=</span> conv_df1.rename(columns<span class="op">=</span>{<span class="st">'label'</span>:<span class="st">'label'</span>,<span class="st">'score'</span>:<span class="st">'score_wiki'</span>,<span class="st">'forecast'</span>:<span class="st">'forecast_wiki'</span>})</span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>conv2 <span class="op">=</span> conv_df2.rename(columns<span class="op">=</span>{<span class="st">'score'</span>:<span class="st">'score_cmv'</span>,<span class="st">'forecast'</span>:<span class="st">'forecast_cmv'</span>})</span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a><span class="co"># join on conversation_id</span></span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> conv1.join(conv2[[<span class="st">'score_cmv'</span>,<span class="st">'forecast_cmv'</span>]], how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Conversation‑level forecasts comparison ==="</span>)</span>
+<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>display(merged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Average conversation length in pre-process KODIS: 13.05 utterances
@@ -1169,11 +1144,11 @@ Mean = 10.006060606060606, Median = 9.0
 <div id="0355287b" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download, Corpus</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>corpus_cmv <span class="op">=</span> Corpus(<span class="st">"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets/conversations-gone-awry-cmv-corpus"</span>)</span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>corpus_wiki <span class="op">=</span> Corpus(<span class="st">"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets/conversations-gone-awry-corpus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download, Corpus</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>corpus_cmv <span class="op">=</span> Corpus(<span class="st">"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets/conversations-gone-awry-cmv-corpus"</span>)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>corpus_wiki <span class="op">=</span> Corpus(<span class="st">"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets/conversations-gone-awry-corpus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -1185,86 +1160,86 @@ Mean = 10.006060606060606, Median = 9.0
 <div id="59dfad34" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>convo_ex <span class="op">=</span>  <span class="bu">next</span>(corpus_wiki.iter_conversations())</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, val <span class="kw">in</span> convo_ex.meta.items():</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:20s}</span><span class="ss"> → </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>convo_ex2 <span class="op">=</span>  <span class="bu">next</span>(corpus_cmv.iter_conversations())</span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, val <span class="kw">in</span> convo_ex2.meta.items():</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:20s}</span><span class="ss"> → </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>convo_ex <span class="op">=</span>  <span class="bu">next</span>(corpus_wiki.iter_conversations())</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, val <span class="kw">in</span> convo_ex.meta.items():</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:20s}</span><span class="ss"> → </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>convo_ex2 <span class="op">=</span>  <span class="bu">next</span>(corpus_cmv.iter_conversations())</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, val <span class="kw">in</span> convo_ex2.meta.items():</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:20s}</span><span class="ss"> → </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div id="58f01fde" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download, Corpus</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.forecaster.CRAFT.data <span class="im">import</span> (</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    loadPrecomputedVoc,</span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    tokenize,</span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    Voc,</span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
-<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="co">Need to get only the utterances used for training fine-tuned model. </span></span>
-<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a><span class="co">Choose only those utterances in conversations where mete.split == train</span></span>
-<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
-<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_craft_vocab(model_name: <span class="bu">str</span>) <span class="op">-&gt;</span> Voc:</span>
-<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>    base <span class="op">=</span> download(model_name, data_dir<span class="op">=</span>os.path.expanduser(<span class="st">"~/.convokit/models"</span>))</span>
-<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> loadPrecomputedVoc(</span>
-<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>        model_name,</span>
-<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>        os.path.join(base, <span class="st">"word2index.json"</span>),</span>
-<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>        os.path.join(base, <span class="st">"index2word.json"</span>),</span>
-<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>voc_wiki <span class="op">=</span> load_craft_vocab(<span class="st">"craft-wiki-finetuned"</span>)</span>
-<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>voc_cmv  <span class="op">=</span> load_craft_vocab(<span class="st">"craft-cmv-finetuned"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download, Corpus</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.forecaster.CRAFT.data <span class="im">import</span> (</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    loadPrecomputedVoc,</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    tokenize,</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    Voc,</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="co">Need to get only the utterances used for training fine-tuned model. </span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="co">Choose only those utterances in conversations where mete.split == train</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_craft_vocab(model_name: <span class="bu">str</span>) <span class="op">-&gt;</span> Voc:</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>    base <span class="op">=</span> download(model_name, data_dir<span class="op">=</span>os.path.expanduser(<span class="st">"~/.convokit/models"</span>))</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> loadPrecomputedVoc(</span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>        model_name,</span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>        os.path.join(base, <span class="st">"word2index.json"</span>),</span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>        os.path.join(base, <span class="st">"index2word.json"</span>),</span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>voc_wiki <span class="op">=</span> load_craft_vocab(<span class="st">"craft-wiki-finetuned"</span>)</span>
+<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a>voc_cmv  <span class="op">=</span> load_craft_vocab(<span class="st">"craft-cmv-finetuned"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div id="03fae09d" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co">    Walk through all conversations in `corpus`, select only those with</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co">    convo.meta["split"] == split, tokenize each utterance via CRAFT's</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="co">    tokenize(voc, text), and return summary stats on token counts.</span></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_token_lengths(corpus: Corpus, voc: Voc, split: <span class="bu">str</span> <span class="op">=</span> <span class="va">None</span>):</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>    lengths <span class="op">=</span> []</span>
-<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if a split is specified, filter; otherwise include everything</span></span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> split <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> convo.meta.get(<span class="st">"split"</span>) <span class="op">!=</span> split:</span>
-<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances():</span>
-<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>            toks <span class="op">=</span> tokenize(voc, utt.text <span class="kw">or</span> <span class="st">""</span>)</span>
-<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>            lengths.append(<span class="bu">len</span>(toks))</span>
-<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> lengths:</span>
-<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"n_utt"</span>: <span class="dv">0</span>, <span class="st">"mean"</span>: np.nan, <span class="st">"median"</span>: np.nan, <span class="st">"std"</span>: np.nan}</span>
-<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>    arr <span class="op">=</span> np.array(lengths)</span>
-<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"n_utt"</span>:  <span class="bu">int</span>(arr.size),</span>
-<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean"</span>:   <span class="bu">float</span>(arr.mean()),</span>
-<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"median"</span>: <span class="bu">float</span>(np.median(arr)),</span>
-<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"std"</span>:    <span class="bu">float</span>(arr.std()),</span>
-<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 5) run it on all four settings --</span></span>
-<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {</span>
-<span id="cb59-29"><a href="#cb59-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"craft‑wiki"</span>:   summarize_token_lengths(corpus_wiki, voc_wiki, split<span class="op">=</span><span class="st">"train"</span>),</span>
-<span id="cb59-30"><a href="#cb59-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"craft‑cmv"</span>:    summarize_token_lengths(corpus_cmv,  voc_cmv,  split<span class="op">=</span><span class="st">"train"</span>),</span>
-<span id="cb59-31"><a href="#cb59-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kodis‑wiki"</span>:   summarize_token_lengths(corp1, voc_wiki),</span>
-<span id="cb59-32"><a href="#cb59-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kodis‑cmv"</span>:    summarize_token_lengths(corp1, voc_cmv),</span>
-<span id="cb59-33"><a href="#cb59-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-34"><a href="#cb59-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb59-35"><a href="#cb59-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-36"><a href="#cb59-36" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(results).T.reset_index().rename(columns<span class="op">=</span>{<span class="st">"index"</span>:<span class="st">"vocab"</span>})</span>
-<span id="cb59-37"><a href="#cb59-37" aria-hidden="true" tabindex="-1"></a>display(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co">    Walk through all conversations in `corpus`, select only those with</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co">    convo.meta["split"] == split, tokenize each utterance via CRAFT's</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co">    tokenize(voc, text), and return summary stats on token counts.</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_token_lengths(corpus: Corpus, voc: Voc, split: <span class="bu">str</span> <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    lengths <span class="op">=</span> []</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if a split is specified, filter; otherwise include everything</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> split <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> convo.meta.get(<span class="st">"split"</span>) <span class="op">!=</span> split:</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances():</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>            toks <span class="op">=</span> tokenize(voc, utt.text <span class="kw">or</span> <span class="st">""</span>)</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>            lengths.append(<span class="bu">len</span>(toks))</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> lengths:</span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"n_utt"</span>: <span class="dv">0</span>, <span class="st">"mean"</span>: np.nan, <span class="st">"median"</span>: np.nan, <span class="st">"std"</span>: np.nan}</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>    arr <span class="op">=</span> np.array(lengths)</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"n_utt"</span>:  <span class="bu">int</span>(arr.size),</span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean"</span>:   <span class="bu">float</span>(arr.mean()),</span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"median"</span>: <span class="bu">float</span>(np.median(arr)),</span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"std"</span>:    <span class="bu">float</span>(arr.std()),</span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 5) run it on all four settings --</span></span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {</span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"craft‑wiki"</span>:   summarize_token_lengths(corpus_wiki, voc_wiki, split<span class="op">=</span><span class="st">"train"</span>),</span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"craft‑cmv"</span>:    summarize_token_lengths(corpus_cmv,  voc_cmv,  split<span class="op">=</span><span class="st">"train"</span>),</span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kodis‑wiki"</span>:   summarize_token_lengths(corp1, voc_wiki),</span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kodis‑cmv"</span>:    summarize_token_lengths(corp1, voc_cmv),</span>
+<span id="cb58-33"><a href="#cb58-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-34"><a href="#cb58-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-35"><a href="#cb58-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-36"><a href="#cb58-36" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(results).T.reset_index().rename(columns<span class="op">=</span>{<span class="st">"index"</span>:<span class="st">"vocab"</span>})</span>
+<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a>display(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
