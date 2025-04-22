@@ -518,8 +518,8 @@ corp-cmv    0.541044  0.271951     0.528305</code></pre>
 </ul>
 <p><strong>PR Curve</strong></p>
 <ul>
-<li><p>Bottoms out at baseline impasse rate with lower decision thresholds. Essesntially, as I lower decision threshold (less confident about classifying impasse) -&gt; <strong>it mispredicts derailment a lot for successful conversations</strong>. Therefore, model is as good as random classifier as it predicts the baseline derailment rate from the sample. Probably due to high impassee/success class imbalance.</p></li>
-<li><p>wiki model outperforms cmv model acrosss all decision thresholds</p></li>
+<li><p>Bottoms out at baseline impasse rate with lower decision thresholds. Essesntially, as I lower decision threshold (less confident about classifying impasse) -&gt; <strong>it mispredicts impasse a lot more for successful conversations since higher recall -&gt; less chance of 0(success) outcome</strong>. Therefore, model is as good as random classifier as it predicts the baseline derailment rate from the sample. Probably due to high impassee/success class imbalance.</p></li>
+<li><p>wiki model outperforms cmv model acrosss all decision thresholds, so it does better overall with getting successful disputes right</p></li>
 </ul>
 <p><strong>AUC Curve</strong></p>
 <ul>
