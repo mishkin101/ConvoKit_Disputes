@@ -2,13 +2,9 @@ project:
   type: website
   output-dir: docs    # ← GitHub Pages will serve from docs/
   render:
-    - "!CRAFT/"
-    - "!convokit_notebooks/"
-    - "src/Forcaster_Explorer.ipynb"
-    - "!src/CRAFT_Corpus_Explorer.ipynb"
-    - "!src/debugger.ipynb"
-    - "!src/corpus_converter.ipynb"
-    - index.qmd
+    # render this notebook as docs/index.html
+    - src/Forcaster_Explorer.ipynb:
+        output-file: index.html
 
 site-lib-dir: docs/site-libs   # ← here
 website:
