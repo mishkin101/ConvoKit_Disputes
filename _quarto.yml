@@ -1,17 +1,13 @@
 project:
   type: website
-  output-dir: docs    # ← GitHub Pages will serve from docs/
+  output-dir: docs       # ← where all HTML will go
   render:
     # render this notebook as docs/index.html
-    - src/Forcaster_Explorer.ipynb:
-        output-file: index.html
-
-site-lib-dir: docs/site-libs   # ← here
+    - src/Forcaster_Explorer.ipynb
+site-lib-dir: docs/site-libs
 website:
   title: "Weekly ConvoKit Updates"
   navbar:
     right:
       - text: Home
         href: index.html
-
-        

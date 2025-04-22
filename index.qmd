@@ -1,9 +1,0 @@
----
-title: "Current Updates"
-format:
-  html:
-    execute:
-      echo: false
----
-
-{{< include src/Forcaster_Explorer.ipynb >}}
