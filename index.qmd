@@ -1,9 +1,10 @@
 ---
-title: "Forecaster Explorer"
+title: "Current Updates"
 format:
   html:
     execute:
       echo: false
 ---
 
-```{include} src/Forcaster_Explorer.ipynb```
+
+{{< include src/Forcaster_Explorer.ipynb >}}
