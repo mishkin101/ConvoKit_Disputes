@@ -180,4 +180,4 @@ dataprocessing/data_explore_files/*
 /data/convokit_datasets/*
 
 /.quarto/
-/data/saved_corpora
+/data/saved_corpora/**
