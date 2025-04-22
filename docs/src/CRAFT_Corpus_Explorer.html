@@ -153,7 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-1" class="cell">
+<div id="cell-1" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the corpus</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, download</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -163,39 +163,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>corpus_w <span class="op">=</span> Corpus(wiki_path)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>corpus_cmv <span class="op">=</span> Corpus(cmv_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Dataset already exists at /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus
-Dataset already exists at /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus/conversations-gone-awry-cmv-corpus</code></pre>
-</div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
-<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[3]</span><span class="ansi-green-fg">, line 6</span>
-<span class="ansi-green-fg">      4</span> wiki_path = download(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">conversations-gone-awry-corpus</span><span class="ansi-yellow-fg">"</span>)
-<span class="ansi-green-fg">      5</span> cmv_path  = download(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">conversations-gone-awry-cmv-corpus</span><span class="ansi-yellow-fg">"</span>)
-<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">6</span> corpus_w = <span class="ansi-yellow-bg">Corpus</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">wiki_path</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">      7</span> corpus_cmv = Corpus(cmv_path)
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/Desktop/Research/Convo_Kit/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/convokit/model/corpus.py:172</span>, in <span class="ansi-cyan-fg">Corpus.__init__</span><span class="ansi-blue-fg">(self, filename, utterances, db_collection_prefix, db_host, preload_vectors, utterance_start_index, utterance_end_index, merge_lines, exclude_utterance_meta, exclude_conversation_meta, exclude_speaker_meta, exclude_overall_meta, disable_type_check, backend, backend_mapper)</span>
-<span class="ansi-green-fg">    170</span>     speakers_data = defaultdict(<span style="color:rgb(0,135,0)">dict</span>)
-<span class="ansi-green-fg">    171</span>     convos_data = defaultdict(<span style="color:rgb(0,135,0)">dict</span>)
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">172</span>     utterances = <span class="ansi-yellow-bg">load_from_utterance_file</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg">    173</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">filename</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">utterance_start_index</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">utterance_end_index</span>
-<span class="ansi-green-fg">    174</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    176</span> <span style="color:rgb(0,135,0)">self</span>.utterances = <span style="color:rgb(0,135,0)">dict</span>()
-<span class="ansi-green-fg">    177</span> <span style="color:rgb(0,135,0)">self</span>.speakers = <span style="color:rgb(0,135,0)">dict</span>()
-
-<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/Desktop/Research/Convo_Kit/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/convokit/model/corpus_helpers.py:313</span>, in <span class="ansi-cyan-fg">load_from_utterance_file</span><span class="ansi-blue-fg">(filename, utterance_start_index, utterance_end_index)</span>
-<span class="ansi-green-fg">    309</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">load_from_utterance_file</span>(filename, utterance_start_index, utterance_end_index):
-<span class="ansi-green-fg">    310</span> <span style="color:rgb(188,188,188)">    </span><span style="font-style:italic" class="ansi-yellow-fg">"""</span>
-<span class="ansi-green-fg">    311</span> <span style="font-style:italic" class="ansi-yellow-fg">    where filename is "utterances.json" or "utterances.jsonl" for example</span>
-<span class="ansi-green-fg">    312</span> <span style="font-style:italic" class="ansi-yellow-fg">    """</span>
-<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">313</span>     <span style="font-weight:bold;color:rgb(0,135,0)">with</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">open</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">filename</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">r</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">)</span> <span style="font-weight:bold;color:rgb(0,135,0)">as</span> f:
-<span class="ansi-green-fg">    314</span>         <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">    315</span>             ext = filename.split(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">.</span><span class="ansi-yellow-fg">"</span>)[-<span class="ansi-green-fg">1</span>]
-
-<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: '/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus'</pre>
-</div>
+<pre><code>Downloading conversations-gone-awry-corpus to /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets/conversations-gone-awry-corpus
+Downloading conversations-gone-awry-corpus from http://zissou.infosci.cornell.edu/convokit/datasets/conversations-gone-awry-corpus/conversations-gone-awry-corpus.zip (45.2MB)... Done
+Downloading conversations-gone-awry-cmv-corpus to /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/convokit_datasets/conversations-gone-awry-cmv-corpus
+Downloading conversations-gone-awry-cmv-corpus from http://zissou.infosci.cornell.edu/convokit/datasets/conversations-gone-awry-cmv-corpus/conversations-gone-awry-cmv-corpus.zip (51.5MB)... Done</code></pre>
 </div>
 </div>
 <div id="cell-2" class="cell">
