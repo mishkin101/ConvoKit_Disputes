@@ -2,6 +2,7 @@ project:
   type: website
   output-dir: docs    # ← GitHub Pages will serve from docs/
 
+site-lib-dir: docs/site-libs   # ← here
 website:
   title: "My Forecaster Explorer"
   navbar:

@@ -37,5 +37,17 @@
   },
   "src/debugger.ipynb": {
     "debugger.html": "9d525601"
+  },
+  "Annotations/ConvoKitNotes.md": {
+    "ConvoKitNotes.html": "5d99418a"
+  },
+  "src/CRAFT_Corpus_Explorer.ipynb": {
+    "CRAFT_Corpus_Explorer.html": "c68bb5a4"
+  },
+  "src/corpus_converter.ipynb": {
+    "corpus_converter.html": "e376aab3"
+  },
+  "src/data_preprocessing.ipynb": {
+    "data_preprocessing.html": "879cdb13"
   }
 }
