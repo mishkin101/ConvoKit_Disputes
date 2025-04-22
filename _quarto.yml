@@ -6,7 +6,9 @@ project:
     - "!convokit_notebooks/"
     - "src/"
     - "!src/CRAFT_Corpus_Explorer.ipynb"
-    - "!src/CRAFT_Corpus_Explorer.ipynb"
+    - "!src/debugger.ipynb"
+    - "!src/corpus_converter.ipynb"
+    - index.qmd
 
 site-lib-dir: docs/site-libs   # ← here
 website:
