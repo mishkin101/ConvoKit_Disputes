@@ -6,4 +6,4 @@ format:
       echo: false
 ---
 
-```{include} src/Forcaster_Explorer.ipynb
+```{include} src/Forcaster_Explorer.ipynb```
