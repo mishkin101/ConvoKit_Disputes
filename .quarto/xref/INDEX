@@ -1,0 +1,29 @@
+{
+  "CRAFT/fine_tuning_demo.ipynb": {
+    "fine_tuning_demo.html": "a7907882"
+  },
+  "CRAFT/model/explanations.md": {
+    "explanations.html": "44b6ca11"
+  },
+  "CRAFT/pretraining_data_prep_demo.ipynb": {
+    "pretraining_data_prep_demo.html": "847bcf31"
+  },
+  "Annotations/text.MD": {
+    "text.html": "7fed4d0a"
+  },
+  "ConvoKitNotes.md": {
+    "ConvoKitNotes.html": "6a0abcfa"
+  },
+  "notebooks/Conversations_Gone_Awry_Prediction.ipynb": {
+    "Conversations_Gone_Awry_Prediction.html": "758d3d4f"
+  },
+  "notebooks/craft_demo_new.ipynb": {
+    "craft_demo_new.html": "2b25587d"
+  },
+  "src/Forcaster_Explorer.ipynb": {
+    "Forcaster_Explorer.html": "1c5a5290"
+  },
+  "index.qmd": {
+    "index.html": "d6fe6bca"
+  }
+}
