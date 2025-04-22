@@ -10,7 +10,7 @@ from IPython.display import display
 
 class DataPreprocesser:
 
-    def __init__(self, filepath=None):
+    def __init__(self, filepath=None, label_path = None):
         self.num_matches = {}
         self.metric_keys = ['timestamp', 'speaker', 'message', 'value', 'Case Match Type', 'matchidx', 'convolen', 'uttidx', 'matchfreq', 'speaker_id']
         self.match_stats = {'relative_pos'}
@@ -27,7 +27,21 @@ class DataPreprocesser:
         self.df = None  # Ensure df exists even if loading fails
         if filepath:
             self.getFromCSV(filepath)
+        
 
+        if label_path:
+            label_df = pd.read_csv(label_path)
+            self.df = self.df.merge(
+            label_df[["formattedChat", "b_final_result"]],
+            on="formattedChat",
+            how="inner"
+            )     
+            self.dropChatNA()
+            # Drop missing values
+            self.df = self.df.dropna(subset=["b_final_result"])
+            #get rid of AI dialopgues
+            self.df = self.df[self.df["is_AI"] != True]
+            self.df["labeled_dispute_outcome"] = self.df["b_final_result"].apply(self.addDisputeOutcomesfromLabels)
 
     def getMatchedUtterancesDF(self, key_val, all = False):
         # Make sure both DataFrames have the same index for comparison
@@ -219,8 +233,8 @@ class DataPreprocesser:
         return None
     
     def addDisputeOutcomes(self, parsed_dialog):
-        flag_general = {1: ['Accept Deal'],
-                        0: ['I Walk Away.']}
+        flag_general = {0: ['Accept Deal'],
+                        1: ['I Walk Away.']}
         
         if not isinstance(parsed_dialog, list) or len(parsed_dialog) == 0:
             return None
@@ -231,20 +245,6 @@ class DataPreprocesser:
                     return key
         return None
         
-    def getOutcomesBySpeaker(self):
-        flag_speaker_map = {
-        0: "Buyer - I Walk Away",
-        1: "Buyer - Accept Deal",
-        2: "Seller - I Walk Away",
-        3: "Seller - Accept Deal"
-        }
-        final_success_df_counts.index = final_success_df_counts.index.map(flag_speaker_map)
-        print(final_success_df_counts)
-
-        # Apply mapping to final_reject_df_counts
-        final_reject_df_counts.index = final_reject_df_counts.index.map(flag_speaker_map)
-        display(final_reject_df_counts)
-
     def is_accept_deal(self, lst):
         if isinstance(lst, list) and len(lst) > 0:
             last = lst[-1]
@@ -258,7 +258,14 @@ class DataPreprocesser:
             if isinstance(last, dict) and 'message' in last:
                 return last['message'] == "I Walk Away."
         return False
-   
+    
+    def is_submit_agreement(self, lst):
+        if isinstance(lst, list) and len(lst) > 0:
+            last = lst[-1]
+            if isinstance(last, dict) and 'message' in last:
+                return "Submitted agreement" in last["message"]
+        return False
+
     def filterValidOutcomes(self):
     
         self.filterMatches("message", "Accept Deal")
@@ -273,6 +280,13 @@ class DataPreprocesser:
         final_reject_df  = final_reject_df[final_reject_df["parsed_dialog"].apply(self.is_walk_away)]
         final_reject_df = final_reject_df[final_reject_df["is_AI"] != True]
         self.df = pd.concat([final_success_df, final_reject_df]).sort_index()
+
+    def addDisputeOutcomesfromLabels(self, row):
+        """
+        Returns 0 if 'b_final_result' is 'Z' (failure), else 0.
+        Expects `row` to be a dict or Series containing 'b_final_result'.
+        """
+        return 0 if row == "Z" else 1
 
 
     def saveToCSV(self, final_filepath):
@@ -350,7 +364,6 @@ class DataPreprocesser:
         self.resetUtDF()
         self.normalizedRelativePos(value_to_check)# Optionally drop it
         df.drop(columns=["temp_col"], inplace=True)
-
 
     def resetUtDF(self):
         df = self.utterancesDF
@@ -511,6 +524,7 @@ class DataPreprocesser:
         return juilland_d
     
     # always matched
+    #measures the relative position of a phrase across all utterances
     def normalizedRelativePos(self, key_value):
         #save this column to getMatchedUtterancesDF
         df = self.getMatchedUtterancesDF(key_value)

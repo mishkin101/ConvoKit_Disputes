@@ -127,8 +127,6 @@ def clean_corpus_timestamps(data, utts, speakers, convos):
     return utts, speakers, convos
 
 
-
-   
 def corpusBuilder(data):
     utts =buildUtteranceDF(data.getUtterancesDF())
     speakers =buildSpeakerDF(data.getUtterancesDF())
