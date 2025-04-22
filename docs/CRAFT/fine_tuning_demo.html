@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>CRAFT fine-tuning and inference interactive demo – My Forecaster Explorer</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-79108a0fc1995748cbd19a5b0e3e3e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">My Forecaster Explorer</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">CRAFT fine-tuning and inference interactive demo</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This example notebook shows how to fine-tune a pretrained CRAFT conversational model for the task of forecasting conversational derailment, as shown in the “Trouble on the Horizon” paper (note however that due to nondeterminism in the training process, the results will not exactly reproduce the ones shown in the paper; if you need the exact inference results from the paper, see our <a href="https://colab.research.google.com/drive/1GvICZN0VwZQSWw3pJaEVY-EQGoO-L5lH">online demo</a> that does inference only using the saved already-fine-tuned model from the paper).</p>
+<p>Also note that this notebook is written primarily for the Wikipedia data. It will still work on the Reddit CMV data as well, but be aware that if seeking to compare results to those in the paper, the actual Reddit CMV evaluation contains some nuances that are not present in the Wikipedia data, as detailed in the <a href="https://colab.research.google.com/drive/1aGBUBeiF3jT-GtBU9SDUoxhsjwKZaMKl?usp=sharing">CMV version of the online demo</a>.</p>
+<div id="cell-2" class="cell" data-outputid="a9d10e05-c6db-401f-a651-20bb60a3c095" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import necessary libraries, including convokit</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.jit <span class="im">import</span> script, trace</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> optim</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> unicodedata</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download, Corpus</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlretrieve</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># import all configuration variables</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> model.config <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># import data preprocessing functions</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> model.data <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># import our custom PyTorch modules</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> model.model <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>save_dir <span class="op">=</span> os.path.join(<span class="st">"./"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="part-1-set-up-data-preprocessing-utilities" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-set-up-data-preprocessing-utilities">Part 1: set up data preprocessing utilities</h2>
+<p>We begin by setting up some helper functions for preprocessing the ConvoKit Utterance data for use with CRAFT.</p>
+<div id="cell-4" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Given a ConvoKit conversation, preprocess each utterance's text by tokenizing and truncating.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Returns the processed dialog entry where text has been replaced with a list of</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># tokens, each no longer than MAX_LENGTH - 1 (to leave space for the EOS token)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> processDialog(voc, dialog):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    processed <span class="op">=</span> []</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> utterance <span class="kw">in</span> dialog.iter_utterances():</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># skip the section header, which does not contain conversational content</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> corpus_name <span class="op">==</span> <span class="st">'wikiconv'</span> <span class="kw">and</span> utterance.meta[<span class="st">'is_section_header'</span>]:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> tokenize(utterance.text)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># replace out-of-vocabulary tokens</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(tokens)):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> tokens[i] <span class="kw">not</span> <span class="kw">in</span> voc.word2index:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                tokens[i] <span class="op">=</span> <span class="st">"UNK"</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        processed.append({<span class="st">"tokens"</span>: tokens, <span class="st">"is_attack"</span>: <span class="bu">int</span>(utterance.meta[utt_label_metadata]) <span class="cf">if</span> utt_label_metadata <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> <span class="dv">0</span>, <span class="st">"id"</span>: utterance.<span class="bu">id</span>})</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> utt_label_metadata <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if the dataset does not come with utterance-level labels, we assume that (as in the case of CMV)</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the only labels are conversation-level and that the actual toxic comment was not included in the</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># data. In that case, we must add a dummy comment containing no actual text, to get CRAFT to run on </span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the context preceding the dummy (that is, the full prefix before the removed comment)</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        processed.append({<span class="st">"tokens"</span>: [<span class="st">"UNK"</span>], <span class="st">"is_attack"</span>: <span class="bu">int</span>(dialog.meta[label_metadata]), <span class="st">"id"</span>: processed[<span class="op">-</span><span class="dv">1</span>][<span class="st">"id"</span>] <span class="op">+</span> <span class="st">"_dummyreply"</span>})</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> processed</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Load context-reply pairs from the Corpus, optionally filtering to only conversations</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># from the specified split (train, val, or test).</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Each conversation, which has N comments (not including the section header) will</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># get converted into N-1 comment-reply pairs, one pair for each reply </span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># (the first comment does not reply to anything).</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Each comment-reply pair is a tuple consisting of the conversational context</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (that is, all comments prior to the reply), the reply itself, the label (that</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># is, whether the reply contained a derailment event), and the comment ID of the</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># last comment in the context (for later use in re-joining with the ConvoKit corpus).</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># The function returns a list of such pairs.</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loadPairs(voc, corpus, split<span class="op">=</span><span class="va">None</span>, last_only<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> []</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># consider only conversations in the specified split of the data</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> split <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> convo.meta[<span class="st">'split'</span>] <span class="op">==</span> split:</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>            dialog <span class="op">=</span> processDialog(voc, convo)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>            iter_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(dialog)) <span class="cf">if</span> <span class="kw">not</span> last_only <span class="cf">else</span> [<span class="bu">len</span>(dialog)<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> idx <span class="kw">in</span> iter_range:</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                reply <span class="op">=</span> dialog[idx][<span class="st">"tokens"</span>][:(MAX_LENGTH<span class="op">-</span><span class="dv">1</span>)]</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>                label <span class="op">=</span> dialog[idx][<span class="st">"is_attack"</span>]</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>                <span class="co"># when re-joining with the corpus we want to store forecasts in</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>                <span class="co"># the last comment of each context (i.e. the comment directly</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>                <span class="co"># preceding the reply), so we must save that comment ID.</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>                comment_id <span class="op">=</span> dialog[idx<span class="op">-</span><span class="dv">1</span>][<span class="st">"id"</span>]</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>                <span class="co"># gather as context up to CONTEXT_SIZE utterances preceding the reply</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>                start <span class="op">=</span> <span class="bu">max</span>(idx <span class="op">-</span> CONTEXT_SIZE, <span class="dv">0</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                context <span class="op">=</span> [u[<span class="st">"tokens"</span>][:(MAX_LENGTH<span class="op">-</span><span class="dv">1</span>)] <span class="cf">for</span> u <span class="kw">in</span> dialog[start:idx]]</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>                pairs.append((context, reply, label, comment_id))</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pairs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="part-2-load-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-load-the-data">Part 2: load the data</h2>
+<p>Now we load the labeled corpus (Wikiconv or Reddit CMV) from ConvoKit, and run some transformations to prepare it for use with PyTorch</p>
+<div id="cell-6" class="cell" data-outputid="64557a00-453c-44c0-f334-b5ae83508231" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> corpus_name <span class="op">==</span> <span class="st">"wikiconv"</span>:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    corpus <span class="op">=</span> Corpus(filename<span class="op">=</span>download(<span class="st">"conversations-gone-awry-corpus"</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> corpus_name <span class="op">==</span> <span class="st">"cmv"</span>:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    corpus <span class="op">=</span> Corpus(filename<span class="op">=</span>download(<span class="st">"conversations-gone-awry-cmv-corpus"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Downloading conversations-gone-awry-corpus to /Users/adb/.convokit/saved-corpora/conversations-gone-awry-corpus
+Downloading conversations-gone-awry-corpus from http://zissou.infosci.cornell.edu/convokit/datasets/conversations-gone-awry-corpus/conversations-gone-awry-corpus.zip (45.2MB)... Done</code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell" data-outputid="18931f88-572d-4c39-e5da-df3eca9c078c" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let's check some quick stats to verify that the corpus loaded correctly</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(corpus.get_utterance_ids()))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(corpus.get_speaker_ids()))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(corpus.get_conversation_ids()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>30021
+8069
+4188</code></pre>
+</div>
+</div>
+<div id="cell-8" class="cell" data-outputid="61b9f041-d59f-4f5a-a65b-ce9631c02336" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's also take a look at some example data to see what kinds of information/metadata are available to us</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(corpus.iter_conversations())[<span class="dv">0</span>].__dict__)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(corpus.iter_utterances())[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'obj_type': 'conversation', '_owner': &lt;convokit.model.corpus.Corpus object at 0x30f5e17d0&gt;, '_id': '146743638.12652.12652', 'vectors': [], '_meta': ConvoKitMeta({'page_title': 'User talk:2005', 'page_id': 1003212, 'pair_id': '143890867.11926.11926', 'conversation_has_personal_attack': False, 'verified': True, 'pair_verified': True, 'annotation_year': '2018', 'split': 'train'}), '_utterance_ids': ['146743638.12652.12652', '146743638.12667.12652', '146842219.12874.12874', '146860774.13072.13072'], '_speaker_ids': None, 'tree': None}
+Utterance(id: '146743638.12652.12652', conversation_id: 146743638.12652.12652, reply-to: None, speaker: Speaker(id: 'Sirex98', vectors: [], meta: ConvoKitMeta({})), timestamp: 1185295934.0, text: '== [WIKI_LINK: WP:COMMONNAME] ==\n', vectors: [], meta: ConvoKitMeta({'is_section_header': True, 'comment_has_personal_attack': False, 'toxicity': 0, 'parsed': [{'rt': 3, 'toks': [{'tok': '=', 'tag': 'NFP', 'dep': 'punct', 'up': 3, 'dn': []}, {'tok': '=', 'tag': 'LS', 'dep': 'punct', 'up': 3, 'dn': []}, {'tok': '[', 'tag': '-LRB-', 'dep': 'punct', 'up': 3, 'dn': []}, {'tok': 'WIKI_LINK', 'tag': 'JJ', 'dep': 'ROOT', 'dn': [0, 1, 2, 4]}, {'tok': ':', 'tag': ':', 'dep': 'punct', 'up': 3, 'dn': []}]}, {'rt': 0, 'toks': [{'tok': 'WP', 'tag': 'NNP', 'dep': 'ROOT', 'dn': [1, 2, 5]}, {'tok': ':', 'tag': ':', 'dep': 'punct', 'up': 0, 'dn': []}, {'tok': 'COMMONNAME', 'tag': 'NNPS', 'dep': 'appos', 'up': 0, 'dn': [3]}, {'tok': ']', 'tag': '-RRB-', 'dep': 'punct', 'up': 2, 'dn': []}, {'tok': '=', 'tag': 'SYM', 'dep': 'punct', 'up': 5, 'dn': []}, {'tok': '=', 'tag': 'SYM', 'dep': 'punct', 'up': 0, 'dn': [4, 6]}, {'tok': '\n', 'tag': '', 'dep': '', 'up': 5, 'dn': []}]}]}))</code></pre>
+</div>
+</div>
+<p>Now we can use the utilities defined in Part 1 to convert the ConvoKit conversational data into a tokenized form that can be straightforwardly turned into Tensors later.</p>
+<div id="cell-10" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, we need to build the vocabulary so that we know how to map tokens to tensor indicies.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For the sake of replicating the paper results, we will load the pre-computed vocabulary objects used in the paper.</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>voc <span class="op">=</span> loadPrecomputedVoc(corpus_name, word2index_path, index2word_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-11" class="cell" data-outputid="a682ac56-5ec9-4a88-fdce-fc9fb08aa104" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the Voc object to make sure it loaded correctly</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(voc.num_words) <span class="co"># expected vocab size is 50004: it was built using a fixed vocab size of 50k plus 4 spots for special tokens PAD, SOS, EOS, and UNK.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(voc.word2index.items())[:<span class="dv">10</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(voc.index2word.items())[:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>50004
+[('UNK', 3), ('.', 4), ('the', 5), ("'", 6), (',', 7), ('to', 8), ('i', 9), ('of', 10), ('a', 11), ('and', 12)]
+[('0', 'PAD'), ('1', 'SOS'), ('2', 'EOS'), ('3', 'UNK'), ('4', '.'), ('5', 'the'), ('6', "'"), ('7', ','), ('8', 'to'), ('9', 'i')]</code></pre>
+</div>
+</div>
+<div id="cell-12" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the test set data into a list of input/label pairs. Each input will represent the conversation as a list of lists of tokens.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>train_pairs <span class="op">=</span> loadPairs(voc, corpus, <span class="st">"train"</span>, last_only<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>val_pairs <span class="op">=</span> loadPairs(voc, corpus, <span class="st">"val"</span>, last_only<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>test_pairs <span class="op">=</span> loadPairs(voc, corpus, <span class="st">"test"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-13" class="cell" data-outputid="11d7b50b-bc00-4080-d4ce-9294b3988194" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validate the conversion by checking data size and some samples</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(train_pairs))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(val_pairs))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(test_pairs))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> train_pairs[:<span class="dv">5</span>]:</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2508
+840
+4365
+([['i', 'notice', 'that', 'UNK', 'that', 'moved', 'UNK', 'to', 'bill', 'chen', 'citing', 'UNK', ',', 'then', 'you', 'reverted', 'this', 'change', ',', 'bill', 'chen', 'doesn', "'", 't', 'commonly', 'go', 'by', 'william', ',', 'his', 'book', 'is', 'even', 'penned', 'as', 'bill', 'chen', '.', 'from', 'what', 'i', 'read', 'in', 'wp', ':', 'commonname', 'UNK', 'seems', 'to', 'be', 'correct', ',', 'examples', 'given', 'are', 'names', 'such', 'as', ':', '*', 'UNK', '(', 'not', 'UNK', ')', '*', 'UNK', '(', 'not', 'UNK', ')', 'i', 'think', 'this', 'revert', 'may', 'have', 'been', 'a'], ['chen', 'was', 'known', 'in', 'the', 'poker', 'world', 'as', '"', 'william', '"', 'for', 'years', 'before', 'he', 'became', 'commonly', 'known', 'as', '"', 'bill', '"', '.', 'i', 'changed', 'it', 'back', 'because', 'incidences', 'online', 'including', 'usenet', 'are', 'roughly', 'equal', ',', 'nothing', 'at', 'all', 'like', 'bill', 'clinton', 'and', 'william', 'clinton', ',', 'and', 'in', 'equal', 'cases', 'using', 'the', 'real', 'name', 'seems', 'the', 'best', 'choice', '.', '(', 'the', 'UNK', 'page', 'is', 'especially', 'UNK', '.', '.', '.', 'UNK', 'in', 'the', 'page', 'title', ',', 'bill', 'in', 'the', 'page']], ['i', 'see', 'what', 'you', 'saying', 'i', 'just', 'read', 'his', 'UNK', 'profile', ',', 'it', 'struck', 'me', 'when', 'i', 'saw', 'the', 'change', 'because', 'i', 'remember', 'him', 'being', 'called', 'bill', 'when', 'i', 'watched', 'the', 'last', 'season', 'of', 'high', 'stakes', 'poker', ',', 'but', 'you', 'seem', 'to', 'have', 'many', 'more', 'years', 'experience', 'in', 'the', 'poker', '/', 'gambling', 'world', 'then', 'i', 'do', '(', 'i', "'", 'm', 'still', 'a', 'bit', 'of', 'a', 'newbie', ')', ',', 'so', 'i', 'wanted', 'to', 'check', 'with', 'you', 'first', '.', 'btw', 'as'], 0, '146842219.12874.12874')
+([['no', 'more', 'than', 'two', 'editors', 'advocated', 'deletion', '.', 'UNK', 'and', 'maybe', 'UNK', '.', 'that', "'", 's', 'not', 'a', 'clear', 'consensus', 'for', 'deletion', '.', 'cheers', ','], ['in', 'the', 'future', 'please', 'don', "'", 't', 'close', 'afds', 'when', 'you', 'don', "'", 't', 'have', 'the', 'courtesy', 'of', 'reading', 'the', 'comments', '.', 'all', 'comments', 'favored', 'deletion', 'except', 'two', '.', 'please', 'don', "'", 't', 'be', 'so', 'careless', 'in', 'the', 'future', '.'], ['that', 'simply', 'isn', "'", 't', 'true', '.', 'if', 'you', 'read', 'the', 'comments', ',', 'you', "'", 'll', 'find', 'it', "'", 's', 'actually', '2', 'keep', ',', '4', 'transwiki', ',', '2', 'delete', '(', 'more', 'or', 'less', ')', '.', 'the', "'", "'", 'comments', "'", "'", 'favour', 'no', 'consensus', '/', 'transwiki', '.', 'the', '"', 'votes', '"', 'favour', 'delete', ',', 'but', 'voting', 'is', 'evil', ',', 'of', 'course', '.', '.', '.'], ['somehow', ',', 'i', 'suspect', 'you', 'may', 'wish', 'to', 'participate', 'in', 'UNK', 'discussion', '.', 'cheers', ',']], ['i', 'assume', 'your', 'deliberate', 'lying', 'has', 'a', 'point', ',', 'but', 'get', 'over', 'it', '.', 'stop', 'bizarrely', 'goin', 'on', 'about', 'UNK', '.', 'that', 'has', 'nothing', 'to', 'do', 'with', 'the', 'afd', '.', 'there', 'was', 'a', 'plain', 'consensus', 'for', 'deleting', 'the', 'article', '.', 'UNK', 'is', 'completely', 'unrelated', '.', 'please', 'don', "'", 't', 'be', 'so', 'deliberately', 'obtuse', 'in', 'the', 'future', '.', 'wasting', 'other', 'people', "'", 's', 'time', 'is', 'simply', 'rude', '.'], 1, '144052463.12169.12169')
+([['if', 'you', 'have', 'problems', 'with', 'my', 'edits', 'to', 'the', 'UNK', 'page', 'please', 'let', 'me', 'know', ',', 'do', 'not', 'just', 'revert', 'the', 'edits', '.', 'although', 'the', 'UNK', 'article', 'is', 'very', 'accurate', 'the', 'introduction', 'is', 'riddled', 'with', 'errors', ',', 'which', 'i', 'corrected', '.', 'i', 'think', 'it', 'is', 'everyone', "'", 's', 'best', 'interests', 'to', 'make', 'wiki', 'pages', 'as', 'accurate', 'as', 'possible', 'and', 'the', 'four', 'wheel', 'drive', 'article', 'is', 'not', 'a', 'UNK', 'example', 'of', 'this', '.', 'i', '.', 'e', '.', 'all', '-', 'wheel'], ['*', 'shrug', '*', 'it', '*', 'is', '*', 'just', 'a', 'marketing', 'term', '.', 'i', 'wish', 'you', 'lot', 'would', 'stop', 'editing', 'it', 'otherwise', '.', 'UNK', '.']], ['although', 'UNK', 'can', 'be', 'considered', 'a', 'form', 'of', 'UNK', 'it', 'is', 'not', 'the', 'same', 'drive', 'train', 'type', 'as', 'part', '-', 'time', 'UNK', '.', 'so', 'i', 'would', 'have', 'to', 'say', 'calling', 'it', 'just', 'a', 'marketing', 'term', 'is', 'a', 'narrow', 'minded', 'and', 'inaccurate', 'statement', '.', 'even', 'though', 'they', 'are', 'similar', 'you', 'can', "'", 't', 'just', 'UNK', 'them', 'into', 'the', 'same', 'group', '.', 'if', ',', 'as', 'you', 'say', ',', 'UNK', 'is', 'just', 'a', 'marketing', 'term', 'then', 'taking', 'a', 'turn', 'in', 'a', 'audi'], 0, '127331347.862.862')
+([['please', 'stop', 'removing', 'and', 'altering', 'other', 'editors', "'", 'comments', '.', 'what', 'appeared', 'to', 'be', 'valid', 'concern', 'is', 'quickly', 'descending', 'into', 'trolling', ',', 'and', 'if', 'you', 'continue', ',', 'you', 'may', 'be', 'blocked', 'from', 'editing', '.', 'stop', 'it', '.', '-'], ['well', 'please', 'stop', 'posting', 'incorrect', 'information', '.', 'if', 'you', 'were', 'right', 'i', "'", 'd', 'agree', 'with', 'you', ',', 'and', 'i', 'am', 'not', 'trolling', '.'], ['UNK', 'is', 'trolling', ',', 'as', 'is', 'removing', 'other', 'people', "'", 's', 'comments', '.', 'look', ',', 'wikipedia', 'is', 'built', 'on', 'consensus', ',', 'and', 'consensus', 'has', 'it', 'that', 'we', 'use', 'american', 'style', 'for', 'american', 'subjects', '.', 'end', 'of', 'story', '.', 'any', 'more', 'complaint', 'about', 'trolling', 'about', 'this', 'topic', 'and', 'i', "'", 'll', 'report', 'you', 'myself', '.']], ['bullshit', '.', 'i', 'am', 'correcting', 'a', 'simple', 'mistake', '.', 'if', 'i', 'was', 'trolling', 'i', "'", 'd', 'be', 'doing', 'damage', 'to', 'the', 'page', ',', 'yet', 'i', 'am', 'not', '.', 'what', 'was', 'written', 'is', 'wrong', ',', 'simple', 'as', 'that', '.', 'all', 'i', 'have', 'done', 'is', 'disagree', 'with', 'what', 'was', 'written', 'and', 'written', 'as', 'such', '.', 'if', 'that', "'", 's', 'trolling', 'then', 'you', 'are', 'guilty', 'as', 'well', '.', 'and', 'stop', 'UNK', 'my', 'page', 'dickhead', '.', 'UNK', '.'], 1, '144645147.1375.1330')
+([['please', 'stop', 'including', 'disreputable', 'sources', 'for', 'this', 'article', '.', 'wikipedia', 'policy', 'is', 'quite', 'clear', 'on', 'this', 'matter', 'blogs', 'and', 'other', 'websites', 'which', 'do', 'not', 'employ', 'editorial', 'oversight', 'of', 'authors', "'", 'work', 'are', 'not', 'permitted', 'as', 'sources', 'here', '.', 'please', 'stop', 'adding', 'blogs', '.'], ['please', 'stop', 'deleting', 'reputable', 'sources', 'from', 'this', 'article', '.', 'you', 'have', 'deleted', 'joe', 'wilson', "'", 's', 'nyt', 'article', 'that', 'is', 'a', 'key', 'factor', 'in', 'this', 'whole', 'controversy', '!', 'among', 'others', '.', 'simply', 'because', 'the', 'article', 'is', 'printed', 'on', 'a', 'different', 'site', 'does', 'not', 'mean', 'it', 'is', 'sourced', 'to', 'a', '"', 'heinous', 'blog', '"', '(', 'which', 'the', 'site', 'is', 'not', 'anyway', ')', '.', 'if', 'you', 'find', 'a', 'better', 'place', 'that', 'the', 'article', 'exists', ',', 'put', 'it', 'there', '.', 'or', 'if'], ['the', 'american', 'prospect', 'article', 'should', 'stay', '-', 'american', 'prospect', 'easily', 'meets', 'UNK', '.', 'the', 'cooperative', 'research', 'project', 'link', 'should', 'be', 'nuked', 'and', 'should', 'stay', 'nuked', '-', 'i', 'see', 'no', 'evidence', 'that', 'it', "'", 's', 'a', 'reliable', 'source', '.', 'factcheck', '.', 'org', 'is', 'reliable', 'enough', 'that', 'the', 'vice', 'president', 'of', 'the', 'united', 'states', '(', 'incorrectly', ')', 'cited', 'it', 'in', 'his', 'debate', 'as', 'an', 'authoritative', 'source', ';', 'they', 'have', 'a', 'good', 'reputation', ',', 'and', 'their', 'very', "'", "'", 'purpose', "'", "'"], ['agreed', 'UNK', 'cooperative', 'research', 'but', 'not', 'the', 'alternet', 'citation', '-', 'they', 'are', 'transcribing', 'an', 'interview', 'on', 'a', 'well', 'known', 'radio', 'show', 'with', 'a', 'well', 'known', 'source', 'with', 'expertise', 'on', 'this', 'topic', 'whose', 'comments', 'are', 'cited', 'in', 'numerous', 'mainstream', 'sources', '.', 'if', 'you', 'have', 'a', 'better', 'source', 'for', 'the', 'transcript', 'that', 'is', 'fine', 'but', 'you', 'cannot', 'just', 'delete', 'it', 'because', 'it', 'is', '"', 'edited', '"', '-', 'unless', 'you', 'have', 'evidence', 'that', 'they', 'are', 'making', 'stuff', 'up', ',', 'we', 'must', 'presume'], ['actually', ',', 'especially', 'with', 'alternet', ',', 'we', "'", "'", 'can', "'", 't', "'", "'", 'assume', 'good', 'faith', ';', 'we', 'need', 'to', 'do', 'exactly', 'the', 'opposite', '.', 'we', 'need', 'to', 'examine', 'sources', 'critically', ',', 'according', 'to', 'the', 'guidelines', 'on', 'UNK', '.', 'were', 'it', 'to', 'be', 'a', 'verbatim', 'copy', ',', 'perhaps', 'we', 'could', 'accept', 'it', 'as', 'a', 'source', '(', "'", "'", 'perhaps', "'", "'", 'being', 'absolutely', 'critical', ')', ',', 'but', 'because', 'it', "'", 's', 'edited', 'and', 'doesn', "'", 't', 'contain', 'information']], ['(', '1', ')', 'please', 'substantiate', 'that', 'the', 'source', 'is', '"', 'notoriously', 'unreliable', '.', '"', '(', '2', ')', 'please', 'indicate', 'where', 'it', 'says', 'we', 'should', 'assume', 'bad', 'faith', 'with', 'sources', 'that', 'are', 'transcripts', 'of', 'interviews', '(', 'i', 'know', 'the', 'quote', 'in', 'the', 'article', 'is', 'directly', 'from', 'the', 'interview', 'as', 'i', 'listened', 'to', 'the', 'interview', 'myself', ';', 'i', 'also', 'have', 'looked', 'at', 'the', 'transcript', 'and', 'do', 'not', 'see', 'anything', 'that', 'is', 'different', 'from', 'what', 'i', 'heard', ';', 'but', 'apparently', 'i', 'should'], 0, '67175218.24895.24895')</code></pre>
+</div>
+</div>
+</section>
+<section id="part-3-define-the-inference-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-define-the-inference-pipeline">Part 3: define the inference pipeline</h2>
+<p>CRAFT inference consists of three steps: (1) using the utterance encoder to produce embeddings of each comment in the context (2) running the comment embeddings through the context encoder to get a final representation of conversational context (3) running the classifier head on the context embedding. To streamline the subsequent code, we encapsulate these three steps in a single PyTorch <code>nn.Module</code>.</p>
+<div id="cell-15" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Predictor(nn.Module):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""This helper module encapsulates the CRAFT pipeline, defining the logic of passing an input through each consecutive sub-module."""</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, encoder, context_encoder, classifier):</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(Predictor, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.encoder <span class="op">=</span> encoder</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.context_encoder <span class="op">=</span> context_encoder</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.classifier <span class="op">=</span> classifier</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, input_batch, dialog_lengths, dialog_lengths_list, utt_lengths, batch_indices, dialog_indices, batch_size, max_length):</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Forward input through encoder model</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        _, utt_encoder_hidden <span class="op">=</span> <span class="va">self</span>.encoder(input_batch, utt_lengths)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Convert utterance encoder final states to batched dialogs for use by context encoder</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        context_encoder_input <span class="op">=</span> makeContextEncoderInput(utt_encoder_hidden, dialog_lengths_list, batch_size, batch_indices, dialog_indices)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Forward pass through context encoder</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        context_encoder_outputs, context_encoder_hidden <span class="op">=</span> <span class="va">self</span>.context_encoder(context_encoder_input, dialog_lengths)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Forward pass through classifier to get prediction logits</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> <span class="va">self</span>.classifier(context_encoder_outputs, dialog_lengths)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Apply sigmoid activation</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> F.sigmoid(logits)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> predictions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="part-4-define-training-loop" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-define-training-loop">Part 4: define training loop</h2>
+<p>Now that we have all the model components defined, we need to define the actual training procedure. This will be a fairly standard neural network training loop, iterating over batches of labeled dialogs and computing cross-entropy loss on the predicted label. We will also define evaluation functions so that we can compute accuracy on the validation set after every epoch, allowing us to keep the model with the best validation performance. Note that for the sake of simpler code, validation accuracy is computed in the “unfair” manner using a single run of CRAFT over the full context preceding the actual personal attack, rather than the more realistic (and complicated) iterated evaluation that is used for final evaluation of the test set (in practice the two metrics track each other fairly well, making this a reasonable simplification for the sake of easy validation).</p>
+<div id="cell-17" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train(input_variable, dialog_lengths, dialog_lengths_list, utt_lengths, batch_indices, dialog_indices, labels, <span class="co"># input/output arguments</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>          encoder, context_encoder, attack_clf,                                                                    <span class="co"># network arguments</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>          encoder_optimizer, context_encoder_optimizer, attack_clf_optimizer,                                      <span class="co"># optimization arguments</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>          batch_size, clip, max_length<span class="op">=</span>MAX_LENGTH):                                                                <span class="co"># misc arguments</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Zero gradients</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    encoder_optimizer.zero_grad()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    context_encoder_optimizer.zero_grad()</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    attack_clf_optimizer.zero_grad()</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set device options</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    input_variable <span class="op">=</span> input_variable.to(device)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    dialog_lengths <span class="op">=</span> dialog_lengths.to(device)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    utt_lengths <span class="op">=</span> utt_lengths.to(device)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> labels.to(device)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Forward pass through utterance encoder</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    _, utt_encoder_hidden <span class="op">=</span> encoder(input_variable, utt_lengths)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert utterance encoder final states to batched dialogs for use by context encoder</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    context_encoder_input <span class="op">=</span> makeContextEncoderInput(utt_encoder_hidden, dialog_lengths_list, batch_size, batch_indices, dialog_indices)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Forward pass through context encoder</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    context_encoder_outputs, _ <span class="op">=</span> context_encoder(context_encoder_input, dialog_lengths)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Forward pass through classifier to get prediction logits</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> attack_clf(context_encoder_outputs, dialog_lengths)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate loss</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> F.binary_cross_entropy_with_logits(logits, labels)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Perform backpropatation</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Clip gradients: gradients are modified in place</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> torch.nn.utils.clip_grad_norm_(encoder.parameters(), clip)</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> torch.nn.utils.clip_grad_norm_(context_encoder.parameters(), clip)</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> torch.nn.utils.clip_grad_norm_(attack_clf.parameters(), clip)</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust model weights</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>    encoder_optimizer.step()</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>    context_encoder_optimizer.step()</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>    attack_clf_optimizer.step()</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> loss.item()</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluateBatch(encoder, context_encoder, predictor, voc, input_batch, dialog_lengths, </span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>                  dialog_lengths_list, utt_lengths, batch_indices, dialog_indices, batch_size, device, max_length<span class="op">=</span>MAX_LENGTH):</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set device options</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    input_batch <span class="op">=</span> input_batch.to(device)</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>    dialog_lengths <span class="op">=</span> dialog_lengths.to(device)</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    utt_lengths <span class="op">=</span> utt_lengths.to(device)</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predict future attack using predictor</span></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> predictor(input_batch, dialog_lengths, dialog_lengths_list, utt_lengths, batch_indices, dialog_indices, batch_size, max_length)</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> (scores <span class="op">&gt;</span> <span class="fl">0.5</span>).<span class="bu">float</span>()</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions, scores</span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate(dataset, encoder, context_encoder, predictor, voc, batch_size, device):</span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create a batch iterator for the given data</span></span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>    batch_iterator <span class="op">=</span> batchIterator(voc, dataset, batch_size, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>    <span class="co"># find out how many iterations we will need to cover the whole dataset</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>    n_iters <span class="op">=</span> <span class="bu">len</span>(dataset) <span class="op">//</span> batch_size <span class="op">+</span> <span class="bu">int</span>(<span class="bu">len</span>(dataset) <span class="op">%</span> batch_size <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>    <span class="co"># containers for full prediction results so we can compute accuracy at the end</span></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>    all_preds <span class="op">=</span> []</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>    all_labels <span class="op">=</span> []</span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> iteration <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n_iters<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>        batch, batch_dialogs, _, true_batch_size <span class="op">=</span> <span class="bu">next</span>(batch_iterator)</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract fields from batch</span></span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>        input_variable, dialog_lengths, utt_lengths, batch_indices, dialog_indices, labels, convo_ids, target_variable, mask, max_target_len <span class="op">=</span> batch</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>        dialog_lengths_list <span class="op">=</span> [<span class="bu">len</span>(x) <span class="cf">for</span> x <span class="kw">in</span> batch_dialogs]</span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>        <span class="co"># run the model</span></span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>        predictions, scores <span class="op">=</span> evaluateBatch(encoder, context_encoder, predictor, voc, input_variable,</span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>                                            dialog_lengths, dialog_lengths_list, utt_lengths, batch_indices, dialog_indices,</span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>                                            true_batch_size, device)</span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>        <span class="co"># aggregate results for computing accuracy at the end</span></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>        all_preds <span class="op">+=</span> [p.item() <span class="cf">for</span> p <span class="kw">in</span> predictions]</span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>        all_labels <span class="op">+=</span> [l.item() <span class="cf">for</span> l <span class="kw">in</span> labels]</span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Iteration: </span><span class="sc">{}</span><span class="st">; Percent complete: </span><span class="sc">{:.1f}</span><span class="st">%"</span>.<span class="bu">format</span>(iteration, iteration <span class="op">/</span> n_iters <span class="op">*</span> <span class="dv">100</span>))</span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># compute and return the accuracy</span></span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (np.asarray(all_preds) <span class="op">==</span> np.asarray(all_labels)).mean()</span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> trainIters(voc, pairs, val_pairs, encoder, context_encoder, attack_clf,</span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>               encoder_optimizer, context_encoder_optimizer, attack_clf_optimizer, embedding,</span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>               n_iteration, batch_size, print_every, validate_every, clip):</span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create a batch iterator for training data</span></span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>    batch_iterator <span class="op">=</span> batchIterator(voc, pairs, batch_size)</span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initializations</span></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Initializing ...'</span>)</span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>    start_iteration <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>    print_loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Training loop</span></span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Training..."</span>)</span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>    <span class="co"># keep track of best validation accuracy - only save when we have a model that beats the current best</span></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>    best_acc <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> iteration <span class="kw">in</span> <span class="bu">range</span>(start_iteration, n_iteration <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>        training_batch, training_dialogs, _, true_batch_size <span class="op">=</span> <span class="bu">next</span>(batch_iterator)</span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract fields from batch</span></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>        input_variable, dialog_lengths, utt_lengths, batch_indices, dialog_indices, labels, _, target_variable, mask, max_target_len <span class="op">=</span> training_batch</span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>        dialog_lengths_list <span class="op">=</span> [<span class="bu">len</span>(x) <span class="cf">for</span> x <span class="kw">in</span> training_dialogs]</span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Run a training iteration with batch</span></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> train(input_variable, dialog_lengths, dialog_lengths_list, utt_lengths, batch_indices, dialog_indices, labels, <span class="co"># input/output arguments</span></span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>                     encoder, context_encoder, attack_clf,                                                                    <span class="co"># network arguments</span></span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>                     encoder_optimizer, context_encoder_optimizer, attack_clf_optimizer,                                      <span class="co"># optimization arguments</span></span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>                     true_batch_size, clip)                                                                                   <span class="co"># misc arguments</span></span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a>        print_loss <span class="op">+=</span> loss</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Print progress</span></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> iteration <span class="op">%</span> print_every <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a>            print_loss_avg <span class="op">=</span> print_loss <span class="op">/</span> print_every</span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Iteration: </span><span class="sc">{}</span><span class="st">; Percent complete: </span><span class="sc">{:.1f}</span><span class="st">%; Average loss: </span><span class="sc">{:.4f}</span><span class="st">"</span>.<span class="bu">format</span>(iteration, iteration <span class="op">/</span> n_iteration <span class="op">*</span> <span class="dv">100</span>, print_loss_avg))</span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>            print_loss <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Evaluate on validation set</span></span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (iteration <span class="op">%</span> validate_every <span class="op">==</span> <span class="dv">0</span>):</span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Validating!"</span>)</span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>            <span class="co"># put the network components into evaluation mode</span></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>            encoder.<span class="bu">eval</span>()</span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>            context_encoder.<span class="bu">eval</span>()</span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>            attack_clf.<span class="bu">eval</span>()</span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a>            predictor <span class="op">=</span> Predictor(encoder, context_encoder, attack_clf)</span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a>            accuracy <span class="op">=</span> validate(val_pairs, encoder, context_encoder, predictor, voc, batch_size, device)</span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Validation set accuracy: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(accuracy <span class="op">*</span> <span class="dv">100</span>))</span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a>            <span class="co"># keep track of our best model so far</span></span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> accuracy <span class="op">&gt;</span> best_acc:</span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="st">"Validation accuracy better than current best; saving model..."</span>)</span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a>                best_acc <span class="op">=</span> accuracy</span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a>                torch.save({</span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'iteration'</span>: iteration,</span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'en'</span>: encoder.state_dict(),</span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'ctx'</span>: context_encoder.state_dict(),</span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'atk_clf'</span>: attack_clf.state_dict(),</span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'en_opt'</span>: encoder_optimizer.state_dict(),</span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'ctx_opt'</span>: context_encoder_optimizer.state_dict(),</span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'atk_clf_opt'</span>: attack_clf_optimizer.state_dict(),</span>
+<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'loss'</span>: loss,</span>
+<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'voc_dict'</span>: voc.__dict__,</span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'embedding'</span>: embedding.state_dict()</span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a>                }, os.path.join(save_dir, <span class="st">"finetuned_model.tar"</span>))</span>
+<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a>            <span class="co"># put the network components back into training mode</span></span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a>            encoder.train()</span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a>            context_encoder.train()</span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>            attack_clf.train()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="part-5-define-the-evaluation-procedure" class="level2">
+<h2 class="anchored" data-anchor-id="part-5-define-the-evaluation-procedure">Part 5: define the evaluation procedure</h2>
+<p>We’re almost ready to run! The last component we need is some code to evaluate performance on the test set after fine-tuning is completed. This evaluation should use the full iterative procedure described in the paper, replicating how a system might be deployed in practice, without knowledge of where the personal attack occurs</p>
+<div id="cell-19" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluateDataset(dataset, encoder, context_encoder, predictor, voc, batch_size, device):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create a batch iterator for the given data</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    batch_iterator <span class="op">=</span> batchIterator(voc, dataset, batch_size, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># find out how many iterations we will need to cover the whole dataset</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    n_iters <span class="op">=</span> <span class="bu">len</span>(dataset) <span class="op">//</span> batch_size <span class="op">+</span> <span class="bu">int</span>(<span class="bu">len</span>(dataset) <span class="op">%</span> batch_size <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    output_df <span class="op">=</span> {</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: [],</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"prediction"</span>: [],</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score"</span>: []</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> iteration <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n_iters<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        batch, batch_dialogs, _, true_batch_size <span class="op">=</span> <span class="bu">next</span>(batch_iterator)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract fields from batch</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        input_variable, dialog_lengths, utt_lengths, batch_indices, dialog_indices, labels, convo_ids, target_variable, mask, max_target_len <span class="op">=</span> batch</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        dialog_lengths_list <span class="op">=</span> [<span class="bu">len</span>(x) <span class="cf">for</span> x <span class="kw">in</span> batch_dialogs]</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># run the model</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        predictions, scores <span class="op">=</span> evaluateBatch(encoder, context_encoder, predictor, voc, input_variable,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                                            dialog_lengths, dialog_lengths_list, utt_lengths, batch_indices, dialog_indices,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>                                            true_batch_size, device)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># format the output as a dataframe (which we can later re-join with the corpus)</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(true_batch_size):</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>            convo_id <span class="op">=</span> convo_ids[i]</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>            pred <span class="op">=</span> predictions[i].item()</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>            score <span class="op">=</span> scores[i].item()</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>            output_df[<span class="st">"id"</span>].append(convo_id)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>            output_df[<span class="st">"prediction"</span>].append(pred)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>            output_df[<span class="st">"score"</span>].append(score)</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Iteration: </span><span class="sc">{}</span><span class="st">; Percent complete: </span><span class="sc">{:.1f}</span><span class="st">%"</span>.<span class="bu">format</span>(iteration, iteration <span class="op">/</span> n_iters <span class="op">*</span> <span class="dv">100</span>))</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(output_df).set_index(<span class="st">"id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="part-6-build-and-fine-tune-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="part-6-build-and-fine-tune-the-model">Part 6: build and fine-tune the model</h2>
+<p>We finally have all the components we need! Now we can instantiate the CRAFT model components, load the pre-trained weights, and run fine-tuning.</p>
+<div id="cell-21" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>MODEL_URL <span class="op">=</span> <span class="st">"http://zissou.infosci.cornell.edu/convokit/models/craft_wikiconv/craft_full.tar"</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix random state for reproducibility</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">2019</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell torch to use GPU. Note that if you are running this notebook in a non-GPU environment, you can change 'cuda' to 'cpu' to get the code to run.</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">'cpu'</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Loading saved parameters..."</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.isfile(<span class="st">"model.tar"</span>):</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\t</span><span class="st">Downloading trained CRAFT..."</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    urlretrieve(MODEL_URL, <span class="st">"model.tar"</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\t</span><span class="st">...Done!"</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># checkpoint = torch.load("model.tar")</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co"># If running in a non-GPU environment, you need to tell PyTorch to convert the parameters to CPU tensor format.</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># To do so, replace the previous line with the following:</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(<span class="st">"model.tar"</span>, map_location<span class="op">=</span>torch.device(<span class="st">'cpu'</span>))</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>encoder_sd <span class="op">=</span> checkpoint[<span class="st">'en'</span>]</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>context_sd <span class="op">=</span> checkpoint[<span class="st">'ctx'</span>]</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>attack_clf_sd <span class="op">=</span> checkpoint[<span class="st">'atk_clf'</span>]</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>embedding_sd <span class="op">=</span> checkpoint[<span class="st">'embedding'</span>]</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>voc.__dict__ <span class="op">=</span> checkpoint[<span class="st">'voc_dict'</span>]</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Building encoders, decoder, and classifier...'</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize word embeddings</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> nn.Embedding(voc.num_words, hidden_size)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>embedding.load_state_dict(embedding_sd)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize utterance and context encoders</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> EncoderRNN(hidden_size, embedding, encoder_n_layers, dropout)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>context_encoder <span class="op">=</span> ContextEncoderRNN(hidden_size, context_encoder_n_layers, dropout)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>encoder.load_state_dict(encoder_sd)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>context_encoder.load_state_dict(context_sd)</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize classifier</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>attack_clf <span class="op">=</span> SingleTargetClf(hidden_size, dropout)</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>attack_clf.load_state_dict(attack_clf_sd)</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Use appropriate device</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> encoder.to(device)</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>context_encoder <span class="op">=</span> context_encoder.to(device)</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>attack_clf <span class="op">=</span> attack_clf.to(device)</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Models built and ready to go!'</span>)</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Set dropout layers to eval mode</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>encoder.<span class="bu">eval</span>()</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>context_encoder.<span class="bu">eval</span>()</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>attack_clf.<span class="bu">eval</span>()</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the pipeline</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>predictor <span class="op">=</span> Predictor(encoder, context_encoder, attack_clf)</span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the pipeline!</span></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>forecasts_df <span class="op">=</span> evaluateDataset(test_pairs, encoder, context_encoder, predictor, voc, batch_size, device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loading saved parameters...
+Building encoders, decoder, and classifier...
+Models built and ready to go!
+Iteration: 1; Percent complete: 1.4%
+Iteration: 2; Percent complete: 2.9%
+Iteration: 3; Percent complete: 4.3%
+Iteration: 4; Percent complete: 5.8%
+Iteration: 5; Percent complete: 7.2%
+Iteration: 6; Percent complete: 8.7%
+Iteration: 7; Percent complete: 10.1%
+Iteration: 8; Percent complete: 11.6%
+Iteration: 9; Percent complete: 13.0%
+Iteration: 10; Percent complete: 14.5%
+Iteration: 11; Percent complete: 15.9%
+Iteration: 12; Percent complete: 17.4%
+Iteration: 13; Percent complete: 18.8%
+Iteration: 14; Percent complete: 20.3%
+Iteration: 15; Percent complete: 21.7%
+Iteration: 16; Percent complete: 23.2%
+Iteration: 17; Percent complete: 24.6%
+Iteration: 18; Percent complete: 26.1%
+Iteration: 19; Percent complete: 27.5%
+Iteration: 20; Percent complete: 29.0%
+Iteration: 21; Percent complete: 30.4%
+Iteration: 22; Percent complete: 31.9%
+Iteration: 23; Percent complete: 33.3%
+Iteration: 24; Percent complete: 34.8%
+Iteration: 25; Percent complete: 36.2%
+Iteration: 26; Percent complete: 37.7%
+Iteration: 27; Percent complete: 39.1%
+Iteration: 28; Percent complete: 40.6%
+Iteration: 29; Percent complete: 42.0%
+Iteration: 30; Percent complete: 43.5%
+Iteration: 31; Percent complete: 44.9%
+Iteration: 32; Percent complete: 46.4%
+Iteration: 33; Percent complete: 47.8%
+Iteration: 34; Percent complete: 49.3%
+Iteration: 35; Percent complete: 50.7%
+Iteration: 36; Percent complete: 52.2%
+Iteration: 37; Percent complete: 53.6%
+Iteration: 38; Percent complete: 55.1%
+Iteration: 39; Percent complete: 56.5%
+Iteration: 40; Percent complete: 58.0%
+Iteration: 41; Percent complete: 59.4%
+Iteration: 42; Percent complete: 60.9%
+Iteration: 43; Percent complete: 62.3%
+Iteration: 44; Percent complete: 63.8%
+Iteration: 45; Percent complete: 65.2%
+Iteration: 46; Percent complete: 66.7%
+Iteration: 47; Percent complete: 68.1%
+Iteration: 48; Percent complete: 69.6%
+Iteration: 49; Percent complete: 71.0%
+Iteration: 50; Percent complete: 72.5%
+Iteration: 51; Percent complete: 73.9%
+Iteration: 52; Percent complete: 75.4%
+Iteration: 53; Percent complete: 76.8%
+Iteration: 54; Percent complete: 78.3%
+Iteration: 55; Percent complete: 79.7%
+Iteration: 56; Percent complete: 81.2%
+Iteration: 57; Percent complete: 82.6%
+Iteration: 58; Percent complete: 84.1%
+Iteration: 59; Percent complete: 85.5%
+Iteration: 60; Percent complete: 87.0%
+Iteration: 61; Percent complete: 88.4%
+Iteration: 62; Percent complete: 89.9%
+Iteration: 63; Percent complete: 91.3%
+Iteration: 64; Percent complete: 92.8%
+Iteration: 65; Percent complete: 94.2%
+Iteration: 66; Percent complete: 95.7%
+Iteration: 67; Percent complete: 97.1%
+Iteration: 68; Percent complete: 98.6%
+Iteration: 69; Percent complete: 100.0%</code></pre>
+</div>
+</div>
+<div id="cell-22" class="cell" data-outputid="99df8b29-f6cb-4fab-80db-611e73ab3869" data-scrolled="true" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix random state (affect native Python code only, does not affect PyTorch and hence does not guarantee reproducibility)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">2019</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell torch to use GPU. Note that if you are running this notebook in a non-GPU environment, you can change 'cuda' to 'cpu' to get the code to run.</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">'cpu'</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Loading saved parameters..."</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.isfile(os.path.join(save_dir, <span class="st">"model.tar"</span>)):</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Pretrained model not found in </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(os.path.join(save_dir, <span class="st">"model.tar"</span>, <span class="st">"Have you tried running train_generative_model.py first?"</span>)))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(os.path.join(save_dir, <span class="st">"model.tar"</span>), map_location<span class="op">=</span>torch.device(<span class="st">'cpu'</span>))</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># If running in a non-GPU environment, you need to tell PyTorch to convert the parameters to CPU tensor format.</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co"># To do so, replace the previous line with the following:</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># checkpoint = torch.load("model.tar", map_location=torch.device('cpu'))</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>encoder_sd <span class="op">=</span> checkpoint[<span class="st">'en'</span>]</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>context_sd <span class="op">=</span> checkpoint[<span class="st">'ctx'</span>]</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>embedding_sd <span class="op">=</span> checkpoint[<span class="st">'embedding'</span>]</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>voc.__dict__ <span class="op">=</span> checkpoint[<span class="st">'voc_dict'</span>]</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Building encoders, decoder, and classifier...'</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize word embeddings</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> nn.Embedding(voc.num_words, hidden_size)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>embedding.load_state_dict(embedding_sd)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize utterance and context encoders</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> EncoderRNN(hidden_size, embedding, encoder_n_layers, dropout)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>context_encoder <span class="op">=</span> ContextEncoderRNN(hidden_size, context_encoder_n_layers, dropout)</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>encoder.load_state_dict(encoder_sd)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>context_encoder.load_state_dict(context_sd)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize classifier</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>attack_clf <span class="op">=</span> SingleTargetClf(hidden_size, dropout)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Use appropriate device</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> encoder.to(device)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>context_encoder <span class="op">=</span> context_encoder.to(device)</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>attack_clf <span class="op">=</span> attack_clf.to(device)</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Models built and ready to go!'</span>)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the number of training iterations we will need in order to achieve the number of epochs specified in the settings at the start of the notebook</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>n_iter_per_epoch <span class="op">=</span> <span class="bu">len</span>(train_pairs) <span class="op">//</span> batch_size <span class="op">+</span> <span class="bu">int</span>(<span class="bu">len</span>(train_pairs) <span class="op">%</span> batch_size <span class="op">==</span> <span class="dv">1</span>)</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>n_iteration <span class="op">=</span> n_iter_per_epoch <span class="op">*</span> finetune_epochs</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Put dropout layers in train mode</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>encoder.train()</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>context_encoder.train()</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>attack_clf.train()</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize optimizers</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Building optimizers...'</span>)</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>encoder_optimizer <span class="op">=</span> optim.Adam(encoder.parameters(), lr<span class="op">=</span>labeled_learning_rate)</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>context_encoder_optimizer <span class="op">=</span> optim.Adam(context_encoder.parameters(), lr<span class="op">=</span>labeled_learning_rate)</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>attack_clf_optimizer <span class="op">=</span> optim.Adam(attack_clf.parameters(), lr<span class="op">=</span>labeled_learning_rate)</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Run training iterations, validating after every epoch</span></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Starting Training!"</span>)</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Will train for </span><span class="sc">{}</span><span class="st"> iterations"</span>.<span class="bu">format</span>(n_iteration))</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>trainIters(voc, train_pairs, val_pairs, encoder, context_encoder, attack_clf,</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>           encoder_optimizer, context_encoder_optimizer, attack_clf_optimizer, embedding,</span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>           n_iteration, batch_size, print_every, n_iter_per_epoch, clip)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loading saved parameters...
+Building encoders, decoder, and classifier...
+Models built and ready to go!
+Building optimizers...
+Starting Training!
+Will train for 1170 iterations
+Initializing ...
+Training...
+Iteration: 10; Percent complete: 0.9%; Average loss: 0.6849
+Iteration: 20; Percent complete: 1.7%; Average loss: 0.6828
+Iteration: 30; Percent complete: 2.6%; Average loss: 0.6761
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 60.48%
+Validation accuracy better than current best; saving model...
+Iteration: 40; Percent complete: 3.4%; Average loss: 0.6651
+Iteration: 50; Percent complete: 4.3%; Average loss: 0.6569
+Iteration: 60; Percent complete: 5.1%; Average loss: 0.6576
+Iteration: 70; Percent complete: 6.0%; Average loss: 0.6466
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.57%
+Validation accuracy better than current best; saving model...
+Iteration: 80; Percent complete: 6.8%; Average loss: 0.6368
+Iteration: 90; Percent complete: 7.7%; Average loss: 0.6245
+Iteration: 100; Percent complete: 8.5%; Average loss: 0.6144
+Iteration: 110; Percent complete: 9.4%; Average loss: 0.6023
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.45%
+Iteration: 120; Percent complete: 10.3%; Average loss: 0.5944
+Iteration: 130; Percent complete: 11.1%; Average loss: 0.5802
+Iteration: 140; Percent complete: 12.0%; Average loss: 0.5593
+Iteration: 150; Percent complete: 12.8%; Average loss: 0.5430
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.21%
+Iteration: 160; Percent complete: 13.7%; Average loss: 0.5335
+Iteration: 170; Percent complete: 14.5%; Average loss: 0.5186
+Iteration: 180; Percent complete: 15.4%; Average loss: 0.4965
+Iteration: 190; Percent complete: 16.2%; Average loss: 0.4882
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.93%
+Validation accuracy better than current best; saving model...
+Iteration: 200; Percent complete: 17.1%; Average loss: 0.4699
+Iteration: 210; Percent complete: 17.9%; Average loss: 0.4472
+Iteration: 220; Percent complete: 18.8%; Average loss: 0.4379
+Iteration: 230; Percent complete: 19.7%; Average loss: 0.4388
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 64.52%
+Validation accuracy better than current best; saving model...
+Iteration: 240; Percent complete: 20.5%; Average loss: 0.4170
+Iteration: 250; Percent complete: 21.4%; Average loss: 0.3898
+Iteration: 260; Percent complete: 22.2%; Average loss: 0.3951
+Iteration: 270; Percent complete: 23.1%; Average loss: 0.3852
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 64.29%
+Iteration: 280; Percent complete: 23.9%; Average loss: 0.3765
+Iteration: 290; Percent complete: 24.8%; Average loss: 0.3669
+Iteration: 300; Percent complete: 25.6%; Average loss: 0.3287
+Iteration: 310; Percent complete: 26.5%; Average loss: 0.3354
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.21%
+Iteration: 320; Percent complete: 27.4%; Average loss: 0.3664
+Iteration: 330; Percent complete: 28.2%; Average loss: 0.3016
+Iteration: 340; Percent complete: 29.1%; Average loss: 0.3239
+Iteration: 350; Percent complete: 29.9%; Average loss: 0.2866
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 64.05%
+Iteration: 360; Percent complete: 30.8%; Average loss: 0.3080
+Iteration: 370; Percent complete: 31.6%; Average loss: 0.2643
+Iteration: 380; Percent complete: 32.5%; Average loss: 0.2774
+Iteration: 390; Percent complete: 33.3%; Average loss: 0.2628
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.69%
+Iteration: 400; Percent complete: 34.2%; Average loss: 0.2702
+Iteration: 410; Percent complete: 35.0%; Average loss: 0.2531
+Iteration: 420; Percent complete: 35.9%; Average loss: 0.2424
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.10%
+Iteration: 430; Percent complete: 36.8%; Average loss: 0.2004
+Iteration: 440; Percent complete: 37.6%; Average loss: 0.2360
+Iteration: 450; Percent complete: 38.5%; Average loss: 0.2043
+Iteration: 460; Percent complete: 39.3%; Average loss: 0.2179
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.21%
+Iteration: 470; Percent complete: 40.2%; Average loss: 0.1937
+Iteration: 480; Percent complete: 41.0%; Average loss: 0.1788
+Iteration: 490; Percent complete: 41.9%; Average loss: 0.1696
+Iteration: 500; Percent complete: 42.7%; Average loss: 0.1738
+Validating!
+Iteration: 1; Percent complete: 7.1%
+Iteration: 2; Percent complete: 14.3%
+Iteration: 3; Percent complete: 21.4%
+Iteration: 4; Percent complete: 28.6%
+Iteration: 5; Percent complete: 35.7%
+Iteration: 6; Percent complete: 42.9%
+Iteration: 7; Percent complete: 50.0%
+Iteration: 8; Percent complete: 57.1%
+Iteration: 9; Percent complete: 64.3%
+Iteration: 10; Percent complete: 71.4%
+Iteration: 11; Percent complete: 78.6%
+Iteration: 12; Percent complete: 85.7%
+Iteration: 13; Percent complete: 92.9%
+Iteration: 14; Percent complete: 100.0%
+Validation set accuracy: 63.21%
+Iteration: 510; Percent complete: 43.6%; Average loss: 0.1740
+Iteration: 520; Percent complete: 44.4%; Average loss: 0.1726
+Iteration: 530; Percent complete: 45.3%; Average loss: 0.1478</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[34]</span><span class="ansi-green-fg">, line 54</span>
+<span class="ansi-green-fg">     52</span> <span style="color:rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Starting Training!</span><span class="ansi-yellow-fg">"</span>)
+<span class="ansi-green-fg">     53</span> <span style="color:rgb(0,135,0)">print</span>(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">Will train for </span><span style="font-weight:bold;color:rgb(175,95,135)">{}</span><span class="ansi-yellow-fg"> iterations</span><span class="ansi-yellow-fg">"</span>.format(n_iteration))
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">54</span> <span class="ansi-yellow-bg">trainIters</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">voc</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">train_pairs</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">val_pairs</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">encoder</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">context_encoder</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">attack_clf</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">     55</span> <span class="ansi-yellow-bg">           </span><span class="ansi-yellow-bg">encoder_optimizer</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">context_encoder_optimizer</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">attack_clf_optimizer</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">embedding</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">     56</span> <span class="ansi-yellow-bg">           </span><span class="ansi-yellow-bg">n_iteration</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">batch_size</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">print_every</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">n_iter_per_epoch</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">clip</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[14]</span><span class="ansi-green-fg">, line 106</span>, in <span class="ansi-cyan-fg">trainIters</span><span class="ansi-blue-fg">(voc, pairs, val_pairs, encoder, context_encoder, attack_clf, encoder_optimizer, context_encoder_optimizer, attack_clf_optimizer, embedding, n_iteration, batch_size, print_every, validate_every, clip)</span>
+<span class="ansi-green-fg">    103</span> dialog_lengths_list = [<span style="color:rgb(0,135,0)">len</span>(x) <span style="font-weight:bold;color:rgb(0,135,0)">for</span> x <span style="font-weight:bold;color:rgb(175,0,255)">in</span> training_dialogs]
+<span class="ansi-green-fg">    105</span> <span style="font-style:italic;color:rgb(95,135,135)"># Run a training iteration with batch</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">106</span> loss = <span class="ansi-yellow-bg">train</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">input_variable</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dialog_lengths</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dialog_lengths_list</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">utt_lengths</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">batch_indices</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dialog_indices</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">labels</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="font-style:italic;color:rgb(95,135,135)" class="ansi-yellow-bg"># input/output arguments</span>
+<span class="ansi-green-fg">    107</span> <span class="ansi-yellow-bg">             </span><span class="ansi-yellow-bg">encoder</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">context_encoder</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">attack_clf</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg">                                                                    </span><span style="font-style:italic;color:rgb(95,135,135)" class="ansi-yellow-bg"># network arguments</span>
+<span class="ansi-green-fg">    108</span> <span class="ansi-yellow-bg">             </span><span class="ansi-yellow-bg">encoder_optimizer</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">context_encoder_optimizer</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">attack_clf_optimizer</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg">                                      </span><span style="font-style:italic;color:rgb(95,135,135)" class="ansi-yellow-bg"># optimization arguments</span>
+<span class="ansi-green-fg">    109</span> <span class="ansi-yellow-bg">             </span><span class="ansi-yellow-bg">true_batch_size</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">clip</span><span class="ansi-yellow-bg">)</span>                                                                                   <span style="font-style:italic;color:rgb(95,135,135)"># misc arguments</span>
+<span class="ansi-green-fg">    110</span> print_loss += loss
+<span class="ansi-green-fg">    112</span> <span style="font-style:italic;color:rgb(95,135,135)"># Print progress</span>
+
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[14]</span><span class="ansi-green-fg">, line 33</span>, in <span class="ansi-cyan-fg">train</span><span class="ansi-blue-fg">(input_variable, dialog_lengths, dialog_lengths_list, utt_lengths, batch_indices, dialog_indices, labels, encoder, context_encoder, attack_clf, encoder_optimizer, context_encoder_optimizer, attack_clf_optimizer, batch_size, clip, max_length)</span>
+<span class="ansi-green-fg">     30</span> loss = F.binary_cross_entropy_with_logits(logits, labels)
+<span class="ansi-green-fg">     32</span> <span style="font-style:italic;color:rgb(95,135,135)"># Perform backpropatation</span>
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">33</span> <span class="ansi-yellow-bg">loss</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">backward</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     35</span> <span style="font-style:italic;color:rgb(95,135,135)"># Clip gradients: gradients are modified in place</span>
+<span class="ansi-green-fg">     36</span> _ = torch.nn.utils.clip_grad_norm_(encoder.parameters(), clip)
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/stuff/gitclones/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/torch/_tensor.py:626</span>, in <span class="ansi-cyan-fg">Tensor.backward</span><span class="ansi-blue-fg">(self, gradient, retain_graph, create_graph, inputs)</span>
+<span class="ansi-green-fg">    616</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> has_torch_function_unary(<span style="color:rgb(0,135,0)">self</span>):
+<span class="ansi-green-fg">    617</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> handle_torch_function(
+<span class="ansi-green-fg">    618</span>         Tensor.backward,
+<span class="ansi-green-fg">    619</span>         (<span style="color:rgb(0,135,0)">self</span>,),
+<span class="ansi-green-fg">   (...)</span><span class="ansi-green-fg">    624</span>         inputs=inputs,
+<span class="ansi-green-fg">    625</span>     )
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">626</span> <span class="ansi-yellow-bg">torch</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">autograd</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">backward</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    627</span> <span class="ansi-yellow-bg">    </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">gradient</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">retain_graph</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">create_graph</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">inputs</span><span class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">inputs</span>
+<span class="ansi-green-fg">    628</span> <span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/stuff/gitclones/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/torch/autograd/__init__.py:347</span>, in <span class="ansi-cyan-fg">backward</span><span class="ansi-blue-fg">(tensors, grad_tensors, retain_graph, create_graph, grad_variables, inputs)</span>
+<span class="ansi-green-fg">    342</span>     retain_graph = create_graph
+<span class="ansi-green-fg">    344</span> <span style="font-style:italic;color:rgb(95,135,135)"># The reason we repeat the same comment below is that</span>
+<span class="ansi-green-fg">    345</span> <span style="font-style:italic;color:rgb(95,135,135)"># some Python versions print out the first line of a multi-line function</span>
+<span class="ansi-green-fg">    346</span> <span style="font-style:italic;color:rgb(95,135,135)"># calls in the traceback and some print out the last line</span>
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">347</span> <span class="ansi-yellow-bg">_engine_run_backward</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">    348</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tensors</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    349</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">grad_tensors_</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    350</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">retain_graph</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    351</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">create_graph</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    352</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inputs</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    353</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">allow_unreachable</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">True</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    354</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">accumulate_grad</span><span class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">True</span><span class="ansi-yellow-bg">,</span>
+<span class="ansi-green-fg">    355</span> <span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/stuff/gitclones/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/torch/autograd/graph.py:823</span>, in <span class="ansi-cyan-fg">_engine_run_backward</span><span class="ansi-blue-fg">(t_outputs, *args, **kwargs)</span>
+<span class="ansi-green-fg">    821</span>     unregister_hooks = _register_logging_hooks_on_whole_graph(t_outputs)
+<span class="ansi-green-fg">    822</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">823</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">Variable</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_execution_engine</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">run_backward</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">  </span><span style="font-style:italic;color:rgb(95,135,135)" class="ansi-yellow-bg"># Calls into the C++ engine to run the backward pass</span>
+<span class="ansi-green-fg">    824</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">t_outputs</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">*</span><span class="ansi-yellow-bg">kwargs</span>
+<span class="ansi-green-fg">    825</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>  <span style="font-style:italic;color:rgb(95,135,135)"># Calls into the C++ engine to run the backward pass</span>
+<span class="ansi-green-fg">    826</span> <span style="font-weight:bold;color:rgb(0,135,0)">finally</span>:
+<span class="ansi-green-fg">    827</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> attach_logging_hooks:
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
+</div>
+</div>
+</div>
+</section>
+<section id="part-7-run-test-set-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="part-7-run-test-set-evaluation">Part 7: run test set evaluation</h2>
+<p>Now that we have successfully fine-tuned the model, we run it on the test set so that we can evaluate performance.</p>
+<div id="cell-24" class="cell" data-outputid="154d7581-37a7-48e7-c203-9d3a97c472ed" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix random state for reproducibility</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">2019</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell torch to use GPU. Note that if you are running this notebook in a non-GPU environment, you can change 'cuda' to 'cpu' to get the code to run.</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">'cpu'</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Loading saved parameters..."</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(os.path.join(save_dir, <span class="st">"finetuned_model.tar"</span>))</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># If running in a non-GPU environment, you need to tell PyTorch to convert the parameters to CPU tensor format.</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># To do so, replace the previous line with the following:</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(<span class="st">"model.tar"</span>, map_location<span class="op">=</span>torch.device(<span class="st">'cpu'</span>))</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>encoder_sd <span class="op">=</span> checkpoint[<span class="st">'en'</span>]</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>context_sd <span class="op">=</span> checkpoint[<span class="st">'ctx'</span>]</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>attack_clf_sd <span class="op">=</span> checkpoint[<span class="st">'atk_clf'</span>]</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>embedding_sd <span class="op">=</span> checkpoint[<span class="st">'embedding'</span>]</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>voc.__dict__ <span class="op">=</span> checkpoint[<span class="st">'voc_dict'</span>]</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Building encoders, decoder, and classifier...'</span>)</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize word embeddings</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> nn.Embedding(voc.num_words, hidden_size)</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>embedding.load_state_dict(embedding_sd)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize utterance and context encoders</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> EncoderRNN(hidden_size, embedding, encoder_n_layers, dropout)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>context_encoder <span class="op">=</span> ContextEncoderRNN(hidden_size, context_encoder_n_layers, dropout)</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>encoder.load_state_dict(encoder_sd)</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>context_encoder.load_state_dict(context_sd)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize classifier</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>attack_clf <span class="op">=</span> SingleTargetClf(hidden_size, dropout)</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>attack_clf.load_state_dict(attack_clf_sd)</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Use appropriate device</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> encoder.to(device)</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>context_encoder <span class="op">=</span> context_encoder.to(device)</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>attack_clf <span class="op">=</span> attack_clf.to(device)</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Models built and ready to go!'</span>)</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Set dropout layers to eval mode</span></span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>encoder.<span class="bu">eval</span>()</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>context_encoder.<span class="bu">eval</span>()</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>attack_clf.<span class="bu">eval</span>()</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the pipeline</span></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>predictor <span class="op">=</span> Predictor(encoder, context_encoder, attack_clf)</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the pipeline!</span></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>forecasts_df <span class="op">=</span> evaluateDataset(test_pairs, encoder, context_encoder, predictor, voc, batch_size, device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loading saved parameters...
+Building encoders, decoder, and classifier...
+Models built and ready to go!
+Iteration: 1; Percent complete: 1.4%
+Iteration: 2; Percent complete: 2.9%
+Iteration: 3; Percent complete: 4.3%
+Iteration: 4; Percent complete: 5.8%
+Iteration: 5; Percent complete: 7.2%
+Iteration: 6; Percent complete: 8.7%
+Iteration: 7; Percent complete: 10.1%
+Iteration: 8; Percent complete: 11.6%
+Iteration: 9; Percent complete: 13.0%
+Iteration: 10; Percent complete: 14.5%
+Iteration: 11; Percent complete: 15.9%
+Iteration: 12; Percent complete: 17.4%
+Iteration: 13; Percent complete: 18.8%
+Iteration: 14; Percent complete: 20.3%
+Iteration: 15; Percent complete: 21.7%
+Iteration: 16; Percent complete: 23.2%
+Iteration: 17; Percent complete: 24.6%
+Iteration: 18; Percent complete: 26.1%
+Iteration: 19; Percent complete: 27.5%
+Iteration: 20; Percent complete: 29.0%
+Iteration: 21; Percent complete: 30.4%
+Iteration: 22; Percent complete: 31.9%
+Iteration: 23; Percent complete: 33.3%
+Iteration: 24; Percent complete: 34.8%
+Iteration: 25; Percent complete: 36.2%
+Iteration: 26; Percent complete: 37.7%
+Iteration: 27; Percent complete: 39.1%
+Iteration: 28; Percent complete: 40.6%
+Iteration: 29; Percent complete: 42.0%
+Iteration: 30; Percent complete: 43.5%
+Iteration: 31; Percent complete: 44.9%
+Iteration: 32; Percent complete: 46.4%
+Iteration: 33; Percent complete: 47.8%
+Iteration: 34; Percent complete: 49.3%
+Iteration: 35; Percent complete: 50.7%
+Iteration: 36; Percent complete: 52.2%
+Iteration: 37; Percent complete: 53.6%
+Iteration: 38; Percent complete: 55.1%
+Iteration: 39; Percent complete: 56.5%
+Iteration: 40; Percent complete: 58.0%
+Iteration: 41; Percent complete: 59.4%
+Iteration: 42; Percent complete: 60.9%
+Iteration: 43; Percent complete: 62.3%
+Iteration: 44; Percent complete: 63.8%
+Iteration: 45; Percent complete: 65.2%
+Iteration: 46; Percent complete: 66.7%
+Iteration: 47; Percent complete: 68.1%
+Iteration: 48; Percent complete: 69.6%
+Iteration: 49; Percent complete: 71.0%
+Iteration: 50; Percent complete: 72.5%
+Iteration: 51; Percent complete: 73.9%
+Iteration: 52; Percent complete: 75.4%
+Iteration: 53; Percent complete: 76.8%
+Iteration: 54; Percent complete: 78.3%
+Iteration: 55; Percent complete: 79.7%
+Iteration: 56; Percent complete: 81.2%
+Iteration: 57; Percent complete: 82.6%
+Iteration: 58; Percent complete: 84.1%
+Iteration: 59; Percent complete: 85.5%
+Iteration: 60; Percent complete: 87.0%
+Iteration: 61; Percent complete: 88.4%
+Iteration: 62; Percent complete: 89.9%
+Iteration: 63; Percent complete: 91.3%
+Iteration: 64; Percent complete: 92.8%
+Iteration: 65; Percent complete: 94.2%
+Iteration: 66; Percent complete: 95.7%
+Iteration: 67; Percent complete: 97.1%
+Iteration: 68; Percent complete: 98.6%
+Iteration: 69; Percent complete: 100.0%</code></pre>
+</div>
+</div>
+<div id="cell-25" class="cell" data-outputid="8b208593-4f96-444f-ad6c-cb84c0ffd88b" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect some of the outputs as a sanity-check</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>forecasts_df.head(<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">prediction</th>
+<th data-quarto-table-cell-role="th">score</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">191149920.17102.17102</td>
+<td>1.0</td>
+<td>0.694258</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">192892110.19259.19259</td>
+<td>1.0</td>
+<td>0.831659</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">190192199.17060.17060</td>
+<td>0.0</td>
+<td>0.426086</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">192890095.19227.19227</td>
+<td>1.0</td>
+<td>0.730474</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">190192005.17004.17004</td>
+<td>0.0</td>
+<td>0.271797</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">192885632.19156.19156</td>
+<td>1.0</td>
+<td>0.793584</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">190191827.16918.16918</td>
+<td>0.0</td>
+<td>0.139923</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">192882222.19129.19129</td>
+<td>1.0</td>
+<td>0.661455</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">190191097.16843.16843</td>
+<td>0.0</td>
+<td>0.335372</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">192642615.19074.19074</td>
+<td>0.0</td>
+<td>0.412739</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">190190570.16705.16705</td>
+<td>0.0</td>
+<td>0.343413</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">192640416.19036.19036</td>
+<td>0.0</td>
+<td>0.475780</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">190189346.16645.16645</td>
+<td>1.0</td>
+<td>0.565198</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">203898053.13222.13222</td>
+<td>1.0</td>
+<td>0.967847</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15838573.3653.3653</td>
+<td>0.0</td>
+<td>0.432382</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">192524064.18894.18894</td>
+<td>0.0</td>
+<td>0.395026</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">188454964.16448.16448</td>
+<td>0.0</td>
+<td>0.229690</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">203897541.12640.12640</td>
+<td>1.0</td>
+<td>0.960140</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">390063750.29403.29403</td>
+<td>1.0</td>
+<td>0.727606</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">434000907.9886.9886</td>
+<td>1.0</td>
+<td>0.659510</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="part-8-merge-predictions-back-into-corpus-and-evaluate" class="level2">
+<h2 class="anchored" data-anchor-id="part-8-merge-predictions-back-into-corpus-and-evaluate">Part 8: merge predictions back into corpus and evaluate</h2>
+<p>Now that the hard part is done, all that is left to do is to evaluate the predictions. Since the predictions are in no particular order, we will first merge each prediction back into the source corpus, and then evaluate each conversation according to the order of utterances within that conversation.</p>
+<div id="cell-27" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We will add a metadata entry to each test-set utterance signifying whether, at the time</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># that CRAFT saw the context *up to and including* that utterance, CRAFT forecasted the</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># conversation would derail. Note that in datasets where the actual toxic comment is</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># included (such as wikiconv), we explicitly do not show that comment to CRAFT (since</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># that would be cheating!), so that comment will not have an associated forecast.</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># only consider test set conversations (we did not make predictions for the other ones)</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo.meta[<span class="st">'split'</span>] <span class="op">==</span> <span class="st">"test"</span>:</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances():</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> utt.<span class="bu">id</span> <span class="kw">in</span> forecasts_df.index:</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                utt.meta[<span class="st">'forecast_score'</span>] <span class="op">=</span> forecasts_df.loc[utt.<span class="bu">id</span>].score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-28" class="cell" data-outputid="d478288b-55ae-4bc9-cb8c-f294a80f3174" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Finally, we can use the forecast-annotated corpus to compute the forecast accuracy.</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Though we have an individual forecast per utterance, ground truth is at the conversation level:</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># either a conversation derails or it does not. Thus, forecast accuracy is computed as follows:</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   - True positives are cases that actually derail, for which the model made at least one positive forecast ANYTIME prior to derailment</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   - False positives are cases that don't derail but for which the model made at least one positive forecast</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   - False negatives are cases that derail but for which the model made no positive forecasts prior to derailment</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   - True negatives are cases that don't derail, for which the model made no positive forecasts</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that in the included datasets (wikiconv and cmv), by construction, all forecasts we obtained are forecasts made prior to derailment</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co"># (since these datasets end right before or right at the toxic comment). This simplifies  the computation of forecast metrics as we now </span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># do not need to explicitly consider when a forecast was made. But if you are using a custom dataset where conversations continue past</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># the toxic comment, you will need to take that into account when evaluating.</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>conversational_forecasts_df <span class="op">=</span> {</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"convo_id"</span>: [],</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"label"</span>: [],</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"score"</span>: [],</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"prediction"</span>: []</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo.meta[<span class="st">'split'</span>] <span class="op">==</span> <span class="st">"test"</span>:</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>        conversational_forecasts_df[<span class="st">'convo_id'</span>].append(convo.<span class="bu">id</span>)</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>        conversational_forecasts_df[<span class="st">'label'</span>].append(<span class="bu">int</span>(convo.meta[label_metadata]))</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>        forecast_scores <span class="op">=</span> [utt.meta[<span class="st">'forecast_score'</span>] <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances() <span class="cf">if</span> <span class="st">'forecast_score'</span> <span class="kw">in</span> utt.meta]</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>        conversational_forecasts_df[<span class="st">'score'</span>] <span class="op">=</span> np.<span class="bu">max</span>(forecast_scores)</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>        conversational_forecasts_df[<span class="st">'prediction'</span>].append(<span class="bu">int</span>(np.<span class="bu">max</span>(forecast_scores) <span class="op">&gt;</span> forecast_thresh))</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>conversational_forecasts_df <span class="op">=</span> pd.DataFrame(conversational_forecasts_df).set_index(<span class="st">"convo_id"</span>)</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((conversational_forecasts_df.label <span class="op">==</span> conversational_forecasts_df.prediction).mean())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.6642857142857143</code></pre>
+</div>
+</div>
+<div id="cell-29" class="cell" data-outputid="d1ae7b87-6973-41a1-e7aa-806d57990c01" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in addition to accuracy, we can also consider applying other metrics at the conversation level, such as precision/recall</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_pr_stats(preds, labels):</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    tp <span class="op">=</span> ((labels<span class="op">==</span><span class="dv">1</span>)<span class="op">&amp;</span>(preds<span class="op">==</span><span class="dv">1</span>)).<span class="bu">sum</span>()</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> ((labels<span class="op">==</span><span class="dv">0</span>)<span class="op">&amp;</span>(preds<span class="op">==</span><span class="dv">1</span>)).<span class="bu">sum</span>()</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    tn <span class="op">=</span> ((labels<span class="op">==</span><span class="dv">0</span>)<span class="op">&amp;</span>(preds<span class="op">==</span><span class="dv">0</span>)).<span class="bu">sum</span>()</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> ((labels<span class="op">==</span><span class="dv">1</span>)<span class="op">&amp;</span>(preds<span class="op">==</span><span class="dv">0</span>)).<span class="bu">sum</span>()</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Precision = </span><span class="sc">{0:.4f}</span><span class="st">, recall = </span><span class="sc">{1:.4f}</span><span class="st">"</span>.<span class="bu">format</span>(tp <span class="op">/</span> (tp <span class="op">+</span> fp), tp <span class="op">/</span> (tp <span class="op">+</span> fn)))</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"False positive rate ="</span>, fp <span class="op">/</span> (fp <span class="op">+</span> tn))</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"F1 ="</span>, <span class="dv">2</span> <span class="op">/</span> (((tp <span class="op">+</span> fp) <span class="op">/</span> tp) <span class="op">+</span> ((tp <span class="op">+</span> fn) <span class="op">/</span> tp)))</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>get_pr_stats(conversational_forecasts_df.prediction, conversational_forecasts_df.label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Precision = 0.6348, recall = 0.7738
+False positive rate = 0.4452380952380952
+F1 = 0.6974248927038625</code></pre>
+</div>
+</div>
+</section>
+<section id="part-9-model-analysis-how-early-is-early-warning" class="level2">
+<h2 class="anchored" data-anchor-id="part-9-model-analysis-how-early-is-early-warning">Part 9: model analysis: how early is early warning?</h2>
+<p>The goal of CRAFT is to forecast outcomes in advance, but how far in advance does it typically make its prediction? Following the paper, we measure this in two ways: the number of <em>comments</em> between the first prediction and the actual derailment, and how much <em>elapsed time</em> that gap actually translates to.</p>
+<div id="cell-31" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>comments_until_derail <span class="op">=</span> {} <span class="co"># store the "number of comments until derailment" metric for each conversation</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>time_until_derail <span class="op">=</span> {} <span class="co"># store the "time until derailment" metric for each conversation</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo.meta[<span class="st">'split'</span>] <span class="op">==</span> <span class="st">"test"</span> <span class="kw">and</span> convo.meta[label_metadata]:</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># filter out the section header as usual</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>        utts <span class="op">=</span> [utt <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances() <span class="cf">if</span> <span class="kw">not</span> (corpus_name <span class="op">==</span> <span class="st">'wikiconv'</span> <span class="kw">and</span> utt.meta[<span class="st">'is_section_header'</span>])]</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> utt_label_metadata <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>            <span class="co"># if utterances have individual toxicity labels, we assume that the last comment in the conversation</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>            <span class="co"># is the one that is toxic (as in the case for wikiconv)</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>            derail_idx <span class="op">=</span> <span class="bu">len</span>(utts) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>            <span class="co"># otherwise, we assume that the toxic comment is not included and that derailment happens immediately</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>            <span class="co"># after the last comment in the conversation</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>            derail_idx <span class="op">=</span> <span class="bu">len</span>(utts)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># now scan the utterances in order until we find the first derailment prediction (if any)</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> idx <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(utts)):</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> utts[idx].meta[<span class="st">'forecast_score'</span>] <span class="op">&gt;</span> forecast_thresh:</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>                comments_until_derail[convo.<span class="bu">id</span>] <span class="op">=</span> derail_idx <span class="op">-</span> idx</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>                time_until_derail[convo.<span class="bu">id</span>] <span class="op">=</span> utts[derail_idx].timestamp <span class="op">-</span> utts[idx].timestamp</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[40]</span><span class="ansi-green-fg">, line 18</span>
+<span class="ansi-green-fg">     16</span> <span style="font-style:italic;color:rgb(95,135,135)"># now scan the utterances in order until we find the first derailment prediction (if any)</span>
+<span class="ansi-green-fg">     17</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> idx <span style="font-weight:bold;color:rgb(175,0,255)">in</span> <span style="color:rgb(0,135,0)">range</span>(<span class="ansi-green-fg">1</span>, <span style="color:rgb(0,135,0)">len</span>(utts)):
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">18</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span class="ansi-yellow-bg">utts</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">idx</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">meta</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-fg ansi-yellow-bg">'</span><span class="ansi-yellow-fg ansi-yellow-bg">forecast_score</span><span class="ansi-yellow-fg ansi-yellow-bg">'</span><span class="ansi-yellow-bg">]</span> &gt; forecast_thresh:
+<span class="ansi-green-fg">     19</span>         comments_until_derail[convo.id] = derail_idx - idx
+<span class="ansi-green-fg">     20</span>         time_until_derail[convo.id] = utts[derail_idx].timestamp - utts[idx].timestamp
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/stuff/gitclones/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/convokit/model/convoKitMeta.py:37</span>, in <span class="ansi-cyan-fg">ConvoKitMeta.__getitem__</span><span class="ansi-blue-fg">(self, item)</span>
+<span class="ansi-green-fg">     33</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span class="ansi-blue-fg">__getitem__</span>(<span style="color:rgb(0,135,0)">self</span>, item):
+<span class="ansi-green-fg">     34</span>     <span style="font-style:italic;color:rgb(95,135,135)"># in DB mode, metadata field mutation would not be updated. (ex. mutating dict/list metadata fields)</span>
+<span class="ansi-green-fg">     35</span>     <span style="font-style:italic;color:rgb(95,135,135)"># we align MEM mode behavior and DB mode by making deepcopy of metadata fields, so mutation no longer</span>
+<span class="ansi-green-fg">     36</span>     <span style="font-style:italic;color:rgb(95,135,135)"># affect corpus metadata backend, but only acting on the copy of it.</span>
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">37</span>     item = <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_get_backend</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_data</span><span class="ansi-yellow-bg">(</span>
+<span class="ansi-green-fg">     38</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">meta</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">backend_key</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">item</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">index</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_index</span><span class="ansi-yellow-bg">(</span><span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">obj_type</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     39</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     40</span>     immutable_types = (<span style="color:rgb(0,135,0)">int</span>, <span style="color:rgb(0,135,0)">float</span>, <span style="color:rgb(0,135,0)">bool</span>, <span style="color:rgb(0,135,0)">complex</span>, <span style="color:rgb(0,135,0)">str</span>, <span style="color:rgb(0,135,0)">tuple</span>, <span style="color:rgb(0,135,0)">frozenset</span>)
+<span class="ansi-green-fg">     41</span>     <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">isinstance</span>(item, immutable_types):
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/stuff/gitclones/ConvoKit_Disputes/.venv/lib/python3.11/site-packages/convokit/model/backendMapper.py:179</span>, in <span class="ansi-cyan-fg">MemMapper.get_data</span><span class="ansi-blue-fg">(self, component_type, component_id, property_name, index)</span>
+<span class="ansi-green-fg">    177</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> collection[component_id]
+<span class="ansi-green-fg">    178</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">--&gt; </span><span class="ansi-green-fg">179</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">collection</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">component_id</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">property_name</span><span class="ansi-yellow-bg">]</span>
+
+<span class="ansi-red-fg">KeyError</span>: 'forecast_score'</pre>
+</div>
+</div>
+</div>
+<div id="cell-32" class="cell" data-outputid="26611644-8c44-4380-8897-b0de6eece0cd" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute some quick statistics about the distribution of the "number of comments until derailment" metric</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>comments_until_derail_vals <span class="op">=</span> np.asarray(<span class="bu">list</span>(comments_until_derail.values()))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">min</span>(comments_until_derail_vals), np.<span class="bu">max</span>(comments_until_derail_vals), np.median(comments_until_derail_vals), np.mean(comments_until_derail_vals))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 1 1.0 1.0</code></pre>
+</div>
+</div>
+<div id="cell-33" class="cell" data-outputid="85df20c5-62e1-4d2c-8736-8432a65f55ac" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute some quick statistics about the distribution of the "time until derailment" metric</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># note that since timestamps are in seconds, we convert to hours by dividing by 3600, to make it more human readable</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>time_until_derail_vals <span class="op">=</span> np.asarray(<span class="bu">list</span>(time_until_derail.values())) <span class="op">/</span> <span class="dv">3600</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">min</span>(time_until_derail_vals), np.<span class="bu">max</span>(time_until_derail_vals), np.median(time_until_derail_vals), np.mean(time_until_derail_vals))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.07555555555555556 0.07555555555555556 0.07555555555555556 0.07555555555555556</code></pre>
+</div>
+</div>
+<div id="cell-34" class="cell" data-outputid="7de51fb0-dbb9-42f2-8d5f-18fcda28ab00" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the distribution of "number of comments until derailment" as a histogram (reproducing Figure 4 from the paper)</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.figsize'</span>] <span class="op">=</span> (<span class="fl">10.0</span>, <span class="fl">5.0</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>plt.hist(comments_until_derail_vals, bins<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, np.<span class="bu">max</span>(comments_until_derail_vals)), density<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">1</span>,<span class="dv">10</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(np.arange(<span class="dv">1</span>,<span class="dv">10</span>)<span class="op">+</span><span class="fl">0.5</span>, np.arange(<span class="dv">1</span>,<span class="dv">10</span>))</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>plt.yticks(np.arange(<span class="dv">0</span>,<span class="fl">0.25</span>,<span class="fl">0.05</span>), np.arange(<span class="dv">0</span>,<span class="dv">25</span>,<span class="dv">5</span>))</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Number of comments elapsed"</span>)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"</span><span class="sc">% o</span><span class="st">f conversations"</span>)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fine_tuning_demo_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

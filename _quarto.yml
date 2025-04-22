@@ -1,0 +1,10 @@
+project:
+  type: website
+  output-dir: docs    # ← GitHub Pages will serve from docs/
+
+website:
+  title: "My Forecaster Explorer"
+  navbar:
+    right:
+      - text: Home
+        href: index.html

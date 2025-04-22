@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Creating KODIS Corpus Object – My Forecaster Explorer</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-79108a0fc1995748cbd19a5b0e3e3e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">My Forecaster Explorer</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Creating KODIS Corpus Object</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="c02ba9ac" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, Speaker, Utterance</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pprint <span class="im">as</span> pp</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules.DataPreprocesser <span class="im">import</span> DataPreprocesser</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules <span class="im">import</span> CorpusUtils <span class="im">as</span> corp</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the src directory to the path</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the src</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>sys.path.append(os.path.abspath(<span class="st">"."</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> import_ipynb</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Convokit Imports</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.forecaster.CRAFTModel <span class="im">import</span> CRAFTModel</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.forecaster.forecaster <span class="im">import</span> Forecaster</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="create-corpus" class="level3">
+<h3 class="anchored" data-anchor-id="create-corpus">Create Corpus</h3>
+<div id="0a0f8710" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>filepath <span class="op">=</span> <span class="st">"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/preprocessed_dyads.csv"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>final_data <span class="op">=</span> DataPreprocesser(filepath)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>test_corp<span class="op">=</span> corp.corpusBuilder(final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/src/modules/DataPreprocesser.py:111: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '1702723625' has dtype incompatible with float64, please explicitly cast to a compatible dtype first.
+  self.utterancesDF.loc[13988, 'timestamp']= '1702723625'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2107</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>27498it [00:00, 56260.50it/s]</code></pre>
+</div>
+</div>
+<div id="e567ddb2" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>test_corp.print_summary_stats()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of Speakers: 4214
+Number of Utterances: 27498
+Number of Conversations: 2107</code></pre>
+</div>
+</div>
+</section>
+<section id="add-conversation-lengths-as-conversation-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="add-conversation-lengths-as-conversation-metadata">Add conversation lengths as conversation metadata</h3>
+<ul>
+<li>1 is “impasse”</li>
+<li>0 is “success”</li>
+</ul>
+<div id="bd8aa693" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> convo <span class="kw">in</span> test_corp.iter_conversations():</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    convo_len <span class="op">=</span> <span class="bu">len</span>(convo.get_utterance_ids())  <span class="co"># Count utterances in the conversation</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    convo.add_meta(<span class="st">"convo_len"</span>, convo_len)      <span class="co"># Store as conversation-level metadata</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    some_convo <span class="op">=</span> test_corp.get_conversation(<span class="st">"utt0_con0"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Length of conversation:"</span>, some_convo.retrieve_meta(<span class="st">"convo_len"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Length of conversation: 14</code></pre>
+</div>
+</div>
+</section>
+<section id="add-conversation-labels-from-final-pre-processed-dataframe-as-conversation-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="add-conversation-labels-from-final-pre-processed-dataframe-as-conversation-metadata">Add Conversation Labels from Final Pre-processed Dataframe as conversation metadata</h3>
+<div id="0f35e516" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp.conversations:</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        test_corp.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="creating-forecaster-and-model-objects" class="level1">
+<h1>Creating Forecaster and Model Objects</h1>
+<section id="cmv-model-and-forecaster-object" class="level3">
+<h3 class="anchored" data-anchor-id="cmv-model-and-forecaster-object">CMV Model and Forecaster Object</h3>
+<div id="9c115eff" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> CRAFTModel(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    initial_weights<span class="op">=</span> <span class="st">"craft-cmv-finetuned"</span>,  <span class="co"># or "craft-wiki-finetuned"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    torch_device<span class="op">=</span><span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Downloading craft-cmv-finetuned to /Users/mishkin/.convokit/saved-models/craft-cmv-finetuned
+Downloading craft-cmv-finetuned/craft_full.tar from https://zissou.infosci.cornell.edu/convokit/models/craft_cmv/craft_full.tar (548.7MB)... Done
+Downloading craft-cmv-finetuned/index2word.json from https://zissou.infosci.cornell.edu/convokit/models/craft_cmv/index2word.json (1.0MB)... Done
+Downloading craft-cmv-finetuned/word2index.json from https://zissou.infosci.cornell.edu/convokit/models/craft_cmv/word2index.json (928.0KB)... Done</code></pre>
+</div>
+</div>
+<div id="cca2a6e5" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 'label' because we added it to conversation.meta["label"]</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>forecaster2 <span class="op">=</span> Forecaster(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    forecaster_model<span class="op">=</span>model2,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    labeler<span class="op">=</span><span class="st">"label"</span>,  <span class="co"># uses conversation.meta["label"]</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    forecast_attribute_name<span class="op">=</span><span class="st">"prediction"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    forecast_prob_attribute_name<span class="op">=</span><span class="st">"pred_score"</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wiki-model-and-forecaster-object" class="level3">
+<h3 class="anchored" data-anchor-id="wiki-model-and-forecaster-object">Wiki Model and Forecaster Object</h3>
+<div id="6f3248bf" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> CRAFTModel(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    initial_weights<span class="op">=</span> <span class="st">"craft-wiki-finetuned"</span>,  <span class="co"># or "craft-wiki-finetuned"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    torch_device<span class="op">=</span><span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Downloading craft-wiki-finetuned to /Users/mishkin/.convokit/saved-models/craft-wiki-finetuned
+Downloading craft-wiki-finetuned/craft_full.tar from https://zissou.infosci.cornell.edu/convokit/models/craft_wikiconv/craft_full.tar (548.6MB)... Done
+Downloading craft-wiki-finetuned/index2word.json from https://zissou.infosci.cornell.edu/convokit/models/craft_wikiconv/index2word.json (998.5KB)... Done
+Downloading craft-wiki-finetuned/word2index.json from https://zissou.infosci.cornell.edu/convokit/models/craft_wikiconv/word2index.json (898.4KB)... Done</code></pre>
+</div>
+</div>
+<div id="79b466b0" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 'label' because we added it to conversation.meta["label"]</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>forecaster <span class="op">=</span> Forecaster(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    forecaster_model<span class="op">=</span>model,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    labeler<span class="op">=</span><span class="st">"label"</span>,  <span class="co"># uses conversation.meta["label"]</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    forecast_attribute_name<span class="op">=</span><span class="st">"prediction"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    forecast_prob_attribute_name<span class="op">=</span><span class="st">"pred_score"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="model-weight-info" class="level1">
+<h1>Model Weight Info</h1>
+<section id="craftwikipretrained" class="level3">
+<h3 class="anchored" data-anchor-id="craftwikipretrained"><strong>craft‑wiki‑pretrained</strong></h3>
+<ul>
+<li><p>Contains only the utterance and context encoder layers pre‑trained on the CGA‑Wikipedia data (via next‑comment prediction), but its classifier head (the SingleTargetClf) is still at its random initialization.</p></li>
+<li><p>Intended as a starting point if you want to fine‑tune CRAFT on your own conversational data (you’ll call fit to learn the classifier weights).</p></li>
+</ul>
+</section>
+<section id="craftwikifinetuned" class="level3">
+<h3 class="anchored" data-anchor-id="craftwikifinetuned"><strong>craft‑wiki‑finetuned</strong></h3>
+<ul>
+<li>Builds on the above by having already fine‑tuned the entire network (including the classifier head).</li>
+<li>Ready for inference only—you can call transform immediately and get sensible forecasts without any further training.</li>
+</ul>
+</section>
+</section>
+<section id="run-predictions-on-fine-tuned-wiki-dataset-with-craft-model" class="level1">
+<h1>Run predictions on fine-tuned WIKI dataset with CRAFT model</h1>
+<section id="fresh-kodis-corpus" class="level3">
+<h3 class="anchored" data-anchor-id="fresh-kodis-corpus">Fresh Kodis Corpus</h3>
+<div id="03fa3bda" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>test_corp<span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp.conversations:</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        test_corp.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>27498it [00:01, 23682.26it/s]</code></pre>
+</div>
+</div>
+</section>
+<section id="make-predictions-as-conversation-evolves-temporally---when-will-this-conversation-derail" class="level3">
+<h3 class="anchored" data-anchor-id="make-predictions-as-conversation-evolves-temporally---when-will-this-conversation-derail">Make predictions as conversation evolves (temporally) - When will this conversation derail?</h3>
+<div id="183436cf" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>test_corp <span class="op">=</span> forecaster.transform(test_corp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="1d2d3940" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>forecaster.summarize(test_corp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy     0.450403
+Precision    0.233220
+Recall       0.927224
+FPR          0.651498
+F1           0.372698
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-13-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Horizon statistics (# of comments between first positive forecast and conversation end):
+Mean = 9.723837209302326, Median = 9.0</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>(                 label     score  forecast
+ conversation_id                           
+ utt0_con0            0  0.481174       0.0
+ utt0_con1            0  0.785086       1.0
+ utt0_con2            0  0.540673       0.0
+ utt0_con3            0  0.376359       0.0
+ utt0_con4            0  0.868184       1.0
+ ...                ...       ...       ...
+ utt0_con2102         0  0.677453       1.0
+ utt0_con2103         1  0.954360       1.0
+ utt0_con2104         0  0.645120       1.0
+ utt0_con2105         0  0.737709       1.0
+ utt0_con2106         0  0.264288       0.0
+ 
+ [2107 rows x 3 columns],
+ {'Accuracy': np.float64(0.4504034171808258),
+  'Precision': np.float64(0.23322033898305083),
+  'Recall': np.float64(0.9272237196765498),
+  'FPR': np.float64(0.6514976958525346),
+  'F1': np.float64(0.37269772481040087)})</code></pre>
+</div>
+</div>
+</section>
+<section id="make-predictions-on-last-utterance-only-classification---is-this-a-derailed-conversation" class="level3">
+<h3 class="anchored" data-anchor-id="make-predictions-on-last-utterance-only-classification---is-this-a-derailed-conversation">Make predictions on last utterance only (classification) - Is this a derailed conversation?</h3>
+<div id="c2dcdfea" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>test_corp2<span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp2.conversations:</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        test_corp2.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>27498it [00:00, 70236.09it/s]</code></pre>
+</div>
+</div>
+<div id="b17dcab6" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_utterance_selector(context_tuple):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    all_utts <span class="op">=</span> context_tuple.current_utterance.get_conversation().get_chronological_utterance_list()</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> context_tuple.current_utterance.<span class="bu">id</span> <span class="op">==</span> all_utts[<span class="op">-</span><span class="dv">1</span>].<span class="bu">id</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>test_corp_classification <span class="op">=</span> forecaster.transform(test_corp2, last_utterance_selector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fc0c12b4" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>convo_df, metrics <span class="op">=</span> forecaster.summarize(test_corp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy     0.831989
+Precision    0.517454
+Recall       0.679245
+FPR          0.135369
+F1           0.587413
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-16-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Horizon statistics (# of comments between first positive forecast and conversation end):
+Mean = 1.0, Median = 1.0</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="run-predictions-on-fine-tuned-reddit-cmv-dataset-with-craft-model" class="level1">
+<h1>Run predictions on fine-tuned REDDIT CMV dataset with CRAFT model</h1>
+<section id="fresh-kodis-corpus-1" class="level3">
+<h3 class="anchored" data-anchor-id="fresh-kodis-corpus-1">Fresh Kodis Corpus</h3>
+<div id="72be63f8" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>test_corp3<span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp3.conversations:</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        test_corp3.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>27498it [00:00, 40008.33it/s]</code></pre>
+</div>
+</div>
+</section>
+<section id="make-predictions-as-conversation-evolves-temporally---when-will-this-conversation-derail-1" class="level3">
+<h3 class="anchored" data-anchor-id="make-predictions-as-conversation-evolves-temporally---when-will-this-conversation-derail-1">Make predictions as conversation evolves (temporally) - When will this conversation derail?</h3>
+<div id="aad0e139" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>test_corp3 <span class="op">=</span> forecaster2.transform(test_corp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="843f01c4" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>convo_df, metrics <span class="op">=</span> forecaster2.summarize(test_corp3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy     0.240152
+Precision    0.174603
+Recall       0.889488
+FPR          0.898618
+F1           0.291906
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-19-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Horizon statistics (# of comments between first positive forecast and conversation end):
+Mean = 10.006060606060606, Median = 9.0</code></pre>
+</div>
+</div>
+</section>
+<section id="make-predictions-on-last-utterance-only-classification---is-this-a-derailed-conversation-1" class="level3">
+<h3 class="anchored" data-anchor-id="make-predictions-on-last-utterance-only-classification---is-this-a-derailed-conversation-1">Make predictions on last utterance only (classification) - Is this a derailed conversation?</h3>
+<div id="fca8a7e5" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>test_corp5<span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span>  <span class="co"># generate conversation_id format from index</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]  <span class="co"># update if your label column is named differently</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> test_corp5.conversations:</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>        test_corp5.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>27498it [00:00, 70695.85it/s]</code></pre>
+</div>
+</div>
+<div id="d54da2fd" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> last_utterance_selector(context_tuple):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    all_utts <span class="op">=</span> context_tuple.current_utterance.get_conversation().get_chronological_utterance_list()</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> context_tuple.current_utterance.<span class="bu">id</span> <span class="op">==</span> all_utts[<span class="op">-</span><span class="dv">1</span>].<span class="bu">id</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>test_corp_classification <span class="op">=</span> forecaster.transform(test_corp5, last_utterance_selector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5deacf8f" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>forecaster2.summarize(test_corp_classification)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy     0.831989
+Precision    0.517454
+Recall       0.679245
+FPR          0.135369
+F1           0.587413
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-22-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Horizon statistics (# of comments between first positive forecast and conversation end):
+Mean = 1.0, Median = 1.0</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>(                 label     score  forecast
+ conversation_id                           
+ utt0_con0            0  0.374480       0.0
+ utt0_con1            0  0.673291       1.0
+ utt0_con2            0  0.407664       0.0
+ utt0_con3            0  0.188250       0.0
+ utt0_con4            0  0.166284       0.0
+ ...                ...       ...       ...
+ utt0_con2102         0  0.326548       0.0
+ utt0_con2103         1  0.762463       1.0
+ utt0_con2104         0  0.463558       0.0
+ utt0_con2105         0  0.270675       0.0
+ utt0_con2106         0  0.088958       0.0
+ 
+ [2107 rows x 3 columns],
+ {'Accuracy': np.float64(0.8319886093972473),
+  'Precision': np.float64(0.5174537987679672),
+  'Recall': np.float64(0.6792452830188679),
+  'FPR': np.float64(0.13536866359447006),
+  'F1': np.float64(0.5874125874125874)})</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="run-predictions-on-test-sets-for-cmv-and-wiki-datasets-using-respecitve-fine-tuned-craft-models-todo" class="level1">
+<h1>Run predictions on test sets for CMV and WIKI datasets using respecitve fine-tuned CRAFT Models (todo)</h1>
+</section>
+<section id="comparing-fine-tuned-models-on-kodis-corpus" class="level1">
+<h1>Comparing fine-tuned Models on KODIS Corpus</h1>
+<section id="running-predictions-on-both-fine-tuned-wiki-and-cmv-craft-models-temporally-on-all-utterances" class="level3">
+<h3 class="anchored" data-anchor-id="running-predictions-on-both-fine-tuned-wiki-and-cmv-craft-models-temporally-on-all-utterances">Running predictions on both fine-tuned wiki and cmv CRAFT models temporally on all utterances</h3>
+<div id="d4f125f8" class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, accuracy_score, f1_score</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus, Forecaster, CRAFTModel</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules.DataPreprocesser <span class="im">import</span> DataPreprocesser  <span class="co"># adjust imports to your project structure</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> modules <span class="im">import</span> CorpusUtils <span class="im">as</span> corp</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># corpusBuilder should return a ConvoKit Corpus</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>corp1 <span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>corp2 <span class="op">=</span> corp.corpusBuilder(final_data)</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign conversation-level labels</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, row <span class="kw">in</span> final_data.getDataframe().iterrows():</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>    convo_id <span class="op">=</span> <span class="ss">f"utt0_con</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> row[<span class="st">"dispute_outcome"</span>]</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> corp1.conversations:</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>        corp1.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> convo_id <span class="kw">in</span> corp2.conversations:</span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>        corp2.get_conversation(convo_id).meta[<span class="st">"label"</span>] <span class="op">=</span> label</span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Initialize two forecasters with different CRAFT weights</span></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> <span class="st">"cuda"</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">"cpu"</span></span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>craft_wiki <span class="op">=</span> CRAFTModel(<span class="st">"craft-wiki-finetuned"</span>, torch_device<span class="op">=</span>device)</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>craft_cmv  <span class="op">=</span> CRAFTModel(<span class="st">"craft-cmv-finetuned"</span>,  torch_device<span class="op">=</span>device)</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>forecaster1 <span class="op">=</span> Forecaster(craft_wiki, <span class="st">"label"</span>)</span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>forecaster2 <span class="op">=</span> Forecaster(craft_cmv,  <span class="st">"label"</span>)</span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Helper to apply transform and return utterance-level DataFrame</span></span>
+<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_forecast_df(forecaster, corpus, selector<span class="op">=</span><span class="kw">lambda</span> ctx: <span class="va">True</span>):</span>
+<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annotate the corpus</span></span>
+<span id="cb43-33"><a href="#cb43-33" aria-hidden="true" tabindex="-1"></a>    annotated <span class="op">=</span> forecaster.transform(corpus, selector)</span>
+<span id="cb43-34"><a href="#cb43-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract utterance-level DataFrame</span></span>
+<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> annotated</span>
+<span id="cb43-36"><a href="#cb43-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-37"><a href="#cb43-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Transform both corpora</span></span>
+<span id="cb43-38"><a href="#cb43-38" aria-hidden="true" tabindex="-1"></a>corp1 <span class="op">=</span> get_forecast_df(forecaster1, corp1)</span>
+<span id="cb43-39"><a href="#cb43-39" aria-hidden="true" tabindex="-1"></a>corp2 <span class="op">=</span> get_forecast_df(forecaster2, corp2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="getting-average-derailement-prediction-and-frequency-of-forecast-probabilities-across-all-utterances" class="level3">
+<h3 class="anchored" data-anchor-id="getting-average-derailement-prediction-and-frequency-of-forecast-probabilities-across-all-utterances">Getting average derailement prediction and frequency of forecast probabilities across all utterances</h3>
+<div id="b681cd9f" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, accuracy_score, f1_score</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) extract the utterance‑level DataFrames from the two corpora</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>utt_df1 <span class="op">=</span> corp1.get_utterances_dataframe()</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>utt_df2 <span class="op">=</span> corp2.get_utterances_dataframe()</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Keep only the forecast columns and drop NA</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>forecast_df1 <span class="op">=</span> utt_df1[[<span class="st">'meta.forecast'</span>, <span class="st">'meta.forecast_prob'</span>]].dropna()</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>forecast_df2 <span class="op">=</span> utt_df2[[<span class="st">'meta.forecast'</span>, <span class="st">'meta.forecast_prob'</span>]].dropna()</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Summary statistics</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mean_prob'</span>:  [forecast_df1[<span class="st">'meta.forecast_prob'</span>].mean(),  forecast_df2[<span class="st">'meta.forecast_prob'</span>].mean()],</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'std_prob'</span>:   [forecast_df1[<span class="st">'meta.forecast_prob'</span>].std(),   forecast_df2[<span class="st">'meta.forecast_prob'</span>].std()],</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'median_prob'</span>:[forecast_df1[<span class="st">'meta.forecast_prob'</span>].median(),forecast_df2[<span class="st">'meta.forecast_prob'</span>].median()],</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[<span class="st">'corp-wiki'</span>, <span class="st">'corp-cmv'</span>])</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Summary statistics for forecast probabilities:"</span>)</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary)</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Plot histograms</span></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">4</span>))</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>plt.hist(forecast_df1[<span class="st">'meta.forecast_prob'</span>], bins<span class="op">=</span><span class="dv">50</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'craft-wiki'</span>)</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>plt.hist(forecast_df2[<span class="st">'meta.forecast_prob'</span>], bins<span class="op">=</span><span class="dv">50</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">'craft-cmv'</span>)</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Forecast probability'</span>)</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Summary statistics for forecast probabilities:
+           mean_prob  std_prob  median_prob
+corp-wiki   0.440724  0.267856     0.381885
+corp-cmv    0.541044  0.271951     0.528305</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-25-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="conversation-level-auc-and-pr-curves" class="level3">
+<h3 class="anchored" data-anchor-id="conversation-level-auc-and-pr-curves">Conversation-level AUC and PR Curves</h3>
+<p>to create these plots, I looked at <a href="https://github.com/CornellNLP/ConvoKit/blob/master/convokit/forecaster/forecaster.py#L139">Forecasters</a> code for aggregating utternce-levele metrics on a conversation level where: - np.max(forecast_scores) is highest probability the model ever assigned to this conversation - np.max(forecasts) is if the model ever cross its decision threshold and predict 1 (derailement) for thsi conversation ### Insights - baseline positive class rate (successful dispute) for KODIS is 17.6%. - PR curve bottoms out at baseline accuracy wuth higher decision thresholds, so no presicion-accuracy trade-off. Essesntially, lower decision threshold -&gt; model is as good as baseline posititve rate, so never predicts derailment. Probably due to high impassee/success class imbalance - AUC still looks high for both bc of the class imbalance for derailement disputes I think</p>
+<div id="bbd3d086" class="cell" data-execution_count="66">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, precision_recall_curve, auc</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_conv_level_scores(corpus):</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1) grab all utterances with a forecast</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    utt <span class="op">=</span> (corpus</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>            .get_utterances_dataframe()[[<span class="st">'conversation_id'</span>,<span class="st">'meta.forecast_prob'</span>]]</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>            .dropna())</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>    conv_scores <span class="op">=</span> utt.groupby(<span class="st">'conversation_id'</span>)[<span class="st">'meta.forecast_prob'</span>].<span class="bu">max</span>()</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>    conv_df <span class="op">=</span> corpus.get_conversations_dataframe()</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    conv_scores <span class="op">=</span> conv_scores.reindex(conv_df.index, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>    y_true <span class="op">=</span> conv_df[<span class="st">'meta.label'</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>    y_scores <span class="op">=</span> conv_scores.values</span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_true, y_scores</span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_baseline_accuracy(corpus, label_field<span class="op">=</span><span class="st">"label"</span>):</span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># pull out the conversation‑level labels</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>    conv_df <span class="op">=</span> corpus.get_conversations_dataframe()[[<span class="ss">f"meta.</span><span class="sc">{</span>label_field<span class="sc">}</span><span class="ss">"</span>]]</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># count each class</span></span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> conv_df[<span class="st">"meta.label"</span>].value_counts()</span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>    min_label <span class="op">=</span> counts.idxmin()    </span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>    min_count <span class="op">=</span> counts.<span class="bu">min</span>()      </span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>    total     <span class="op">=</span> counts.<span class="bu">sum</span>()</span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>    baseline_acc <span class="op">=</span> min_count <span class="op">/</span> total</span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Baseline accuracy (derailement): </span><span class="sc">{</span>baseline_acc<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>conv_df <span class="op">=</span> corp1.get_conversations_dataframe()[[<span class="ss">f"meta.label"</span>]]</span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>display(conv_df[<span class="st">"meta.label"</span>].value_counts())</span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>y1, s1 <span class="op">=</span> get_conv_level_scores(corp1)</span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>y2, s2 <span class="op">=</span> get_conv_level_scores(corp2)</span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>positive_rate <span class="op">=</span> np.mean(y1)</span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Positive class rate: </span><span class="sc">{</span>positive_rate<span class="sc">:.2%}</span><span class="ss">"</span>)</span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a>print_baseline_accuracy(corp1)</span>
+<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a><span class="co"># compute ROC and PR metrics</span></span>
+<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a>fpr1, tpr1, _    <span class="op">=</span> roc_curve(y1, s1)</span>
+<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a>roc_auc1         <span class="op">=</span> auc(fpr1, tpr1)</span>
+<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a>fpr2, tpr2, _    <span class="op">=</span> roc_curve(y2, s2)</span>
+<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a>roc_auc2         <span class="op">=</span> auc(fpr2, tpr2)</span>
+<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a>prec1, rec1, _   <span class="op">=</span> precision_recall_curve(y1, s1)</span>
+<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a>pr_auc1          <span class="op">=</span> auc(rec1, prec1)</span>
+<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a>prec2, rec2, _   <span class="op">=</span> precision_recall_curve(y2, s2)</span>
+<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a>pr_auc2          <span class="op">=</span> auc(rec2, prec2)</span>
+<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a><span class="co"># plot side‑by‑side</span></span>
+<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a>fig, (ax_roc, ax_pr) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">5</span>))</span>
+<span id="cb46-53"><a href="#cb46-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-54"><a href="#cb46-54" aria-hidden="true" tabindex="-1"></a><span class="co"># ROC panel</span></span>
+<span id="cb46-55"><a href="#cb46-55" aria-hidden="true" tabindex="-1"></a>ax_roc.plot(fpr1, tpr1, label<span class="op">=</span><span class="ss">f'corp-wiki (AUC=</span><span class="sc">{</span>roc_auc1<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb46-56"><a href="#cb46-56" aria-hidden="true" tabindex="-1"></a>ax_roc.plot(fpr2, tpr2, label<span class="op">=</span><span class="ss">f'corp-cmv (AUC=</span><span class="sc">{</span>roc_auc2<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb46-57"><a href="#cb46-57" aria-hidden="true" tabindex="-1"></a>ax_roc.set_xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb46-58"><a href="#cb46-58" aria-hidden="true" tabindex="-1"></a>ax_roc.set_ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb46-59"><a href="#cb46-59" aria-hidden="true" tabindex="-1"></a>ax_roc.set_title(<span class="st">'ROC Curves'</span>)</span>
+<span id="cb46-60"><a href="#cb46-60" aria-hidden="true" tabindex="-1"></a>ax_roc.legend()</span>
+<span id="cb46-61"><a href="#cb46-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-62"><a href="#cb46-62" aria-hidden="true" tabindex="-1"></a><span class="co"># PR panel</span></span>
+<span id="cb46-63"><a href="#cb46-63" aria-hidden="true" tabindex="-1"></a>ax_pr.plot(rec1, prec1, label<span class="op">=</span><span class="ss">f'corp-wiki (AUC=</span><span class="sc">{</span>pr_auc1<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb46-64"><a href="#cb46-64" aria-hidden="true" tabindex="-1"></a>ax_pr.plot(rec2, prec2, label<span class="op">=</span><span class="ss">f'corp-cmv (AUC=</span><span class="sc">{</span>pr_auc2<span class="sc">:.3f}</span><span class="ss">)'</span>)</span>
+<span id="cb46-65"><a href="#cb46-65" aria-hidden="true" tabindex="-1"></a>ax_pr.set_xlabel(<span class="st">'Recall'</span>)</span>
+<span id="cb46-66"><a href="#cb46-66" aria-hidden="true" tabindex="-1"></a>ax_pr.set_ylabel(<span class="st">'Precision'</span>)</span>
+<span id="cb46-67"><a href="#cb46-67" aria-hidden="true" tabindex="-1"></a>ax_pr.set_title(<span class="st">'Precision–Recall Curves'</span>)</span>
+<span id="cb46-68"><a href="#cb46-68" aria-hidden="true" tabindex="-1"></a>ax_pr.legend()</span>
+<span id="cb46-69"><a href="#cb46-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-70"><a href="#cb46-70" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb46-71"><a href="#cb46-71" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>meta.label
+0    1736
+1     371
+Name: count, dtype: int64</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Positive class rate: 17.61%
+Baseline accuracy (derailement): 0.176</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-26-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-forcaster-summaries-for-both-fine-tuned-wiki-and-cmv-craft-models-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="comparing-forcaster-summaries-for-both-fine-tuned-wiki-and-cmv-craft-models-predictions">Comparing forcaster summaries for both fine-tuned wiki and cmv CRAFT models predictions</h3>
+<ul>
+<li>Ran using Forecasers summarize function ### Insights</li>
+<li>since our dataset has an average length of 13.5 utterances, the forecast horizon on average is 9.72 and 10 respecitvely for the WIKI and cmv models, meaning derailement is forecats towards the end of a dispute</li>
+<li>on a conversation-level, accuracy of predicting derailement is pretty low and F1 scores are low</li>
+</ul>
+<div id="2593f142" class="cell" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>lengths <span class="op">=</span> [</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span>(convo.get_utterance_ids())</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corp2.iter_conversations()</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>avg_len <span class="op">=</span> <span class="bu">sum</span>(lengths) <span class="op">/</span> <span class="bu">len</span>(lengths)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Average conversation length in pre-process KODIS: </span><span class="sc">{</span>avg_len<span class="sc">:.2f}</span><span class="ss"> utterances"</span>)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stats for fine-tuned wiki model predicitons </span><span class="ch">\n</span><span class="st"> -------------------"</span>)</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>conv_df1, metrics1 <span class="op">=</span> forecaster1.summarize(corp1)</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stats for fine-tuned cmv model predicitons  </span><span class="ch">\n</span><span class="st"> -------------------"</span>)</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>conv_df2, metrics2 <span class="op">=</span> forecaster2.summarize(corp2)</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>metrics_df <span class="op">=</span> pd.DataFrame([metrics1, metrics2], index<span class="op">=</span>[<span class="st">'corp1'</span>,<span class="st">'corp2'</span>])</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Overall metrics ==="</span>)</span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>display(metrics_df)</span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Merge the two conversation‐level forecasts side by side</span></span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a><span class="co">#    rename so you can see which is which</span></span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>conv1 <span class="op">=</span> conv_df1.rename(columns<span class="op">=</span>{<span class="st">'label'</span>:<span class="st">'label'</span>,<span class="st">'score'</span>:<span class="st">'score1'</span>,<span class="st">'forecast'</span>:<span class="st">'forecast1'</span>})</span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>conv2 <span class="op">=</span> conv_df2.rename(columns<span class="op">=</span>{<span class="st">'score'</span>:<span class="st">'score2'</span>,<span class="st">'forecast'</span>:<span class="st">'forecast2'</span>})</span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a><span class="co"># join on conversation_id</span></span>
+<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a>merged <span class="op">=</span> conv1.join(conv2[[<span class="st">'score2'</span>,<span class="st">'forecast2'</span>]], how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"=== Conversation‑level forecasts comparison ==="</span>)</span>
+<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>display(merged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Average conversation length in pre-process KODIS: 13.05 utterances
+Stats for fine-tuned wiki model predicitons 
+ -------------------
+Accuracy     0.450403
+Precision    0.233220
+Recall       0.927224
+FPR          0.651498
+F1           0.372698
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-27-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Horizon statistics (# of comments between first positive forecast and conversation end):
+Mean = 9.723837209302326, Median = 9.0
+
+
+Stats for fine-tuned cmv model predicitons  
+ -------------------
+Accuracy     0.240152
+Precision    0.174603
+Recall       0.889488
+FPR          0.898618
+F1           0.291906
+dtype: float64</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Forcaster_Explorer_files/figure-html/cell-27-output-4.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Horizon statistics (# of comments between first positive forecast and conversation end):
+Mean = 10.006060606060606, Median = 9.0
+=== Overall metrics ===</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Accuracy</th>
+<th data-quarto-table-cell-role="th">Precision</th>
+<th data-quarto-table-cell-role="th">Recall</th>
+<th data-quarto-table-cell-role="th">FPR</th>
+<th data-quarto-table-cell-role="th">F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">corp1</td>
+<td>0.450403</td>
+<td>0.233220</td>
+<td>0.927224</td>
+<td>0.651498</td>
+<td>0.372698</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">corp2</td>
+<td>0.240152</td>
+<td>0.174603</td>
+<td>0.889488</td>
+<td>0.898618</td>
+<td>0.291906</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== Conversation‑level forecasts comparison ===</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">label</th>
+<th data-quarto-table-cell-role="th">score1</th>
+<th data-quarto-table-cell-role="th">forecast1</th>
+<th data-quarto-table-cell-role="th">score2</th>
+<th data-quarto-table-cell-role="th">forecast2</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">conversation_id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">utt0_con0</td>
+<td>0</td>
+<td>0.481174</td>
+<td>0.0</td>
+<td>0.912546</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">utt0_con1</td>
+<td>0</td>
+<td>0.785086</td>
+<td>1.0</td>
+<td>0.798515</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">utt0_con2</td>
+<td>0</td>
+<td>0.540673</td>
+<td>0.0</td>
+<td>0.734454</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">utt0_con3</td>
+<td>0</td>
+<td>0.376359</td>
+<td>0.0</td>
+<td>0.881353</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">utt0_con4</td>
+<td>0</td>
+<td>0.868184</td>
+<td>1.0</td>
+<td>0.775170</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">utt0_con2102</td>
+<td>0</td>
+<td>0.677453</td>
+<td>1.0</td>
+<td>0.727126</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">utt0_con2103</td>
+<td>1</td>
+<td>0.954360</td>
+<td>1.0</td>
+<td>0.890551</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">utt0_con2104</td>
+<td>0</td>
+<td>0.645120</td>
+<td>1.0</td>
+<td>0.844538</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">utt0_con2105</td>
+<td>0</td>
+<td>0.737709</td>
+<td>1.0</td>
+<td>0.950130</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">utt0_con2106</td>
+<td>0</td>
+<td>0.264288</td>
+<td>0.0</td>
+<td>0.812961</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>2107 rows × 5 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="average-length-of-tokenized-utterances-for-wiki-cmv-and-kodis-corpora" class="level3">
+<h3 class="anchored" data-anchor-id="average-length-of-tokenized-utterances-for-wiki-cmv-and-kodis-corpora">Average length of tokenized utterances for wiki, cmv, and kodis corpora</h3>
+<ul>
+<li>CRAFT has max tokemization length of 80 tokens per utterance. Is this relevant ti the performance in anyway?</li>
+</ul>
+<div id="0355287b" class="cell" data-execution_count="67">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>corpus_wiki <span class="op">=</span> Corpus(filename<span class="op">=</span>download(<span class="st">"conversations-gone-awry-corpus"</span>))</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>corpus_cmv <span class="op">=</span> Corpus(filename<span class="op">=</span>download(<span class="st">"conversations-gone-awry-cmv-corpus"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset already exists at /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus
+Dataset already exists at /Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/conversations-gone-awry-corpus/conversations-gone-awry-cmv-corpus</code></pre>
+</div>
+</div>
+</section>
+<section id="get-tokenized-utterances-from-training-set-data-used-in-trouble-on-the-horizon-paper." class="level2">
+<h2 class="anchored" data-anchor-id="get-tokenized-utterances-from-training-set-data-used-in-trouble-on-the-horizon-paper.">Get tokenized utterances from training set data used in “Trouble on the Horizon” paper.</h2>
+<ul>
+<li>MAX_LENGTH = 80 for tokenized utterances</li>
+</ul>
+<div id="59dfad34" class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>convo_ex <span class="op">=</span>  <span class="bu">next</span>(corpus_wiki.iter_conversations())</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, val <span class="kw">in</span> convo_ex.meta.items():</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:20s}</span><span class="ss"> → </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>convo_ex2 <span class="op">=</span>  <span class="bu">next</span>(corpus_cmv.iter_conversations())</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, val <span class="kw">in</span> convo_ex2.meta.items():</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">:20s}</span><span class="ss"> → </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="58f01fde" class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download, Corpus</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.forecaster.CRAFT.data <span class="im">import</span> (</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    loadPrecomputedVoc,</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    tokenize,</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    Voc,</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="co">Need to get only the utterances used for training fine-tuned model. </span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="co">Choose only those utterances in conversations where mete.split == train</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_craft_vocab(model_name: <span class="bu">str</span>) <span class="op">-&gt;</span> Voc:</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>    base <span class="op">=</span> download(model_name, data_dir<span class="op">=</span>os.path.expanduser(<span class="st">"~/.convokit/models"</span>))</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> loadPrecomputedVoc(</span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>        model_name,</span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>        os.path.join(base, <span class="st">"word2index.json"</span>),</span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>        os.path.join(base, <span class="st">"index2word.json"</span>),</span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>voc_wiki <span class="op">=</span> load_craft_vocab(<span class="st">"craft-wiki-finetuned"</span>)</span>
+<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a>voc_cmv  <span class="op">=</span> load_craft_vocab(<span class="st">"craft-cmv-finetuned"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="03fae09d" class="cell" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="co">    Walk through all conversations in `corpus`, select only those with</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co">    convo.meta["split"] == split, tokenize each utterance via CRAFT's</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co">    tokenize(voc, text), and return summary stats on token counts.</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_token_lengths(corpus: Corpus, voc: Voc, split: <span class="bu">str</span> <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    lengths <span class="op">=</span> []</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> convo <span class="kw">in</span> corpus.iter_conversations():</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if a split is specified, filter; otherwise include everything</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> split <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> convo.meta.get(<span class="st">"split"</span>) <span class="op">!=</span> split:</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> utt <span class="kw">in</span> convo.iter_utterances():</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>            toks <span class="op">=</span> tokenize(voc, utt.text <span class="kw">or</span> <span class="st">""</span>)</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>            lengths.append(<span class="bu">len</span>(toks))</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> lengths:</span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"n_utt"</span>: <span class="dv">0</span>, <span class="st">"mean"</span>: np.nan, <span class="st">"median"</span>: np.nan, <span class="st">"std"</span>: np.nan}</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>    arr <span class="op">=</span> np.array(lengths)</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"n_utt"</span>:  <span class="bu">int</span>(arr.size),</span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean"</span>:   <span class="bu">float</span>(arr.mean()),</span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"median"</span>: <span class="bu">float</span>(np.median(arr)),</span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"std"</span>:    <span class="bu">float</span>(arr.std()),</span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 5) run it on all four settings --</span></span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> {</span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"craft‑wiki"</span>:   summarize_token_lengths(corpus_wiki, voc_wiki, split<span class="op">=</span><span class="st">"train"</span>),</span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"craft‑cmv"</span>:    summarize_token_lengths(corpus_cmv,  voc_cmv,  split<span class="op">=</span><span class="st">"train"</span>),</span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kodis‑wiki"</span>:   summarize_token_lengths(corp1, voc_wiki),</span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kodis‑cmv"</span>:    summarize_token_lengths(corp1, voc_cmv),</span>
+<span id="cb58-33"><a href="#cb58-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-34"><a href="#cb58-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-35"><a href="#cb58-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-36"><a href="#cb58-36" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(results).T.reset_index().rename(columns<span class="op">=</span>{<span class="st">"index"</span>:<span class="st">"vocab"</span>})</span>
+<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a>display(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">vocab</th>
+<th data-quarto-table-cell-role="th">n_utt</th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">median</th>
+<th data-quarto-table-cell-role="th">std</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>craft‑wiki</td>
+<td>18042.0</td>
+<td>82.001330</td>
+<td>47.0</td>
+<td>139.549799</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>craft‑cmv</td>
+<td>25885.0</td>
+<td>123.472474</td>
+<td>72.0</td>
+<td>166.329963</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>kodis‑wiki</td>
+<td>27498.0</td>
+<td>24.159939</td>
+<td>20.0</td>
+<td>20.964779</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>kodis‑cmv</td>
+<td>27498.0</td>
+<td>24.159939</td>
+<td>20.0</td>
+<td>20.964779</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

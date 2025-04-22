@@ -25,5 +25,14 @@
   },
   "index.qmd": {
     "index.html": "d6fe6bca"
+  },
+  "notebooks/wiki_awry_demo.ipynb": {
+    "wiki_awry_demo.html": "67f3f51a"
+  },
+  "notebooks/fine_tuning_demo.ipynb": {
+    "fine_tuning_demo.html": "cc6f5e84"
+  },
+  "notebooks/CRAFT_fine_tuning_demo_using_ConvoKit.ipynb": {
+    "CRAFT_fine_tuning_demo_using_ConvoKit.html": "3e04dab8"
   }
 }

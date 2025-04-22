@@ -178,3 +178,5 @@ cython_debug/
 
 dataprocessing/data_explore_files/*
 /data/conversations-gone-awry-corpus/conversations-gone-awry-cmv-corpus
+
+/.quarto/

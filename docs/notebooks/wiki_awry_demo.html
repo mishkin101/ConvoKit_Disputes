@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Applying the Expected Context Framework to Wikipedia discussions – My Forecaster Explorer</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-79108a0fc1995748cbd19a5b0e3e3e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">My Forecaster Explorer</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Applying the Expected Context Framework to Wikipedia discussions</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This notebook demonstrates an application of the Expected Context Framework to analyze Wikipedia talk page discussions. We are working up to the following question: what types of comments are more likely to start conversations that eventually derail into toxic personal attacks, versus conversations that remain civil throughout? The notebook goes over a few key function calls along the way. See <a href="https://www.cs.cornell.edu/~cristian/Conversations_gone_awry_files/conversations_gone_awry.pdf">this paper</a> for details on the analysis question and datasets, and <a href="https://tisjune.github.io/research/dissertation">this dissertation</a> for details on the framework and more comments on the below analyses.</p>
+<p>For this demo, we start by training an Expected Context Model on a collection of Wikipedia discussions (different from the dataset we later analyze). In short, we want to infer different <em>rhetorical types</em> of comments that occur at the start of these discussions. Via the framework, we’ll derive representations of comments based on their expected replies (the “forwards context” of the conversation), and then infer types of comments by clustering these representations. We interpret the resultant clusters as different rhetorical types.</p>
+<p>For an extended version of this analysis, on a slightly older implementation of the model (using the <code>PromptTypes</code> functionality), see <a href="https://github.com/CornellNLP/ConvoKit/blob/master/examples/conversations-gone-awry/Conversations_Gone_Awry_Prediction.ipynb">this notebook</a>.</p>
+<div id="cell-4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-5" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="loading-and-preprocessing-the-training-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-and-preprocessing-the-training-data">1. Loading and preprocessing the training data</h2>
+<div id="cell-8" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> Corpus</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit <span class="im">import</span> download</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-9" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OPTION 1: DOWNLOAD CORPUS </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># UNCOMMENT THESE LINES TO DOWNLOAD CORPUS</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># DATA_DIR = '&lt;YOUR DIRECTORY&gt;'</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># WIKI_CORPUS_PATH = download('wiki-corpus', data_dir=DATA_DIR)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># OPTION 2: READ PREVIOUSLY-DOWNLOADED CORPUS FROM DISK</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># UNCOMMENT THIS LINE AND REPLACE WITH THE DIRECTORY WHERE THE TENNIS-CORPUS IS LOCATED</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># WIKI_CORPUS_PATH = '&lt;YOUR DIRECTORY&gt;'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-10" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wiki_corpus <span class="op">=</span> Corpus(WIKI_CORPUS_PATH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-11" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>wiki_corpus.print_summary_stats()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of Speakers: 38462
+Number of Utterances: 391294
+Number of Conversations: 125292</code></pre>
+</div>
+</div>
+<p>We represent Wikipedia comments as dependency-parse arcs; in order to capture rhetorical rather than topical information, we’ve removed nouns. These features are included with the release of the corpus, and can be loaded as follows:</p>
+<div id="cell-13" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>wiki_corpus.load_info(<span class="st">'utterance'</span>,[<span class="st">'arcs_censored'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To make sure that the arcs are stored in the right format (i.e., as strings, not lists), we apply the following transformer:</p>
+<div id="cell-15" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.text_processing <span class="im">import</span> TextProcessor</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>join_arcs <span class="op">=</span> TextProcessor(input_field<span class="op">=</span><span class="st">'arcs_censored'</span>, output_field<span class="op">=</span><span class="st">'arcs'</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                     proc_fn<span class="op">=</span><span class="kw">lambda</span> sents: <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(sents))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>wiki_corpus <span class="op">=</span> join_arcs.transform(wiki_corpus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In applying the framework, we need to associate utterances with their replies. One comment can receive multiple replies; here, we arbitrarily choose one (noting that future work could make better use of this additional information).</p>
+<div id="cell-17" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ut <span class="kw">in</span> wiki_corpus.iter_utterances(selector<span class="op">=</span><span class="kw">lambda</span> x: x.reply_to <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    wiki_corpus.get_utterance(ut.reply_to).meta[<span class="st">'next_id'</span>] <span class="op">=</span> ut.<span class="bu">id</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="applying-the-expected-context-framework" class="level2">
+<h2 class="anchored" data-anchor-id="applying-the-expected-context-framework">2. Applying the Expected Context Framework</h2>
+<div id="cell-20" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.expected_context_framework <span class="im">import</span> ColNormedTfidfTransformer, ExpectedContextModelTransformer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To apply the Expected Context Framework, we start by converting the input utterance text to an input vector representation. Here, we represent utterances in a term-document matrix that’s <em>normalized by columns</em> (empirically, we found that this ensures that the representations derived by the framework aren’t skewed by the relative frequency of utterances). We use the <code>ColNormedTfidfTransformer</code> transformer to do this.</p>
+<p>We found that it was preferable to derive different tf-idf representations (and hence different inverse document frequencies, normalization terms, and vocabularies) for comments that receive replies, and utterances that have predecessors. We make this partitioning by passing in different selectors to the <code>fit</code> functions below.</p>
+<p>The two sets are of course overlapping, but the former set mostly contains comments that start conversations, and the second contains more comments that reply to conversation-starters. We note that we’d expect the language of conversation-starters and repliers to be slightly different (i.e., the former tend to be requests, and the latter tend to be responses to these requests).</p>
+<div id="cell-22" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>first_tfidf_obj <span class="op">=</span> ColNormedTfidfTransformer(input_field<span class="op">=</span><span class="st">'arcs'</span>, output_field<span class="op">=</span><span class="st">'first_tfidf'</span>, binary<span class="op">=</span><span class="va">True</span>, min_df<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> first_tfidf_obj.fit(wiki_corpus, selector<span class="op">=</span><span class="kw">lambda</span> x: x.meta.get(<span class="st">'next_id'</span>,<span class="va">None</span>) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> first_tfidf_obj.transform(wiki_corpus)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>second_tfidf_obj <span class="op">=</span> ColNormedTfidfTransformer(input_field<span class="op">=</span><span class="st">'arcs'</span>, output_field<span class="op">=</span><span class="st">'second_tfidf'</span>, binary<span class="op">=</span><span class="va">True</span>, min_df<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> second_tfidf_obj.fit(wiki_corpus, selector<span class="op">=</span><span class="kw">lambda</span> x: x.reply_to <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> second_tfidf_obj.transform(wiki_corpus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We then initialize an Expected Context Model: * we specify that the conversational context we will derive our comment representations from is the reply, <code>context_field=next_id</code> * as input, the model will use tf-idf representations from <code>vect_field=first_tfidf</code> to represent comments, and <code>context_vect_field=second_tfidf</code> to represent context comments * we’ll derive <code>n_svd_dims=25</code>-dimensional representations, and infer <code>n_clusters=6</code> clusters * to infer these clusters, we will cluster <em>term</em>-level representations, <code>cluster_on='terms'</code>. Note that by default, the model will cluster <em>comment</em>-level representations, but in this context (perhaps since comments can get fairly long and unstructured), clustering on terms produces more interpretable output.</p>
+<div id="cell-24" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ec_fw <span class="op">=</span> ExpectedContextModelTransformer(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    context_field<span class="op">=</span><span class="st">'next_id'</span>, output_prefix<span class="op">=</span><span class="st">'fw'</span>, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    vect_field<span class="op">=</span><span class="st">'first_tfidf'</span>, context_vect_field<span class="op">=</span><span class="st">'second_tfidf'</span>, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      n_svd_dims<span class="op">=</span><span class="dv">25</span>, n_clusters<span class="op">=</span><span class="dv">6</span>, cluster_on<span class="op">=</span><span class="st">'terms'</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>     random_state<span class="op">=</span><span class="dv">1000</span>, cluster_random_state<span class="op">=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(note that the following call takes some time to run)</p>
+<div id="cell-26" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ec_fw.fit(wiki_corpus, selector<span class="op">=</span><span class="kw">lambda</span> x: (x.meta.get(<span class="st">'first_tfidf__n_feats'</span>,<span class="dv">0</span>)<span class="op">&gt;=</span><span class="dv">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="kw">and</span> (x.meta.get(<span class="st">'next_id'</span>,<span class="va">None</span>) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>), </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>            context_selector<span class="op">=</span><span class="kw">lambda</span> x: (x.meta.get(<span class="st">'second_tfidf__n_feats'</span>,<span class="dv">0</span>)<span class="op">&gt;=</span> <span class="dv">1</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                         <span class="kw">and</span> (x.reply_to <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="inferred-comment-types" class="level3">
+<h3 class="anchored" data-anchor-id="inferred-comment-types">Inferred comment types</h3>
+<p>Below, we print representative terms, comments, and context terms and comments for the clusters we’ve inferred (note that the output is quite long)</p>
+<div id="cell-29" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ec_fw.print_clusters(k<span class="op">=</span><span class="dv">10</span>,corpus<span class="op">=</span>wiki_corpus,max_chars<span class="op">=</span><span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CLUSTER 0 0
+---
+terms
+           cluster_dist
+index                  
+'m_*           0.497348
+thought_*      0.498929
+guess_*        0.508338
+sorry&gt;*        0.521577
+know_*         0.526687
+had_*          0.531728
+got_*          0.537593
+'s_*           0.543810
+have&gt;*         0.544413
+saw_*          0.549280
+
+context terms
+          cluster_dist
+index                 
+saw_*         0.598228
+yes&gt;*         0.603147
+knew_*        0.607990
+but&gt;*         0.614208
+oh&gt;*          0.615937
+anyway&gt;*      0.619059
+hey&gt;*         0.620055
+guess_*       0.620307
+oh_*          0.635252
+and&gt;*         0.639936
+
+
+utterances
+&gt; 512605 0.456 Thanks for your help but I thought I'd point [http:\/\/en.wikipedia.org\/w\/index.php?title=List_of_Playboy_Playmates_of_1962&amp;curid=27082401&amp;diff=358137637&amp;oldid=357917384 this] out.  Thanks again, &lt;s
+&gt; 384706 0.463 Sorry but I don't know. I 've seen people doing this manually based. -- 
+&gt; 58226 0.464 Hi WFinch. I think it's awesome that you're improving Nero Wolfe articles, but I'm curious - do you know the copyright status of the scripts you are linking to in some articles (eg [[The Silent Speake
+&gt; 141668 0.464 [http:\/\/en.wikipedia.org\/w\/index.php?title=Halloween_%281978_film%29&amp;curid=20179415&amp;diff=443119488&amp;oldid=443117044 This] was gorgeous.  I thought I had done some severe cutting in my plot trimming
+&gt; 294263 0.468 Yes, I saw the comment, and thought it was likely to be the case. I found myself itching to add ''proto-'' in the lede, but that's probably a worse fudge than using an anachronistic term that is widel
+&gt; 325392 0.469 Well, to be honest I knew I was probably not following the right protocol! I thought my solution would be ok but I guess I should have asked for help instead. Anyways, thanks for the advice and the cl
+&gt; 134322 0.470 LOL! Sorry about that man. I just think all this confusing about it is ridiculous. By the way, the reason I suggested the second cover go by Disc Two or Meet Miley Cyrus Cover is so it won't get contr
+&gt; 341552 0.471 (I think when referring to chart positions, it is better to use numerals whether or not our friendly style guide suggests  it, if in fact it comments (as opposed to spelling out numbers one to nine). 
+&gt; 24168 0.471 By the way, just thought I'd say that I think the recent edits you made to this article look good. There's so much negativity all the time I like to consciously remember to comment on useful additions
+&gt; 549552 0.472 Ah... that makes sense. Thanks. Do you know who is responsible for picking names? The [[Admiralty]]? I've seen a lot of RN ship names (especially 18th century) that seem like somebody threw a dart at 
+
+context-utterances
+&gt;&gt; 141287 0.550 Hey thanks mate atleast someone has the logical mind to remove trashy pov its a shame that admins who protect these articles like k2 and nanga parbat turn a blind eye towards this blatant pov just bec
+&gt;&gt; 177807 0.554 Very nice, well done, Maybe format the dates? from 00-00-00, to 1 August 1111, as an exemple. but overall, you did a wonderful job on the list. &lt;br \/&gt;&amp;nbsp;&amp;nbsp;\u2013 ''
+&gt;&gt; 70287 0.568 Re Eddie Watkins. Yes it is, he joined Wigan in March 1939. I'll update the article to reflect his league career today. When I started writing many of the Welsh articles I had a limited number of refe
+&gt;&gt; 422098 0.569 I saw you had contributed to video game articles and I remember many video game pictures from Ubisoft were deleted from Commons, so I wondered what if anything you might have uploaded there, since it'
+&gt;&gt; 344312 0.578 Thanks. But I saw that William, a real expert, already talked to him. --
+&gt;&gt; 234888 0.586 It's no big deal. After thinking about it, I guess you're right about this. --
+&gt;&gt; 23171 0.590 Yeah, I guess it makes sence. Since the CFL doesn't play all their games on one particular day of the week. And thanks the website, I got all my information from [http:\/\/michigan-football.com\/cfl\/
+&gt;&gt; 394976 0.592 hi Maurreen, it more happenstance than system, i was filling in red links at [[MacArthur Fellows Program]], (which to me is a snowball keep) and checking histories, saw a couple that i undid, also fou
+&gt;&gt; 576498 0.594 Wow Mongo, never expected this. You've had a hard time here, but your work dealing with fringe views is invaluable. I hope you can look beyond this one block and see that you are very much appreciated
+&gt;&gt; 583441 0.596 I was just starting to RC patrol when I saw that diff. I thought it looked fimiliar and I realised I had one just like that[http:\/\/en.wikipedia.org\/w\/index.php?title=User_talk%3ASpellcast&amp;diff=149
+
+====
+
+CLUSTER 1 1
+---
+terms
+              cluster_dist
+index                     
+let_*             0.507374
+done_*            0.509473
+appreciate_*      0.512464
+tried_*           0.524234
+help_*            0.530647
+let_know          0.536958
+look_*            0.540756
+hi&gt;*              0.545773
+hi_*              0.548464
+take_*            0.549002
+
+context terms
+               cluster_dist
+index                      
+okay&gt;*             0.641118
+ok&gt;*               0.646864
+alright&gt;*          0.653850
+uploaded_have      0.670640
+update_*           0.681726
+ok_*               0.683843
+helps_*            0.705702
+cool&gt;*             0.707850
+cool_*             0.709546
+hope_do            0.712557
+
+
+utterances
+&gt; 164003 0.446 Good work on the list of Jat clans. It would be nice if there were a more current census.  Let me know if you need help with polishing on articles you write, and I will be glad to edit.  You might use
+&gt; 550714 0.452 Hello Splash! I haven't had much of a chance for correspondance lately, getting ready for the start of the new semester and all that, but I've been wondering what your ideas are concerning the [[Londo
+&gt; 350317 0.454 If you do ever choose to run again, please let me know.  I'll be there. &amp;mdash;&amp;nbsp;
+&gt; 340943 0.455 Let me know which sound files you want added. I'd like to see \"Harborcoat\", but I suppose I would have to be \"Letter Never Sent\" or \"Camera\" from that album. 
+&gt; 161635 0.456 Once you've figured out what format you want, let me know what archive names you want and what you want at the top of each archive and I'll be able to set up the bot for you. '''&lt;span style=\"font-fam
+&gt; 365578 0.457 Hi Sydney. I hope this finds you well. My name is Matthew Roth and I'm a Storyteller at the Wikimedia Foundation. We're chronicling the inspiring stories of the Wikipedia community, especially editors
+&gt; 339036 0.457 Hi Leah, good hearing from you again! When I'm creating books, I mainly create them on two merits: The first is that I must have some sort of interest in the topic, and the second is that the topic mu
+&gt; 107916 0.459 You might try contacting user [[User talk:Colds7ream|Colds7ream]], who successfully took [[International Space Station]] through FAC a year ago -- they may be both knowledgeable and willing to help wi
+&gt; 570792 0.460 I actually don't know how to do that. If you can point me at any examples of what you're trying to do, I'll prod at it and let you know how it works. I'd like to encourage you to focus less on your us
+&gt; 462990 0.461 Your help is very much appreciated. I don't know if I understand exactly all what you mean but I will try my best. The examples of other composers that you suggested will be a great help. I will be in
+
+context-utterances
+&gt;&gt; 296304 0.601 Alright; got someone else I could bug? I've already contacted Fuchs. &lt;font face=\"Verdana\"&gt;
+&gt;&gt; 165740 0.610 Thanks, I appreciate the help.  The list above helps, and I'll mess with it some more to see if any further scrutiny is required to eliminate the chances of tagging incorrect images.  
+&gt;&gt; 347273 0.616 Hi, you have some good comments. I started a rudimentary Core Topics COTW at [[Wikipedia:Version 1.0 Editorial Team\/Core topics\/Core topics COTW]]. We can see how it goes. Thanks. 
+&gt;&gt; 321554 0.618 OK with the group we can do it all. Although Picasso images are proving to be tough to work with because of copyrights and estate issues. Olympia, maybe or late Monet - what a story. 
+&gt;&gt; 551717 0.623 Great, I hate autoblocks. They're more trouble than they're worth in situations like these. Ok, off to deliver pizzas...&lt;font color=\"#4682B4\"&gt;
+&gt;&gt; 90138 0.623 Okay. Nevertheless, please drop a line on the football project talk page once the discussion has been opened. --
+&gt;&gt; 374426 0.625 Okay, I appreciate your looking into it, 
+&gt;&gt; 545836 0.629 Hey there. Yes, I do see your argument, but unfortunately with organisations like the CDC and WHO all referring to this as \"swine influenza\" (see [http:\/\/www.who.int\/csr\/disease\/swineflu\/en\/i
+&gt;&gt; 543511 0.631 Ok then... I appreciate the recognition though. Thanks, &lt;b&gt;&lt;font face=\"Arial\" color=\"1F860E\"&gt;[[User:BrendelSignature|Signature]]&lt;\/font&gt;&lt;font color=\"20038A\"&gt;&lt;sup&gt;
+&gt;&gt; 239293 0.643 Since he hasn't edited since the end of August, I also dropped a copy on Jpgordon's page as well.  Hopefully we'll hear from one of them soon. 
+
+====
+
+CLUSTER 2 2
+---
+terms
+               cluster_dist
+index                      
+deleted_*          0.483710
+deleted_be         0.542814
+remove_*           0.551680
+restored_*         0.560979
+deleted_was        0.577411
+deleted_not        0.580295
+deleted_is         0.586556
+find_can           0.586681
+remove_from        0.589373
+remove_please      0.591656
+
+context terms
+               cluster_dist
+index                      
+hello_*            0.617250
+restored_'ve       0.634718
+restored_*         0.635371
+hello&gt;*            0.662584
+restored_have      0.666999
+replaced_with      0.673871
+since&gt;*            0.675255
+replaced_*         0.679293
+tag_*              0.693324
+provided_*         0.694144
+
+
+utterances
+&gt; 116734 0.471 also ... you deleted mention in the body of at least one bio of the fact that the person was Jewish.  Please RV all such deletions, or let me know why you do not wish to do so.  Thanks. --
+&gt; 111384 0.473 To clarify, [[WP:G4]] only applies to articles deleted per a [[WP:XFD|deletion discussion]], not those deleted via [[WP:CSD]]. Cheers \u2014
+&gt; 373927 0.474 the article was deleted due to copyright infringement. OTRS has received permission from the copyright holder under CC-by-sa-3.0 to use the material. If you have OTRS access, please consult ticket# 20
+&gt; 23238 0.475 I know you've managed to deflect concerns about your userpage in the past, Timeshift, but I'm afraid it'll be best for everyone if you take GorillaWarfare's advice now, rather than taking this to an M
+&gt; 490974 0.476 Hi. Please do not recreate \"WP:USER.pce3@ij.net\". Doing so constitutes recreation of deleted material and will be deleted on sight and may lead to blocking of your account. --PS2pcGAMER (talk) 10:59
+&gt; 527977 0.478 The article was deleted at a second AfD nomination ([[Wikipedia:Articles for deletion\/List of city nicknames (2nd nomination)]]). The result on that nomination was delete. If you want to contest the 
+&gt; 290756 0.480 The edit you made [http:\/\/en.wikipedia.org\/w\/index.php?title=Political_positions_of_Barack_Obama&amp;diff=254112557&amp;oldid=254098937 here] constitutes a misuse of the rollback feature, and I must ask y
+&gt; 42967 0.481 The inclusionists, so far as I know, have won the culture war at XfD. If you have even two or three refs from any even semi-decent source, the article will not be deleted. Moreover, you can make a cas
+&gt; 495307 0.482 The deletion log[http:\/\/en.wikipedia.org\/w\/index.php?title=Special:Log\/delete&amp;page=Bernadette_Sands_McKevitt] states ''deleted \"Bernadette Sands McKevitt\" (csd a7)'' - I have no idea what a ''c
+&gt; 427636 0.482 You have your email turned off.  Therefore, you have to email me.  If you're referring to this: [[Wikipedia:Articles for deletion\/Alexander MacGregor]], the result was '''no consensus'''.  Any inform
+
+context-utterances
+&gt;&gt; 344102 0.589 Hi Mrg. If you check out [[Latin alphabet]], you will see that this term is not restricted to the original Roman alphabet, but includes the close derivatives like German (with umlauts \xe4,\xdc,...), 
+&gt;&gt; 263586 0.599 Hello. Well, everything needs to be verifiable. If the photograph says that it can be reproduced then I would advise that that permission also needs to be be uploaded and linked to. 
+&gt;&gt; 517615 0.611 Thank you for warning me about 3rr. I was acting in goodwill as proposed by [[User:Kmccoy|kmccoy]]'s mediation, by substituting the compromise (temp) version of the article for the disputed one. All p
+&gt;&gt; 336908 0.616 Hi Mike, seriously, nothing personal. If I hadn't made the changes, somebody, eventually would have. I would recommend that you review some of Wikipedia's policy, guidelines and FAQs at [[WP:HELP]]. A
+&gt;&gt; 264359 0.616 Hi. &lt;nowiki&gt;{{nn-band}}&lt;\/nowiki&gt; means \"non-notable band.\" Your article failed the criteria for inclusion outlined at [[WP:BAND]]. For inclusion, you MUST cite several reliable third party referenc
+&gt;&gt; 123827 0.626 Hello! It so happens that my mother (76 years old) was with him in the same class and remembers him very well. If you need any details on personnal basis that could clarify anything - just ask.  --
+&gt;&gt; 503563 0.626 Oh for heaven's sake you two. Stop bickering about the past. Homologeo, if some of the deleted material is worth discussing then discuss it. You don't need to restore old edits for that. If it is hard
+&gt;&gt; 532648 0.627 In that case, no problem. Page is restored. For proper formatting, I advise you to check some similar articles and try to format it in the similar way. Any by the way, if you upload a photo, you shoul
+&gt;&gt; 480730 0.629 Man was that ever. Ok, I will first review you edits to see what we need to do. If you don't have email set please do. Friday is also your coach and  I advise you to contact him to see if we can set u
+&gt;&gt; 117653 0.630 842U, I see that elsewhere you have recently directed this editor to [[WP:OWN]]. IIRC when a similar issue arose concerning this editor, [[User:Daniel_J._Leivick]] took a special interest in him and g
+
+====
+
+CLUSTER 3 3
+---
+terms
+           cluster_dist
+index                  
+is_*           0.558697
+is_there       0.564460
+is_not         0.576292
+is_is          0.591916
+even&gt;*         0.593364
+seems_to       0.600885
+'s_not         0.609943
+what&gt;*         0.614863
+are_not        0.617335
+mean_does      0.617859
+
+context terms
+           cluster_dist
+index                  
+to&gt;*           0.631598
+has_*          0.631947
+is_*           0.650184
+as&gt;*           0.660322
+is_fine        0.662922
+in&gt;*           0.668126
+is_to          0.669242
+is_see         0.678658
+because&gt;*      0.689098
+makes_*        0.689591
+
+
+utterances
+&gt; 531550 0.526 It is not that big of a deal or anything, but there are some college\/university navbars that have unique fonts on the heading. The only reason I did it like that, is because that specific font is ver
+&gt; 526290 0.531 Is the asterisk in the infobox a stray mark or does it mean something? 
+&gt; 356839 0.533 In the caption to this phote there is a small error. The word \"rebar\" is slang for reinforcement bar. What the workers are placing is not rebar but welded wire reinforcement, abbreviated WWR, someti
+&gt; 559270 0.535 Deleting is not the most appropiate solution to the problem. Protecting the article, blocking the offending users and continued editing efforts are better solutions. 
+&gt; 332579 0.535 There is one important factor here: changing a category to a list is not a removal of information. 
+&gt; 61281 0.536 But lack of reliable sources for an article in the process of being written is not grounds for speedy deletion! 
+&gt; 189103 0.536 But Ireland is not in the World Cup. Extremely sexy 12:19, 25 June 2006 (UTC)
+&gt; 133651 0.538 There is no cabal, and this is not a secret message. 000393DB396E. --
+&gt; 178596 0.538 what a lot of utter (expletive deleted) - the order of the logic by the editor is fundamentally wrong and against the general intent of things work - add content and then verify is not how it works - 
+&gt; 134734 0.540 I think a reader expects a link to the authority when the link is so labelled as being to the authority. The unitary authority in this case ''is'' [[Cornwall Council]] - [[Cornwall]] is ''not'' a unit
+
+context-utterances
+&gt;&gt; 159825 0.613 For some reason, the original block failed, as it didn't register in the block log. But the good news is that the re-block succeeded. --
+&gt;&gt; 40914 0.622 Hehe, I'm relieved to see that the bot has very little idea of how I think - though the obvious articles related to Wikileaks are always interesting. ;)  I can see that after my editing the [[Critical
+&gt;&gt; 210360 0.626 And giving that terminology too much weight. That is all my complaint is.
+&gt;&gt; 280606 0.626 Paper33d was protesting Morwen's warnings (plural) and clearly not understanding the issue when I added my first note, which was explanatory and '''not''' a warning. The policy against blanking talk p
+&gt;&gt; 197116 0.628 Do you have some further information on this? I know that &amp;amp;ndash; is the  correct html source but the Wikipeda software does more than just displaying html. For example umlaut \xe4 doesn't have to
+&gt;&gt; 505876 0.629 I understand that rule with the talk headers and I only do it as a minor edit when Im there doing other things.  The problem I have with that rule in general is that without the talk header newbys and
+&gt;&gt; 483934 0.631 And I hate to think he's a [[Dungeons &amp; Dragons|D&amp;D]] fan, but the only reference I can find to that term is in [[Nodwick]]. Go figure... -
+&gt;&gt; 275755 0.634 And \u09b8\u09cc\u09ae\u09cb is just my name in [[Bengali language|Bengali]]. --''
+&gt;&gt; 88155 0.637 As my German friends used to say ''Machs Nicth'' sp, makes no difference as long as a source supports whatever section they fall under. --
+&gt;&gt; 405770 0.637 In the spirit of good faith, of course, I will assume that this was a case of some overly fast twinkle-editing which resulted in a message going to the wrong person, which I will of course forgive, wi
+
+====
+
+CLUSTER 4 4
+---
+terms
+                cluster_dist
+index                       
+thinking_*          0.738030
+think_be            0.741211
+be_there            0.751830
+start_should        0.758371
+make_sure           0.759340
+thinking_about      0.760743
+what&gt;do             0.765511
+thinking_'m         0.768603
+be_might            0.772642
+hmm&gt;*               0.772663
+
+context terms
+           cluster_dist
+index                  
+split_*        0.798109
+turn_*         0.832830
+perhaps&gt;*      0.835086
+then&gt;*         0.837803
+but&gt;if         0.845863
+think_yes      0.854162
+could_*        0.854613
+finish_*       0.858283
+tend_be        0.858555
+set_*          0.858626
+
+
+utterances
+&gt; 344270 0.705 Maybe its a matter of definition. Where does \"uncomfortable\" go to \"painful\"? To be honest, my evidence is purely anecdotal - I was thinking about warm water mixers in showers. Modern ones often a
+&gt; 157057 0.709 I agree about making an end-box version of the Holocaust infobox to be used in place of the sidebar version. I don't know a lot about infobox editing, however - though this might be an opportunity to 
+&gt; 563614 0.710 Poor [[User:Ron Ritzman|Ron Ritzman]]! &amp;#9786;&lt;p&gt;I see that you blocked {{user|Frnnrthprd}}.  I, given [http:\/\/en.wikipedia.org\/w\/index.php?diff=390963663&amp;oldid=390939755 this], which is BLP vanda
+&gt; 389411 0.711 Hmm, you raise good arguments. If the material is posted directly on the talk page a header is indeed required. Thinking about it a bit. '''Yoenit''' (
+&gt; 176895 0.711 Shouldn't it be formatted like another notability guideline, ala [[Wikipedia:Notability (people)]]? There might be a school one already? \u2022 &lt;span style=\"font-variant:small-caps\"&gt;&lt;font color=\"#8
+&gt; 399915 0.714 In other news . . . I'd been thinking of nominating one or two clueful people as administrator. These are people who've been beavering away ''writing articles'' and making informative contributions to
+&gt; 27579 0.714 Also I would be curious what you think about the choices it makes about which symbols are suitble for rendering as simple html.  To me many things should probably include spaces that do not.  But issu
+&gt; 487973 0.715 My best advice to you is that one should avoid getting caught up in the debates on the RfA, or worrying to much about this go-round.  While this RfA is unlikely to succeed, I think if you broaden your
+&gt; 197697 0.719 You don't have infoboxes everywhere. If it is about inserting original script in normal articles, it might be better to have something like the IPA template and a font presented horizontally. If so, w
+&gt; 492604 0.719 I would agree if it was clear that all of these categories should be treated the same.  That may well be the case.  There is also another interesting question raised here if you look at the parent cat
+
+context-utterances
+&gt;&gt; 271870 0.773 Maybe if the building has enough content then split it into an own separate article... &lt;small style=\"font:bold 12px Courier New;display:inline;border:#009 1px dashed;padding:1px 6px 2px 7px;white-spa
+&gt;&gt; 191805 0.793 Ok, split. 
+&gt;&gt; 337287 0.794 Then Buddha must love me :). Hey, no biggie here. Cheers and take care! --
+&gt;&gt; 577834 0.798 That's good to see that you've noticed some errors, I assume there could be many. I didn't create the content, I only split existing content from [[Mickey Mouse]] into a new article.  --  
+&gt;&gt; 96972 0.799 BTW, if the section gets too long, it can always be split off into a new article. 
+&gt;&gt; 183800 0.801 Troublesome? Should I be donning my flameproof suit yet again? Argh! but thank you. Much to be done on Khokhar, I think. - 
+&gt;&gt; 575632 0.805 Hire me to be your campaign manager. With any luck, we'd split the Republican vote right in half.\u2014
+&gt;&gt; 48820 0.807 We agree that [http:\/\/www.os390-mvs.freesurf.fr\/mvshist.htm MVS... a long history] is \"not a well-established source, it's just the readily available one\" (although it looks like it's written by 
+&gt;&gt; 247277 0.810 Should I pass the pooh to Materialscientist who changed to the de-version? (No I won't) --
+&gt;&gt; 141862 0.812 FYI, the basketball coach navboxes for five of the six major conferences (ACC, Big Ten, Big XII, Pac-10, SEC) have now been upgraded.  Once we finish enhancing the Division I basketball navboxes and p
+
+====
+
+CLUSTER 5 5
+---
+terms
+            cluster_dist
+index                   
+reverted_*      0.610958
+report_*        0.618923
+revert_*        0.637270
+appears_*       0.650385
+explain_*       0.675527
+warned_*        0.682376
+think_did       0.685245
+for&gt;*           0.687296
+was_not         0.687717
+welcome_to      0.689001
+
+context terms
+             cluster_dist
+index                    
+ignore_*         0.715005
+fixed_have       0.742801
+refused_*        0.746171
+accusing_*       0.759295
+apologize_*      0.765259
+handled_*        0.766994
+extended_*       0.767898
+continue_do      0.768159
+keeping_*        0.774206
+clarify_*        0.775986
+
+
+utterances
+&gt; 279892 0.564 First of all, about edit - Eupator removed not only my edit but others. I have showed now on talkpage another neutral source to support my edit. But question is not about content but about behavior. A
+&gt; 349468 0.569 And they are back again [http:\/\/en.wikipedia.org\/w\/index.php?title=Trigger_point&amp;diff=213404241&amp;oldid=213149905]. I reverted this time. --
+&gt; 385865 0.572 Yes Fainites, direktor reverted all other users as well. And, no, C didn\xb4t edit-warred this time, he only reverted direktor, who actually started edit-warring again, just as he continuosly does in 
+&gt; 364488 0.572 I have [[Totimoshi|restored the article]] with some text and refs. It's not much, but I believe that the notability has been established because the band has been reviewed by multiple unrelated public
+&gt; 267363 0.577 Yes, there is a guideline, policy, or whatever. \"Requirement\" on Wikipedia is to strong a word. But it does say in [[WP:Footnotes]] or [[WP:CITE]] or someplace that a \"bunch of links at the bottom\
+&gt; 362856 0.578 You reverted the page four times, Sanders. That's a violation. 
+&gt; 214104 0.580 I've just noticed your hidden comment in this edit, [http:\/\/en.wikipedia.org\/w\/index.php?title=Will_Eisner&amp;diff=next&amp;oldid=171281643].  Please note such comments are counter to our policies on [[W
+&gt; 476805 0.581 Thanks for your offer to unblock me. I would obviously have accepted your conditions but was so thoroughly disgusted by the ridiculousness of the block that I didn't even bother to sign in for a week 
+&gt; 153679 0.585 Yes, the latter certainly appears to be a breach of the traditional rights and also of Magna Carta - yet according to a judge interviewed on R4 the other night, it is precisely what Parliament has dec
+&gt; 484395 0.585 I was going to be bold and \"fix\" this, but it appears that it will require an administrator change and I found that you had explicitly changed this stuff.   Can you please explain to me why DNS shou
+
+context-utterances
+&gt;&gt; 234254 0.686 Hi Harry&lt;br&gt; Yes, the National Jockey's Hall of Fame did exist at Pimlico and burnt to ground when [[Pimlico]]'s historic Clubhouse caught fire and then both ceased to exist. That was infact the build
+&gt;&gt; 569540 0.691 Eh?  I stopped using that '''ages''' ago, when first alerted to a problem!  My sig now links though to my talk page and contains no image or other html\/wiki code. Regards, 
+&gt;&gt; 573280 0.712 How is Gator1? I hope everything has worked out but I'm disappointed to have not seen some decisive stance taken by the [[User talk:Jimbo Wales#Gator1 stalked in the real world|wikipedia chief]]. I ho
+&gt;&gt; 215912 0.714 I sign off mostly all my comments with \"Thanks!\"  Just habbit I guess.  I apologize if I offended you by saying that. 
+&gt;&gt; 408379 0.716 Just FYI, you struck almost your entire guide - which I think was an typo in the wikicode - so I [http:\/\/en.wikipedia.org\/w\/index.php?title=User:Heimstern\/ACE2010&amp;diff=400313994&amp;oldid=400311822 f
+&gt;&gt; 441447 0.722 Ok, thx a lot. I corrected my mistake in RFC: [http:\/\/en.wikipedia.org\/w\/index.php?title=Wikipedia%3ARequests_for_comment%2FCollect&amp;diff=284157460&amp;oldid=284155997] He still violated terms of his u
+&gt;&gt; 513939 0.724 Okay, I accept that this case is analogous to species names. 
+&gt;&gt; 327599 0.728 Your right I copied each page and then changed all the information to try and save time. Thanks for cleaning them up. 
+&gt;&gt; 267445 0.729 I apparently sent you (and a some other people) the wrong stuff by mistake ! This whole FA thing is complicated and as it turns out the article is [http:\/\/en.wikipedia.org\/wiki\/Wikipedia:Featured_
+&gt;&gt; 431892 0.730 Apology accepted :) Okay, if the consensus is for there to be no hyphens, I'll accept that, though it still comes as a surprise, amd still doesn't explain why adverbs which don't end -ly aren't treate
+
+====
+</code></pre>
+</div>
+</div>
+<p>demo continues below</p>
+<p>Per our interpretation, we assign the following names to these clusters:</p>
+<div id="cell-32" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ec_fw.set_cluster_names([<span class="st">'casual'</span>, <span class="st">'coordination'</span>, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">'procedures'</span>, <span class="st">'contention'</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">'editing'</span>, <span class="st">'moderation'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-33" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ec_fw.print_cluster_stats()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">utts</th>
+<th data-quarto-table-cell-role="th">terms</th>
+<th data-quarto-table-cell-role="th">context_utts</th>
+<th data-quarto-table-cell-role="th">context_terms</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">casual</td>
+<td>0.336966</td>
+<td>0.195341</td>
+<td>0.201834</td>
+<td>0.205236</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">contention</td>
+<td>0.097679</td>
+<td>0.174233</td>
+<td>0.202557</td>
+<td>0.237722</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">coordination</td>
+<td>0.348370</td>
+<td>0.199721</td>
+<td>0.136531</td>
+<td>0.105293</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">editing</td>
+<td>0.019979</td>
+<td>0.160892</td>
+<td>0.225581</td>
+<td>0.202943</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">moderation</td>
+<td>0.097966</td>
+<td>0.153724</td>
+<td>0.118555</td>
+<td>0.130136</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">procedures</td>
+<td>0.099040</td>
+<td>0.116089</td>
+<td>0.114942</td>
+<td>0.118670</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="application-to-analysis-data" class="level2">
+<h2 class="anchored" data-anchor-id="application-to-analysis-data">2. Application to analysis data</h2>
+<p>We now use the comment types we’ve just derived to analyze a dataset containing conversations that eventually derail into toxic behavior, and conversations that stay on track throughout. We load this data:</p>
+<div id="cell-36" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OPTION 1: DOWNLOAD CORPUS </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># UNCOMMENT THESE LINES TO DOWNLOAD CORPUS</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># DATA_DIR = '&lt;YOUR DIRECTORY&gt;'</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># AWRY_CORPUS_PATH = download('conversations-gone-awry-corpus', data_dir=DATA_DIR)</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># OPTION 2: READ PREVIOUSLY-DOWNLOADED CORPUS FROM DISK</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># UNCOMMENT THIS LINE AND REPLACE WITH THE DIRECTORY WHERE THE TENNIS-CORPUS IS LOCATED</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># AWRY_CORPUS_PATH = '&lt;YOUR DIRECTORY&gt;'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-37" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>awry_corpus <span class="op">=</span> Corpus(AWRY_CORPUS_PATH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-38" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>awry_corpus <span class="op">=</span> awry_corpus.filter_conversations_by(<span class="kw">lambda</span> convo: convo.meta[<span class="st">'annotation_year'</span>] <span class="op">==</span> <span class="st">'2018'</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># here we filter to consider only the conversations from the original paper</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-39" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>awry_corpus.print_summary_stats()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of Speakers: 2010
+Number of Utterances: 6363
+Number of Conversations: 1168</code></pre>
+</div>
+</div>
+<p>We start by extracting the same noun-less dependency parse arcs that we used when training the model, above. To do this, we need to load the dependency parses, and then apply a few additional transformers, below:</p>
+<div id="cell-41" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>awry_corpus.load_info(<span class="st">'utterance'</span>,[<span class="st">'parsed'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-42" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> demo_text_pipelines <span class="im">import</span> wiki_arc_pipeline</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># see `demo_text_pipelines.py` in this demo's directory for details</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># in short, this pipeline will compute the dependency-parse arcs we use as input features,</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># but will skip over utterances for which these attributes already exist</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>awry_corpus <span class="op">=</span> wiki_arc_pipeline().transform(awry_corpus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We represent the comments from the new dataset as tf-idf vectors, using the vocabulary and parameters we’ve derived over the training data:</p>
+<div id="cell-44" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>awry_corpus <span class="op">=</span> first_tfidf_obj.transform(awry_corpus)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>awry_corpus <span class="op">=</span> second_tfidf_obj.transform(awry_corpus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we apply the trained model to transform the new dataset. In particular, we annotate each comment with an attribute, <code>fw_clustering.cluster</code>, that denotes the comment type it’s assigned to:</p>
+<div id="cell-46" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>awry_corpus <span class="op">=</span> ec_fw.transform(awry_corpus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To facilitate subsequent analyses, we will gather the comment types for each comment into a table:</p>
+<div id="cell-48" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cluster_assign_df <span class="op">=</span> awry_corpus.get_attribute_table(<span class="st">'utterance'</span>,[<span class="st">'fw_clustering.cluster_id_'</span>])</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>type_assignments <span class="op">=</span> np.zeros((<span class="bu">len</span>(cluster_assign_df), <span class="dv">6</span>))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>type_assignments[np.arange(<span class="bu">len</span>(cluster_assign_df)),cluster_assign_df[<span class="st">'fw_clustering.cluster_id_'</span>].values.astype(<span class="bu">int</span>)] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>cluster_assign_df <span class="op">=</span> pd.DataFrame(columns<span class="op">=</span>np.arange(<span class="dv">6</span>), index<span class="op">=</span>cluster_assign_df.index, data<span class="op">=</span>type_assignments)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>cluster_assign_df.columns <span class="op">=</span> ec_fw.get_cluster_names()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-49" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>cluster_assign_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">coordination</th>
+<th data-quarto-table-cell-role="th">procedures</th>
+<th data-quarto-table-cell-role="th">contention</th>
+<th data-quarto-table-cell-role="th">editing</th>
+<th data-quarto-table-cell-role="th">moderation</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">146743638.12652.12652</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">146743638.12667.12652</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">146842219.12874.12874</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">146860774.13072.13072</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">143890867.11926.11926</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="analysis-comparing-comment-types-in-awry-versus-on-track-conversations" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-comparing-comment-types-in-awry-versus-on-track-conversations">3. Analysis: comparing comment types in awry versus on-track conversations</h2>
+<p>We start by preprocessing the data, to facilitate our comparison of awry versus on-track conversations. Ultimately, we will compare the occurrence of comment types in the first and second comments of these discussions.</p>
+<div id="cell-52" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first, we need to directly map comment IDs to their conversations. We'll build a DataFrame to do this</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>comment_ids <span class="op">=</span> []</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>convo_ids <span class="op">=</span> []</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>timestamps <span class="op">=</span> []</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>page_ids <span class="op">=</span> []</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> conversation <span class="kw">in</span> awry_corpus.iter_conversations():</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> comment <span class="kw">in</span> conversation.iter_utterances():</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># section headers are included in the dataset for completeness, but for prediction we need to ignore</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># them as they are not utterances</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> comment.meta[<span class="st">"is_section_header"</span>]:</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>            comment_ids.append(comment.<span class="bu">id</span>)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>            convo_ids.append(comment.root)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>            timestamps.append(comment.timestamp)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>            page_ids.append(conversation.meta[<span class="st">"page_id"</span>])</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>comment_df <span class="op">=</span> pd.DataFrame({<span class="st">"conversation_id"</span>: convo_ids, <span class="st">"timestamp"</span>: timestamps, <span class="st">"page_id"</span>: page_ids}, index<span class="op">=</span>comment_ids)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="co"># we'll do our construction using awry conversation ID's as the reference key</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>awry_convo_ids <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># these dicts will then all be keyed by awry ID</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>good_convo_map <span class="op">=</span> {}</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>page_id_map <span class="op">=</span> {}</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> conversation <span class="kw">in</span> awry_corpus.iter_conversations():</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> conversation.meta[<span class="st">"conversation_has_personal_attack"</span>] <span class="kw">and</span> conversation.<span class="bu">id</span> <span class="kw">not</span> <span class="kw">in</span> awry_convo_ids:</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        awry_convo_ids.add(conversation.<span class="bu">id</span>)</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>        good_convo_map[conversation.<span class="bu">id</span>] <span class="op">=</span> conversation.meta[<span class="st">"pair_id"</span>]</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>        page_id_map[conversation.<span class="bu">id</span>] <span class="op">=</span> conversation.meta[<span class="st">"page_id"</span>]</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>awry_convo_ids <span class="op">=</span> <span class="bu">list</span>(awry_convo_ids)</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>pairs_df <span class="op">=</span> pd.DataFrame({<span class="st">"bad_conversation_id"</span>: awry_convo_ids,</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"conversation_id"</span>: [good_convo_map[cid] <span class="cf">for</span> cid <span class="kw">in</span> awry_convo_ids],</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"page_id"</span>: [page_id_map[cid] <span class="cf">for</span> cid <span class="kw">in</span> awry_convo_ids]})</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a><span class="co"># finally, we will augment the pairs dataframe with the IDs of the first and second comment for both</span></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a><span class="co"># the bad and good conversation. This will come in handy for constructing the feature matrix.</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>first_ids <span class="op">=</span> []</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>second_ids <span class="op">=</span> []</span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>first_ids_bad <span class="op">=</span> []</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>second_ids_bad <span class="op">=</span> []</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> pairs_df.itertuples():</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># "first two" is defined in terms of time of posting</span></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    comments_sorted <span class="op">=</span> comment_df[comment_df.conversation_id<span class="op">==</span>row.conversation_id].sort_values(by<span class="op">=</span><span class="st">"timestamp"</span>)</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    first_ids.append(comments_sorted.iloc[<span class="dv">0</span>].name)</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    second_ids.append(comments_sorted.iloc[<span class="dv">1</span>].name)</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>    comments_sorted_bad <span class="op">=</span> comment_df[comment_df.conversation_id<span class="op">==</span>row.bad_conversation_id].sort_values(by<span class="op">=</span><span class="st">"timestamp"</span>)</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    first_ids_bad.append(comments_sorted_bad.iloc[<span class="dv">0</span>].name)</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>    second_ids_bad.append(comments_sorted_bad.iloc[<span class="dv">1</span>].name)</span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>pairs_df <span class="op">=</span> pairs_df.assign(first_id<span class="op">=</span>first_ids, second_id<span class="op">=</span>second_ids, </span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>                           bad_first_id<span class="op">=</span>first_ids_bad, bad_second_id<span class="op">=</span>second_ids_bad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-53" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>tox_first_comment_features <span class="op">=</span>pairs_df[[<span class="st">'bad_first_id'</span>]].join(cluster_assign_df, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'bad_first_id'</span>)[cluster_assign_df.columns]</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ntox_first_comment_features <span class="op">=</span>pairs_df[[<span class="st">'first_id'</span>]].join(cluster_assign_df, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'first_id'</span>)[cluster_assign_df.columns]</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>tox_second_comment_features <span class="op">=</span>pairs_df[[<span class="st">'bad_second_id'</span>]].join(cluster_assign_df, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'bad_second_id'</span>)[cluster_assign_df.columns]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>ntox_second_comment_features <span class="op">=</span>pairs_df[[<span class="st">'second_id'</span>]].join(cluster_assign_df, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'second_id'</span>)[cluster_assign_df.columns]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We compute log-odds ratios of each comment type, comparing the awry and on-track conversations. We will also compute significance values from binomal tests comparing the proportion of awry-turning conversations exhibiting a particular comment type to the proportion of on-track conversations.</p>
+<div id="cell-56" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-57" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_p_stars(x):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">&lt;</span> <span class="fl">.001</span>: <span class="cf">return</span> <span class="st">'***'</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> x <span class="op">&lt;</span> <span class="fl">.01</span>: <span class="cf">return</span> <span class="st">'**'</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> x <span class="op">&lt;</span> <span class="fl">.05</span>: <span class="cf">return</span> <span class="st">'*'</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: <span class="cf">return</span> <span class="st">''</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_tox(df_ntox, df_tox,  min_n<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    cols <span class="op">=</span> df_ntox.columns</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    num_feats_in_tox <span class="op">=</span> df_tox[cols].<span class="bu">sum</span>().astype(<span class="bu">int</span>).rename(<span class="st">'num_feat_tox'</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    num_nfeats_in_tox <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> df_tox[cols]).<span class="bu">sum</span>().astype(<span class="bu">int</span>).rename(<span class="st">'num_nfeat_tox'</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    num_feats_in_ntox <span class="op">=</span> df_ntox[cols].<span class="bu">sum</span>().astype(<span class="bu">int</span>).rename(<span class="st">'num_feat_ntox'</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    num_nfeats_in_ntox <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> df_ntox[cols]).<span class="bu">sum</span>().astype(<span class="bu">int</span>).rename(<span class="st">'num_nfeat_ntox'</span>)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    prop_tox <span class="op">=</span> df_tox[cols].mean().rename(<span class="st">'prop_tox'</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    ref_prop_ntox <span class="op">=</span> df_ntox[cols].mean().rename(<span class="st">'prop_ntox'</span>)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    n_tox <span class="op">=</span> <span class="bu">len</span>(df_tox)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>        num_feats_in_tox, </span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>        num_nfeats_in_tox,</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>        num_feats_in_ntox,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>        num_nfeats_in_ntox,</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>        prop_tox,</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>        ref_prop_ntox,</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    ], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'num_total'</span>] <span class="op">=</span> df.num_feat_tox <span class="op">+</span> df.num_feat_ntox</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'log_odds'</span>] <span class="op">=</span> np.log(df.num_feat_tox) <span class="op">-</span> np.log(df.num_nfeat_tox) <span class="op">\</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> np.log(df.num_nfeat_ntox) <span class="op">-</span> np.log(df.num_feat_ntox)</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'abs_log_odds'</span>] <span class="op">=</span> np.<span class="bu">abs</span>(df.log_odds)</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'binom_p'</span>] <span class="op">=</span> df.<span class="bu">apply</span>(<span class="kw">lambda</span> x: stats.binom_test(x.num_feat_tox, n_tox, x.prop_ntox), axis<span class="op">=</span><span class="dv">1</span>)<span class="co">#*5</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df[df.num_total <span class="op">&gt;=</span> min_n]</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'p'</span>] <span class="op">=</span> df[<span class="st">'binom_p'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="st">'</span><span class="sc">%.3f</span><span class="st">'</span> <span class="op">%</span> x)</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'pstars'</span>] <span class="op">=</span> df[<span class="st">'binom_p'</span>].<span class="bu">apply</span>(get_p_stars)</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.sort_values(<span class="st">'log_odds'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-58" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>first_comparisons <span class="op">=</span> compare_tox(ntox_first_comment_features, tox_first_comment_features)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>second_comparisons <span class="op">=</span> compare_tox(ntox_second_comment_features, tox_second_comment_features)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plotting the resultant log-odds ratios, we note some differences in which types of comments tend to start awry versus on track discussions: <em>contentious</em> comments tend to signal future troubles, while <em>coordinating</em> work is a signal that the conversation will remain civil throughout.</p>
+<div id="cell-61" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-62" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we are now ready to plot these comparisons. the following (rather intimidating) helper function </span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># produces a nicely-formatted plot:</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_figure(ax, first_cmp, second_cmp, title<span class="op">=</span><span class="st">''</span>, prompt_types<span class="op">=</span><span class="dv">6</span>, min_log_odds<span class="op">=</span><span class="fl">.2</span>, min_freq<span class="op">=</span><span class="dv">50</span>,xlim<span class="op">=</span><span class="fl">.85</span>):</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># selecting and sorting the features to plot, given minimum effect sizes and statistical significance</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    frequent_feats <span class="op">=</span> first_cmp[first_cmp.num_total <span class="op">&gt;=</span> min_freq].index.union(second_cmp[second_cmp.num_total <span class="op">&gt;=</span> min_freq].index)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    lrg_effect_feats <span class="op">=</span> first_cmp[(first_cmp.abs_log_odds <span class="op">&gt;=</span> <span class="fl">.2</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>                                <span class="op">&amp;</span> (first_cmp.binom_p <span class="op">&lt;</span> <span class="fl">.05</span>)].index.union(second_cmp[(second_cmp.abs_log_odds <span class="op">&gt;=</span> <span class="fl">.2</span>)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>                                                                                  <span class="op">&amp;</span> (second_cmp.binom_p <span class="op">&lt;</span> <span class="fl">.05</span>)].index)</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     feats_to_include = frequent_feats.intersection(lrg_effect_feats)</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    feats_to_include <span class="op">=</span> first_cmp.index</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    feat_order <span class="op">=</span> <span class="bu">sorted</span>(feats_to_include, key<span class="op">=</span><span class="kw">lambda</span> x: first_cmp.loc[x].log_odds, reverse<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># parameters determining the look of the figure</span></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">'blue'</span>, <span class="st">'grey'</span>]</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    shapes <span class="op">=</span> [<span class="st">'^'</span>, <span class="st">'s'</span>]    </span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    eps <span class="op">=</span> <span class="fl">.02</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    star_eps <span class="op">=</span> <span class="fl">.035</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    xlim <span class="op">=</span> xlim</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>    min_log <span class="op">=</span> <span class="fl">.2</span></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>    gap_prop <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    label_size <span class="op">=</span> <span class="dv">14</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>    title_size<span class="op">=</span><span class="dv">18</span></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>    radius <span class="op">=</span> <span class="dv">256</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>    features <span class="op">=</span> feat_order</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>    ax.invert_yaxis()</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>    ax.plot([<span class="dv">0</span>,<span class="dv">0</span>], [<span class="dv">0</span>, <span class="bu">len</span>(features)<span class="op">/</span>gap_prop], color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for each figure we plot the point according to effect size in the first and second comment, </span></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and add axis labels denoting statistical significance</span></span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>    yticks <span class="op">=</span> []</span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>    yticklabels <span class="op">=</span> []</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> f_idx, feat <span class="kw">in</span> <span class="bu">enumerate</span>(features):</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>        curr_y <span class="op">=</span> (f_idx <span class="op">+</span> <span class="fl">.5</span>)<span class="op">/</span>gap_prop</span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>        yticks.append(curr_y)</span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>            first_p <span class="op">=</span> first_cmp.loc[feat].binom_p</span>
+<span id="cb36-39"><a href="#cb36-39" aria-hidden="true" tabindex="-1"></a>            second_p <span class="op">=</span> second_cmp.loc[feat].binom_p            </span>
+<span id="cb36-40"><a href="#cb36-40" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> first_cmp.loc[feat].abs_log_odds <span class="op">&lt;</span> min_log:</span>
+<span id="cb36-41"><a href="#cb36-41" aria-hidden="true" tabindex="-1"></a>                first_face <span class="op">=</span> <span class="st">"white"</span></span>
+<span id="cb36-42"><a href="#cb36-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> first_p <span class="op">&gt;=</span> <span class="fl">0.05</span>:</span>
+<span id="cb36-43"><a href="#cb36-43" aria-hidden="true" tabindex="-1"></a>                first_face <span class="op">=</span> <span class="st">'white'</span></span>
+<span id="cb36-44"><a href="#cb36-44" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb36-45"><a href="#cb36-45" aria-hidden="true" tabindex="-1"></a>                first_face <span class="op">=</span> colors[<span class="dv">0</span>]</span>
+<span id="cb36-46"><a href="#cb36-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> second_cmp.loc[feat].abs_log_odds <span class="op">&lt;</span> min_log:</span>
+<span id="cb36-47"><a href="#cb36-47" aria-hidden="true" tabindex="-1"></a>                second_face <span class="op">=</span> <span class="st">"white"</span></span>
+<span id="cb36-48"><a href="#cb36-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> second_p <span class="op">&gt;=</span> <span class="fl">0.05</span>:</span>
+<span id="cb36-49"><a href="#cb36-49" aria-hidden="true" tabindex="-1"></a>                second_face <span class="op">=</span> <span class="st">'white'</span></span>
+<span id="cb36-50"><a href="#cb36-50" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb36-51"><a href="#cb36-51" aria-hidden="true" tabindex="-1"></a>                second_face <span class="op">=</span> colors[<span class="dv">1</span>]</span>
+<span id="cb36-52"><a href="#cb36-52" aria-hidden="true" tabindex="-1"></a>            ax.plot([<span class="op">-</span><span class="dv">1</span> <span class="op">*</span> xlim, xlim], [curr_y, curr_y], <span class="st">'--'</span>, color<span class="op">=</span><span class="st">'grey'</span>, zorder<span class="op">=</span><span class="dv">0</span>, linewidth<span class="op">=</span><span class="fl">.5</span>)</span>
+<span id="cb36-53"><a href="#cb36-53" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb36-54"><a href="#cb36-54" aria-hidden="true" tabindex="-1"></a>            ax.scatter([first_cmp.loc[feat].log_odds], [curr_y <span class="op">+</span> eps], s<span class="op">=</span>radius, edgecolor<span class="op">=</span>colors[<span class="dv">0</span>], marker<span class="op">=</span>shapes[<span class="dv">0</span>],</span>
+<span id="cb36-55"><a href="#cb36-55" aria-hidden="true" tabindex="-1"></a>                        zorder<span class="op">=</span><span class="dv">20</span>, facecolors<span class="op">=</span>first_face)</span>
+<span id="cb36-56"><a href="#cb36-56" aria-hidden="true" tabindex="-1"></a>            ax.scatter([second_cmp.loc[feat].log_odds], [curr_y <span class="op">+</span> eps], s<span class="op">=</span>radius, edgecolor<span class="op">=</span>colors[<span class="dv">1</span>], marker<span class="op">=</span>shapes[<span class="dv">1</span>], </span>
+<span id="cb36-57"><a href="#cb36-57" aria-hidden="true" tabindex="-1"></a>                       zorder<span class="op">=</span><span class="dv">10</span>, facecolors<span class="op">=</span>second_face)</span>
+<span id="cb36-58"><a href="#cb36-58" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb36-59"><a href="#cb36-59" aria-hidden="true" tabindex="-1"></a>            first_pstr_len <span class="op">=</span> <span class="bu">len</span>(get_p_stars(first_p))</span>
+<span id="cb36-60"><a href="#cb36-60" aria-hidden="true" tabindex="-1"></a>            second_pstr_len <span class="op">=</span> <span class="bu">len</span>(get_p_stars(second_p))</span>
+<span id="cb36-61"><a href="#cb36-61" aria-hidden="true" tabindex="-1"></a>            p_str <span class="op">=</span> np.array([<span class="st">' '</span>] <span class="op">*</span> <span class="dv">8</span>)</span>
+<span id="cb36-62"><a href="#cb36-62" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> first_pstr_len <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb36-63"><a href="#cb36-63" aria-hidden="true" tabindex="-1"></a>                p_str[:first_pstr_len] <span class="op">=</span> <span class="st">'*'</span></span>
+<span id="cb36-64"><a href="#cb36-64" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> second_pstr_len <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb36-65"><a href="#cb36-65" aria-hidden="true" tabindex="-1"></a>                p_str[<span class="op">-</span>second_pstr_len:] <span class="op">=</span> <span class="st">'⁺'</span></span>
+<span id="cb36-66"><a href="#cb36-66" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb36-67"><a href="#cb36-67" aria-hidden="true" tabindex="-1"></a>            feat_str <span class="op">=</span> <span class="bu">str</span>(feat) <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span> <span class="op">+</span> <span class="st">''</span>.join(p_str)</span>
+<span id="cb36-68"><a href="#cb36-68" aria-hidden="true" tabindex="-1"></a>            yticklabels.append(feat_str)</span>
+<span id="cb36-69"><a href="#cb36-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb36-70"><a href="#cb36-70" aria-hidden="true" tabindex="-1"></a>            yticklabels.append(<span class="st">''</span>)</span>
+<span id="cb36-71"><a href="#cb36-71" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb36-72"><a href="#cb36-72" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add the axis labels</span></span>
+<span id="cb36-73"><a href="#cb36-73" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'log-odds ratio'</span>, fontsize<span class="op">=</span><span class="dv">28</span>)</span>
+<span id="cb36-74"><a href="#cb36-74" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks([<span class="op">-</span>xlim<span class="op">-</span><span class="fl">.05</span>, <span class="op">-</span><span class="fl">.5</span>, <span class="dv">0</span>, <span class="fl">.5</span>, xlim])</span>
+<span id="cb36-75"><a href="#cb36-75" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels([<span class="st">'on-track'</span>, <span class="op">-</span><span class="fl">.5</span>, <span class="dv">0</span>, <span class="fl">.5</span>, <span class="st">'awry'</span>], fontsize<span class="op">=</span><span class="dv">24</span>)</span>
+<span id="cb36-76"><a href="#cb36-76" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks(yticks)</span>
+<span id="cb36-77"><a href="#cb36-77" aria-hidden="true" tabindex="-1"></a>    ax.set_yticklabels(yticklabels, fontsize<span class="op">=</span><span class="dv">32</span>)</span>
+<span id="cb36-78"><a href="#cb36-78" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'both'</span>,  which<span class="op">=</span><span class="st">'both'</span>, bottom<span class="op">=</span><span class="st">'off'</span>,  top<span class="op">=</span><span class="st">'off'</span>,left<span class="op">=</span><span class="st">'off'</span>)</span>
+<span id="cb36-79"><a href="#cb36-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> feat_order</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-63" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> draw_figure(ax, first_comparisons, second_comparisons, <span class="st">''</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="wiki_awry_demo_files/figure-html/cell-42-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pipeline-usage" class="level2">
+<h2 class="anchored" data-anchor-id="pipeline-usage">4. Pipeline usage</h2>
+<p>We can also apply the framework via a pipeline that handles the following: * processes text (via a pipeline supplied by the user; see cell below) * transforms text to input representation (via <code>ColNormedTfidfTransformer</code>) * derives framework output (via <code>ExpectedContextModelTransformer</code>)</p>
+<div id="cell-66" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> convokit.expected_context_framework <span class="im">import</span> ExpectedContextModelPipeline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We initialize the pipeline with the following arguments: * <code>text_field</code> specifies which utterance metadata field to use as text input. * <code>share_tfidf_models</code> indicates whether we want to train one <code>ColNormedTfidfTransformer</code> model for both utterances and context-utterances. In this case, since we want different input representations for first and second comments, we set this argument to <code>False</code>. * <code>text_pipe</code> specifies the pipeline used to compute the contents of <code>text_field</code> * <code>tfidf_params</code> specifies the parameters to be passed into the underlying <code>ColNormedTfidfTransformer</code> object * <code>min_terms</code> specifies the minimum number of terms in the vocabulary that an utterance must contain for it to be considered in fitting and transforming the underlying <code>ExpectedContextModelTransformer</code> object (see the <code>selector</code> argument passed into <code>ec_fw.fit</code> above)</p>
+<p>All other arguments are inherited from <code>ExpectedContextModelTransformer</code>.</p>
+<div id="cell-68" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>fw_pipe <span class="op">=</span> ExpectedContextModelPipeline(context_field<span class="op">=</span><span class="st">'next_id'</span>, output_prefix<span class="op">=</span><span class="st">'fw'</span>,</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>        text_field<span class="op">=</span><span class="st">'arcs'</span>, share_tfidf_models<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>        text_pipe<span class="op">=</span>wiki_arc_pipeline(), </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>        tfidf_params<span class="op">=</span>{<span class="st">'binary'</span>: <span class="va">True</span>, <span class="st">'min_df'</span>: <span class="dv">50</span>}, </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>        min_terms<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>        n_svd_dims<span class="op">=</span><span class="dv">25</span>, n_clusters<span class="op">=</span><span class="dv">6</span>, cluster_on<span class="op">=</span><span class="st">'terms'</span>,</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        random_state<span class="op">=</span><span class="dv">1000</span>, cluster_random_state<span class="op">=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-69" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fw_pipe.fit(wiki_corpus,</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>            selector<span class="op">=</span><span class="kw">lambda</span> x: x.meta.get(<span class="st">'next_id'</span>,<span class="va">None</span>) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>            context_selector<span class="op">=</span><span class="kw">lambda</span> x: x.reply_to <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This should produce the same output as calling the constituent steps separately.</p>
+<div id="cell-71" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fw_pipe.ec_model.print_clusters()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CLUSTER 0 0
+---
+terms
+           cluster_dist
+index                  
+'m_*           0.497348
+thought_*      0.498929
+guess_*        0.508338
+sorry&gt;*        0.521577
+know_*         0.526687
+had_*          0.531728
+got_*          0.537593
+'s_*           0.543810
+have&gt;*         0.544413
+saw_*          0.549280
+
+context terms
+          cluster_dist
+index                 
+saw_*         0.598228
+yes&gt;*         0.603147
+knew_*        0.607990
+but&gt;*         0.614208
+oh&gt;*          0.615937
+anyway&gt;*      0.619059
+hey&gt;*         0.620055
+guess_*       0.620307
+oh_*          0.635252
+and&gt;*         0.639936
+
+CLUSTER 1 1
+---
+terms
+              cluster_dist
+index                     
+let_*             0.507374
+done_*            0.509473
+appreciate_*      0.512464
+tried_*           0.524234
+help_*            0.530647
+let_know          0.536958
+look_*            0.540756
+hi&gt;*              0.545773
+hi_*              0.548464
+take_*            0.549002
+
+context terms
+               cluster_dist
+index                      
+okay&gt;*             0.641118
+ok&gt;*               0.646864
+alright&gt;*          0.653850
+uploaded_have      0.670640
+update_*           0.681726
+ok_*               0.683843
+helps_*            0.705702
+cool&gt;*             0.707850
+cool_*             0.709546
+hope_do            0.712557
+
+CLUSTER 2 2
+---
+terms
+               cluster_dist
+index                      
+deleted_*          0.483710
+deleted_be         0.542814
+remove_*           0.551680
+restored_*         0.560979
+deleted_was        0.577411
+deleted_not        0.580295
+deleted_is         0.586556
+find_can           0.586681
+remove_from        0.589373
+remove_please      0.591656
+
+context terms
+               cluster_dist
+index                      
+hello_*            0.617250
+restored_'ve       0.634718
+restored_*         0.635371
+hello&gt;*            0.662584
+restored_have      0.666999
+replaced_with      0.673871
+since&gt;*            0.675255
+replaced_*         0.679293
+tag_*              0.693324
+provided_*         0.694144
+
+CLUSTER 3 3
+---
+terms
+           cluster_dist
+index                  
+is_*           0.558697
+is_there       0.564460
+is_not         0.576292
+is_is          0.591916
+even&gt;*         0.593364
+seems_to       0.600885
+'s_not         0.609943
+what&gt;*         0.614863
+are_not        0.617335
+mean_does      0.617859
+
+context terms
+           cluster_dist
+index                  
+to&gt;*           0.631598
+has_*          0.631947
+is_*           0.650184
+as&gt;*           0.660322
+is_fine        0.662922
+in&gt;*           0.668126
+is_to          0.669242
+is_see         0.678658
+because&gt;*      0.689098
+makes_*        0.689591
+
+CLUSTER 4 4
+---
+terms
+                cluster_dist
+index                       
+thinking_*          0.738030
+think_be            0.741211
+be_there            0.751830
+start_should        0.758371
+make_sure           0.759340
+thinking_about      0.760743
+what&gt;do             0.765511
+thinking_'m         0.768603
+be_might            0.772642
+hmm&gt;*               0.772663
+
+context terms
+           cluster_dist
+index                  
+split_*        0.798109
+turn_*         0.832830
+perhaps&gt;*      0.835086
+then&gt;*         0.837803
+but&gt;if         0.845863
+think_yes      0.854162
+could_*        0.854613
+finish_*       0.858283
+tend_be        0.858555
+set_*          0.858626
+
+CLUSTER 5 5
+---
+terms
+            cluster_dist
+index                   
+reverted_*      0.610958
+report_*        0.618923
+revert_*        0.637270
+appears_*       0.650385
+explain_*       0.675527
+warned_*        0.682376
+think_did       0.685245
+for&gt;*           0.687296
+was_not         0.687717
+welcome_to      0.689001
+
+context terms
+             cluster_dist
+index                    
+ignore_*         0.715005
+fixed_have       0.742801
+refused_*        0.746171
+accusing_*       0.759295
+apologize_*      0.765259
+handled_*        0.766994
+extended_*       0.767898
+continue_do      0.768159
+keeping_*        0.774206
+clarify_*        0.775986
+</code></pre>
+</div>
+</div>
+<div id="cell-72" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fw_pipe.set_cluster_names([<span class="st">'casual'</span>, <span class="st">'coordination'</span>, </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">'procedures'</span>, <span class="st">'contention'</span>,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">'editing'</span>, <span class="st">'moderation'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The pipeline enables us to transform ad-hoc string input.</p>
+<div id="cell-74" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>new_ut <span class="op">=</span> fw_pipe.transform_utterance(<span class="st">'Let me help you out with that'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-75" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'type:'</span>, new_ut.meta[<span class="st">'fw_clustering.cluster'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>type: coordination</code></pre>
+</div>
+</div>
+<p>Here, instead of storing vector representations with a corpus, the pipeline writes these representations to a field in the utterance metadata itself (since the utterance is not attached to a corpus):</p>
+<div id="cell-77" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># note that different versions of SpaCy may produce different outputs, since the</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dependency parses may change from version to version</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>new_ut.meta[<span class="st">'fw_repr'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+<pre><code>[-0.34251719530565966,
+ 0.02658927446810624,
+ -0.01927147734336277,
+ 0.032577912301350556,
+ -0.22583186273707992,
+ 0.3726452662095833,
+ 0.19622014569623866,
+ -0.10407111691341157,
+ -0.29038262872096327,
+ -0.014681640364270429,
+ 0.16817088225571575,
+ 0.13965716231892997,
+ -0.19330007418977502,
+ 0.335512083137985,
+ -0.04301223983724843,
+ -0.10041294183984298,
+ 0.3141634142240819,
+ 0.004730871157014037,
+ -0.4032757831822109,
+ -0.14092188454058427,
+ -0.1225539502059763,
+ 0.009954456070505423,
+ 0.06985947800825029,
+ -0.21434796397126002]</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
