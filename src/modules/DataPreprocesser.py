@@ -90,10 +90,10 @@ class DataPreprocesser:
             return "Buyer"
         else:
             return None
-    
+     
     def parsedtoUtteranceDF(self):
         all_rows = []
-        for row_idx, parsed_dialog in enumerate(self.df["parsed_dialog"]):
+        for row_idx, parsed_dialog in self.df["parsed_dialog"].items():
             for entry in parsed_dialog:
                 if not isinstance(entry, dict):
                      print(f"Warning: Entry in row {row_idx} is not a dictionary: {entry}")
@@ -117,6 +117,9 @@ class DataPreprocesser:
         # Assign conversation length to each utterance in df
         self.utterancesDF = self.utterancesDF.merge(convolen_utt, on="row_idx", how="right")
 
+    def setUtterancesDF(self, utterancesDF):
+        self.utterancesDF = utterancesDF
+   
     def getUtterancesDF(self):
         return self.utterancesDF
    
@@ -288,16 +291,18 @@ class DataPreprocesser:
         """
         return 0 if row == "Z" else 1
 
-
-    def saveToCSV(self, final_filepath):
+    def saveToCSV(self, final_filepath, drop_parsed = False):
         os.makedirs(os.path.dirname(final_filepath), exist_ok=True)
-        self.df.drop(columns=['parsed_dialog'], inplace =True)
+
+        if drop_parsed:
+            self.df.drop(columns=['parsed_dialog'], inplace =True)
         self.getDataframe().to_csv(final_filepath, index= True, index_label="Row_Index")
         print(f"Data saved to {final_filepath}")
 
     def getFromCSV(self, filepath):
         self.df = pd.read_csv(filepath)
         if "Row_Index" in self.df.columns:
+                print("Row Index not in columns")
                 self.df.set_index("Row_Index", inplace=True)  # Set it as the index
         else:
             self.df = pd.read_csv(filepath)
@@ -458,6 +463,12 @@ class DataPreprocesser:
         Returns the DataFrame object.
         """
         return self.df
+    
+    def setDataframe(self, df):
+        """
+        Sets the DataFrame object.
+        """
+        self.df = df
     
     def dropChatNA(self):
         self.df = self.df.dropna(subset=["formattedChat"]).reset_index(drop=True)
