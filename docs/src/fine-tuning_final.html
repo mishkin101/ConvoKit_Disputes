@@ -180,8 +180,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="notes" class="level1">
-<h1>Notes</h1>
+<section id="initial-performance-impressions" class="level1">
+<h1>Initial Performance Impressions</h1>
+<ul>
+<li>I spent a lot of time looking at CRAFT under the hood this week to see possible modifications. This initial “exploratory” fine-tuning notebook ended up necessitating using cloud compute(used <a href="www.deepnote.com">deepnote</a>) for fine-tuning (GP4 -L4 $1.56/hr) to get some initial results, as each run for fine-tuning one model with training size (1264) was taking 40 min to train on my machine. To really improve results, I would look into setting up full end-to-end with python scripts to manage experiment runs better. I did a couple this week (1-3 for each model variant) in this notebook, and there is still randomness that is not reproducible across experiment runs. There is a lot fo room to modify the “model_config” for CRAFT and perhaps do dynamic adjustments to the learning rate for each batch, as I had issues with overfitting, but this notebook is not generalizble to test at this level.</li>
+<li>What does “doing better” mean to know if we should continue? Pivot to analysis with self-report scores?
+<ul>
+<li><strong>It is pretty ineffecient to continue workin in jupyter notebook for fine-tuning as this is no way a robust training pipeline, but I wanted to touch base to see if the above would make sense to continue trying</strong></li>
+</ul></li>
+<li>The few downsampling training runs had high accuracy variablitiy (27% to 80%)</li>
+<li>There are some clear upward patterns in the prediciton scores broken out by success/impasse’s emerging</li>
+<li>downsampling does affect the accuracy quite a bit</li>
+<li>AUC/PR curves look promising. I also chose the best threshold and plotted metric comparisons as well as the Confusion Matrix across each variant.</li>
+</ul>
+</section>
+<section id="experiment-set-ups" class="level1">
+<h1>Experiment set ups:</h1>
+<ul>
+<li>Use wiki-pretrained model params as base</li>
+<li>model default forecast threshold is .54.</li>
+<li>Use fine-tuned wiki model as base comparison for all fine-tuning results</li>
+<li>fine-tune model varitions with:
+<ul>
+<li>conversations with all utterances (ground)</li>
+<li>conversations with no last utterance (no_last)</li>
+<li>conversations with no last no submit agreement box (no last no submit) (note that there are left over “chains of agree/disgree as response after agreement submission, which I did leave)</li>
+</ul></li>
+</ul>
+<p>Model Improvement Considerations: - In craft, changed the Binary cross entropy loss to weighted Binary cross entropy loss in train.py based on class imbalance. Created Cost Sensitive CRAFT model - Downsampled from training set to get even impassee/success training split - default</p>
+</section>
+<section id="development-notes" class="level1">
+<h1>Development Notes</h1>
 <ul>
 <li>According to craft paper, only context prior to derailment comment is used in training.
 <ul>
