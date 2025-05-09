@@ -13,5 +13,5 @@ website:
     right:
       - text: Current
         href: index.html
-      - text: Lask Week
-      - href: Forcaster_Explorer.html
+      - src/Forcaster_Explorer.ipynb
+
