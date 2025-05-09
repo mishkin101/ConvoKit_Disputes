@@ -64,5 +64,8 @@
   },
   "convokit_notebooks/CRAFT_fine_tuning_demo_using_ConvoKit.ipynb": {
     "CRAFT_fine_tuning_demo_using_ConvoKit.html": "2ebbc533"
+  },
+  "src/fine-tuning_final.ipynb": {
+    "fine-tuning_final.html": "0739ccf3"
   }
 }

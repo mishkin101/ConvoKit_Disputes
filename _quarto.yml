@@ -3,11 +3,15 @@ project:
   output-dir: docs       # ← where all HTML will go
   render:
     # render this notebook as docs/index.html
+    - src/fine-tuning_final.ipynb
     - src/Forcaster_Explorer.ipynb
+  
 site-lib-dir: docs/site-libs
 website:
   title: "Weekly ConvoKit Updates"
   navbar:
     right:
-      - text: Home
+      - text: Current
         href: index.html
+      - text: Lask Week
+      - href: Forcaster_Explorer.html
