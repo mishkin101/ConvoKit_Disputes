@@ -109,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -145,7 +145,86 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#initial-performance-impressions-in-progress" id="toc-initial-performance-impressions-in-progress" class="nav-link active" data-scroll-target="#initial-performance-impressions-in-progress">Initial Performance Impressions (In progress)</a></li>
+  <li><a href="#experiment-set-ups" id="toc-experiment-set-ups" class="nav-link" data-scroll-target="#experiment-set-ups">Experiment set ups:</a></li>
+  <li><a href="#development-notes" id="toc-development-notes" class="nav-link" data-scroll-target="#development-notes">Development Notes</a></li>
+  <li><a href="#corpus-pre-processing" id="toc-corpus-pre-processing" class="nav-link" data-scroll-target="#corpus-pre-processing">Corpus Pre-processing</a>
+  <ul class="collapse">
+  <li><a href="#corpus-imports" id="toc-corpus-imports" class="nav-link" data-scroll-target="#corpus-imports">Corpus Imports</a></li>
+  <li><a href="#adding-conversation-labels" id="toc-adding-conversation-labels" class="nav-link" data-scroll-target="#adding-conversation-labels">Adding Conversation Labels</a></li>
+  <li><a href="#weighted-model-class" id="toc-weighted-model-class" class="nav-link" data-scroll-target="#weighted-model-class">Weighted Model Class</a></li>
+  <li><a href="#download-pre-trained-models" id="toc-download-pre-trained-models" class="nav-link" data-scroll-target="#download-pre-trained-models">Download Pre-Trained Models</a></li>
+  </ul></li>
+  <li><a href="#splitting-kodis-trainingtest-set" id="toc-splitting-kodis-trainingtest-set" class="nav-link" data-scroll-target="#splitting-kodis-trainingtest-set">Splitting KODIS: Training/Test Set</a>
+  <ul class="collapse">
+  <li><a href="#context-tuple-selector" id="toc-context-tuple-selector" class="nav-link" data-scroll-target="#context-tuple-selector">Context Tuple Selector</a></li>
+  </ul></li>
+  <li><a href="#finetuning--no-imbalance-correction" id="toc-finetuning--no-imbalance-correction" class="nav-link" data-scroll-target="#finetuning--no-imbalance-correction">Finetuning- No Imbalance Correction</a>
+  <ul class="collapse">
+  <li><a href="#full-training-pipeline" id="toc-full-training-pipeline" class="nav-link" data-scroll-target="#full-training-pipeline">Full Training Pipeline</a></li>
+  <li><a href="#plotting-results" id="toc-plotting-results" class="nav-link" data-scroll-target="#plotting-results">Plotting Results</a></li>
+  <li><a href="#saving-experiment" id="toc-saving-experiment" class="nav-link" data-scroll-target="#saving-experiment">Saving Experiment</a></li>
+  </ul></li>
+  <li><a href="#fine-tuning-class-imbalance-handling-with-class-weighted-loss" id="toc-fine-tuning-class-imbalance-handling-with-class-weighted-loss" class="nav-link" data-scroll-target="#fine-tuning-class-imbalance-handling-with-class-weighted-loss">Fine-Tuning: Class Imbalance Handling with Class-Weighted Loss</a>
+  <ul class="collapse">
+  <li><a href="#modifying-runners.py-code-for-bce-with-weighted-loss" id="toc-modifying-runners.py-code-for-bce-with-weighted-loss" class="nav-link" data-scroll-target="#modifying-runners.py-code-for-bce-with-weighted-loss">Modifying runners.py code for BCE with weighted loss</a></li>
+  <li><a href="#full-training-pipeline-weighted-loss" id="toc-full-training-pipeline-weighted-loss" class="nav-link" data-scroll-target="#full-training-pipeline-weighted-loss">Full Training Pipeline: Weighted Loss</a></li>
+  <li><a href="#plotting-results-conversation-level-aggregation" id="toc-plotting-results-conversation-level-aggregation" class="nav-link" data-scroll-target="#plotting-results-conversation-level-aggregation">Plotting Results (Conversation Level Aggregation)</a></li>
+  <li><a href="#saving-experiment-1" id="toc-saving-experiment-1" class="nav-link" data-scroll-target="#saving-experiment-1">Saving Experiment</a></li>
+  </ul></li>
+  <li><a href="#fine-tuning-downsampling-successful-disputes" id="toc-fine-tuning-downsampling-successful-disputes" class="nav-link" data-scroll-target="#fine-tuning-downsampling-successful-disputes">Fine-tuning: Downsampling Successful Disputes</a>
+  <ul class="collapse">
+  <li><a href="#downsampling-logic" id="toc-downsampling-logic" class="nav-link" data-scroll-target="#downsampling-logic">Downsampling Logic</a></li>
+  <li><a href="#model-configuration" id="toc-model-configuration" class="nav-link" data-scroll-target="#model-configuration">Model Configuration</a></li>
+  <li><a href="#reset-runner.py" id="toc-reset-runner.py" class="nav-link" data-scroll-target="#reset-runner.py">Reset runner.py</a></li>
+  <li><a href="#average-length-of-convo-in-each-split" id="toc-average-length-of-convo-in-each-split" class="nav-link" data-scroll-target="#average-length-of-convo-in-each-split">Average Length of Convo in each split</a></li>
+  <li><a href="#downsample-successful-disputes-train-split-only" id="toc-downsample-successful-disputes-train-split-only" class="nav-link" data-scroll-target="#downsample-successful-disputes-train-split-only">Downsample Successful Disputes (Train Split Only)</a></li>
+  <li><a href="#full-training-pipeline-1" id="toc-full-training-pipeline-1" class="nav-link" data-scroll-target="#full-training-pipeline-1">Full Training Pipeline</a></li>
+  <li><a href="#saving-results" id="toc-saving-results" class="nav-link" data-scroll-target="#saving-results">Saving Results</a></li>
+  <li><a href="#plotting-results-conversation-level-aggregation-1" id="toc-plotting-results-conversation-level-aggregation-1" class="nav-link" data-scroll-target="#plotting-results-conversation-level-aggregation-1">Plotting Results (Conversation Level Aggregation)</a></li>
+  </ul></li>
+  <li><a href="#testing-on-fine-tuned-wiki-model" id="toc-testing-on-fine-tuned-wiki-model" class="nav-link" data-scroll-target="#testing-on-fine-tuned-wiki-model">Testing on Fine-Tuned Wiki Model</a>
+  <ul class="collapse">
+  <li><a href="#plotting-results-1" id="toc-plotting-results-1" class="nav-link" data-scroll-target="#plotting-results-1">Plotting Results</a></li>
+  </ul></li>
+  <li><a href="#analysis-across-all-experiments" id="toc-analysis-across-all-experiments" class="nav-link" data-scroll-target="#analysis-across-all-experiments">Analysis Across All Experiments</a>
+  <ul class="collapse">
+  <li><a href="#ground-model-performance-comparison-across-default-weighteddownsampled-variants" id="toc-ground-model-performance-comparison-across-default-weighteddownsampled-variants" class="nav-link" data-scroll-target="#ground-model-performance-comparison-across-default-weighteddownsampled-variants">Ground Model Performance Comparison Across Default, Weighted,Downsampled Variants</a>
+  <ul class="collapse">
+  <li><a href="#best-threshold-performance-comparison" id="toc-best-threshold-performance-comparison" class="nav-link" data-scroll-target="#best-threshold-performance-comparison">Best Threshold Performance Comparison</a></li>
+  </ul></li>
+  <li><a href="#no-last-utterance-model-performance-comparison-across-default-weighteddownsampled-variants" id="toc-no-last-utterance-model-performance-comparison-across-default-weighteddownsampled-variants" class="nav-link" data-scroll-target="#no-last-utterance-model-performance-comparison-across-default-weighteddownsampled-variants">No Last Utterance Model Performance Comparison Across Default, Weighted,Downsampled Variants</a>
+  <ul class="collapse">
+  <li><a href="#best-threshold-performance-comparison-1" id="toc-best-threshold-performance-comparison-1" class="nav-link" data-scroll-target="#best-threshold-performance-comparison-1">Best Threshold Performance Comparison</a></li>
+  </ul></li>
+  <li><a href="#no-lastno-submit-model-performance-comparison-across-default-weighted-downsampled-variants" id="toc-no-lastno-submit-model-performance-comparison-across-default-weighted-downsampled-variants" class="nav-link" data-scroll-target="#no-lastno-submit-model-performance-comparison-across-default-weighted-downsampled-variants">No Last/No Submit Model Performance Comparison Across Default, Weighted, Downsampled Variants</a>
+  <ul class="collapse">
+  <li><a href="#best-threshold-model-performance-comparison" id="toc-best-threshold-model-performance-comparison" class="nav-link" data-scroll-target="#best-threshold-model-performance-comparison">Best Threshold Model Performance Comparison</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#conversation-forecasting-trends" id="toc-conversation-forecasting-trends" class="nav-link" data-scroll-target="#conversation-forecasting-trends">Conversation Forecasting Trends</a>
+  <ul class="collapse">
+  <li><a href="#ground-model-performance-comparison-across-default-weighted-downsampled-variants" id="toc-ground-model-performance-comparison-across-default-weighted-downsampled-variants" class="nav-link" data-scroll-target="#ground-model-performance-comparison-across-default-weighted-downsampled-variants">Ground Model Performance Comparison Across Default, Weighted, Downsampled Variants</a></li>
+  <li><a href="#no-last-utt-model-performance-comparison-across-default-weighted-downsampled-variants" id="toc-no-last-utt-model-performance-comparison-across-default-weighted-downsampled-variants" class="nav-link" data-scroll-target="#no-last-utt-model-performance-comparison-across-default-weighted-downsampled-variants">No Last Utt Model Performance Comparison Across Default, Weighted, Downsampled Variants</a></li>
+  <li><a href="#no-lastno-submit-model-performance-comparison-across-default-weighted-downsampled-variants-1" id="toc-no-lastno-submit-model-performance-comparison-across-default-weighted-downsampled-variants-1" class="nav-link" data-scroll-target="#no-lastno-submit-model-performance-comparison-across-default-weighted-downsampled-variants-1">No Last/No Submit Model Performance Comparison Across Default, Weighted, Downsampled Variants</a></li>
+  </ul></li>
+  <li><a href="#analysis-with-fine-tuned-craft" id="toc-analysis-with-fine-tuned-craft" class="nav-link" data-scroll-target="#analysis-with-fine-tuned-craft">Analysis with fine-tuned CRAFT</a></li>
+  <li><a href="#utility-functions" id="toc-utility-functions" class="nav-link" data-scroll-target="#utility-functions">Utility Functions</a>
+  <ul class="collapse">
+  <li><a href="#test-conversation-helpers" id="toc-test-conversation-helpers" class="nav-link" data-scroll-target="#test-conversation-helpers">Test Conversation Helpers</a></li>
+  <li><a href="#save-helpers" id="toc-save-helpers" class="nav-link" data-scroll-target="#save-helpers">Save Helpers</a></li>
+  <li><a href="#conversation-level-metrics-plotting-utility" id="toc-conversation-level-metrics-plotting-utility" class="nav-link" data-scroll-target="#conversation-level-metrics-plotting-utility">Conversation-Level Metrics Plotting Utility</a></li>
+  <li><a href="#forecast-probability-trends" id="toc-forecast-probability-trends" class="nav-link" data-scroll-target="#forecast-probability-trends">Forecast Probability Trends</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load Data</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
