@@ -68,5 +68,12 @@
     "title": "Fine-Tuning Kodis Analysis",
     "section": "Design Decisions:",
     "text": "Design Decisions:\n\nDo we include submit agreements or no? Lose out on potential dispute dynamics with chains of submit agreements\ntest on ground kodis conversations?\nRevalant Analysis considerations?\nsentiment granularity: comparing utterance level predicitons with conversational-leel self-report scores\npredicting SVI (self, fairness, outcome, relationships). Predict Frustration?"
+  },
+  {
+    "objectID": "src/fine-tuning_analysis.html#todo",
+    "href": "src/fine-tuning_analysis.html#todo",
+    "title": "Fine-Tuning Kodis Analysis",
+    "section": "TODO:",
+    "text": "TODO:\n\nGo over CARC tutortial + set up GPU\nPredict SVI (relationships, frustration, outcome, impasse)"
   }
 ]
