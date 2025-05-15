@@ -3,8 +3,9 @@ project:
   output-dir: docs       # ← where all HTML will go
   render:
     # render this notebook as docs/index.html
+    - src/fine-tuning_analysis.ipynb
     - src/fine-tuning_final.ipynb
-    - src/Forcaster_Explorer.ipynb
+  
   
 site-lib-dir: docs/site-libs
 website:
@@ -13,5 +14,5 @@ website:
     right:
       - text: Current
         href: index.html
-      - src/Forcaster_Explorer.ipynb
+      - src/fine-tuning_final.ipynb
 
