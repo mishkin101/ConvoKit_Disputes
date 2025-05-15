@@ -182,3 +182,4 @@ dataprocessing/data_explore_files/*
 /.quarto/
 /data/saved_corpora/**
 craft-wiki-pretrained
+fine_tuning_results

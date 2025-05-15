@@ -1,0 +1,9 @@
+Rc files read:
+  NONE
+Latexmk: This is Latexmk, John Collins, 27 Dec. 2024. Version 4.86a.
+
+Latexmk: No file name(s) specified on command line, and no files match the
+patterns in the default list.
+Use
+   latexmk -help
+to get usage information
