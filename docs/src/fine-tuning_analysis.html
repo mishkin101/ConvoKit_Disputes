@@ -159,6 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#current-interpretation" id="toc-current-interpretation" class="nav-link" data-scroll-target="#current-interpretation">Current Interpretation:</a>
   <ul class="collapse">
+  <li><a href="#goals" id="toc-goals" class="nav-link" data-scroll-target="#goals">Goals:</a></li>
   <li><a href="#improvement-considerations" id="toc-improvement-considerations" class="nav-link" data-scroll-target="#improvement-considerations">Improvement Considerations:</a></li>
   <li><a href="#design-decisions" id="toc-design-decisions" class="nav-link" data-scroll-target="#design-decisions">Design Decisions:</a></li>
   <li><a href="#todo" id="toc-todo" class="nav-link" data-scroll-target="#todo">TODO:</a></li>
@@ -476,7 +477,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Want to know how to better analyze mispredictions
 <ul>
-<li>Fighting Words unclear still. Tried training vocabulary both on entire corpus and on just chosesn TP/FP/TN/FP Subsets. Vary n-gram (length of phrases). Unsure aout whether or not to include stopping_words or use priors from entire corpus</li>
+<li>Fighting Words unclear still. Tried training vocabulary both on entire corpus and on just chosesn TP/FP/TN/FP Subsets. Vary n-gram (length of phrases). Unsure about whether or not to include stopping_words or use priors from entire corpus</li>
 </ul></li>
 <li>Ground wiki picked up high best decision threshold (.88), while most others around .55-.75</li>
 <li>No submit no last variants most similar to ground_wiki in terms of confusion matrix and metrics(theshold as well, .75)</li>
@@ -484,11 +485,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>No last no submit closest to ground wiki model. Also has similar utterance aggregtaed prediction score trends across impasse and success dialogues</li>
 <li>The few downsampling training runs had high accuracy variablitiy (27% to 80%) meaning fine-tuning is not entirely reproducible despite controlling for same training/test/split</li>
 <li>AUC/PR curved looked good (better than baseline for all model)</li>
-<li>caviaates to having high prediction threshold? ## Goals:</li>
+<li>caviaates to having high prediction threshold?</li>
+</ul>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals:</h2>
+<ul>
 <li>Define conference target and paper goals to guide interpretation and futher testing</li>
-<li>Define characteristics of derailment for dispute-type dialogue</li>
+<li>Define characteristics of derailment for dispute-type dialogues</li>
 <li>What does the model pick up in a dispute to forecast derailment when predicting probability over-time</li>
 </ul>
+</section>
 <section id="improvement-considerations" class="level2">
 <h2 class="anchored" data-anchor-id="improvement-considerations">Improvement Considerations:</h2>
 <ul>
@@ -502,15 +508,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Do we include submit agreements or no? Lose out on potential dispute dynamics with chains of submit agreements</li>
 <li>test on ground kodis conversations?</li>
 <li>Revalant Analysis considerations?</li>
-<li>sentiment granularity: comparing utterance level predicitons with conversational-leel self-report scores</li>
+<li>Establishing a baseline for expcted predicted probability trends based on articats in success/dispute convos</li>
+<li>Sentiment granularity: comparing utterance level predicitons with conversational-level self-report scores</li>
 <li>predicting SVI (self, fairness, outcome, relationships). Predict Frustration?</li>
 </ul>
 </section>
 <section id="todo" class="level2">
 <h2 class="anchored" data-anchor-id="todo">TODO:</h2>
-<ul>
-<li>Go over CARC tutortial + set up GPU</li>
-<li>Predict SVI (relationships, frustration, outcome, impasse)</li>
+<ul class="task-list">
+<li><label><input type="checkbox">Go over CARC tutortial + set up GPU</label></li>
+<li><label><input type="checkbox">Predict SVI (relationships, frustration, outcome, impasse)</label></li>
+<li><label><input type="checkbox">Establish goals for publicaiton + applicaitions of forecaster as next steps?</label></li>
 </ul>
 </section>
 </section>

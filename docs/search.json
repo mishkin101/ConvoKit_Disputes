@@ -56,6 +56,13 @@
     "text": "Code\n\nfrom tqdm import tqdm\nfrom collections import defaultdict\nimport pandas as pd\nimport pprint as pp\nfrom IPython.display import display\nimport torch\nimport pickle\nimport random\nfrom pathlib import Path \nimport json\nimport re\nfrom collections import defaultdict\nfrom scipy.stats import entropy\nimport ast\nfrom collections import defaultdict\nimport importlib\nimport torch\nimport os\nfrom pathlib import Path\nfrom datetime import datetime\nimport json\nimport torch\nimport matplotlib.pyplot as plt\nfrom sklearn.calibration import CalibrationDisplay\nfrom sklearn.metrics import (\n    ConfusionMatrixDisplay,\n    roc_curve,\n    roc_auc_score,\n    precision_recall_curve,\n    average_precision_score,\n)\nfrom modules.DataPreprocesser import DataPreprocesser\nfrom modules import CorpusUtils as corp\n#Convokit Imports\nfrom convokit.forecaster.CRAFTModel import CRAFTModel\nfrom convokit.forecaster.forecaster import Forecaster\nfrom convokit import download, Corpus\nfrom convokit import Corpus, Speaker, Utterance, Conversation\nfrom functools import partial\nfrom convokit.convokitConfig import ConvoKitConfig\nCode\ndownpath =Path(\"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/fine_tuning_results/downsampled_run/corpus_kodis_ground_downsampled\")\ndefaultpath =Path(\"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/fine_tuning_results/nosampling_run/corpus_kodis_ground_default\")\nweights_path = Path(\"/Users/mishkin/Desktop/Research/Convo_Kit/ConvoKit_Disputes/data/fine_tuning_results/weighted_run/corpus_kodis_ground_weighted_loss\")\n\ncorpus_down = Corpus(filename=downpath)\ncorpus_default = Corpus(filename=defaultpath)\ncorpus_weighted = Corpus(filename=weights_path)"
   },
   {
+    "objectID": "src/fine-tuning_analysis.html#goals",
+    "href": "src/fine-tuning_analysis.html#goals",
+    "title": "Fine-Tuning Kodis Analysis",
+    "section": "Goals:",
+    "text": "Goals:\n\nDefine conference target and paper goals to guide interpretation and futher testing\nDefine characteristics of derailment for dispute-type dialogues\nWhat does the model pick up in a dispute to forecast derailment when predicting probability over-time"
+  },
+  {
     "objectID": "src/fine-tuning_analysis.html#improvement-considerations",
     "href": "src/fine-tuning_analysis.html#improvement-considerations",
     "title": "Fine-Tuning Kodis Analysis",
@@ -67,13 +74,13 @@
     "href": "src/fine-tuning_analysis.html#design-decisions",
     "title": "Fine-Tuning Kodis Analysis",
     "section": "Design Decisions:",
-    "text": "Design Decisions:\n\nDo we include submit agreements or no? Lose out on potential dispute dynamics with chains of submit agreements\ntest on ground kodis conversations?\nRevalant Analysis considerations?\nsentiment granularity: comparing utterance level predicitons with conversational-leel self-report scores\npredicting SVI (self, fairness, outcome, relationships). Predict Frustration?"
+    "text": "Design Decisions:\n\nDo we include submit agreements or no? Lose out on potential dispute dynamics with chains of submit agreements\ntest on ground kodis conversations?\nRevalant Analysis considerations?\nEstablishing a baseline for expcted predicted probability trends based on articats in success/dispute convos\nSentiment granularity: comparing utterance level predicitons with conversational-level self-report scores\npredicting SVI (self, fairness, outcome, relationships). Predict Frustration?"
   },
   {
     "objectID": "src/fine-tuning_analysis.html#todo",
     "href": "src/fine-tuning_analysis.html#todo",
     "title": "Fine-Tuning Kodis Analysis",
     "section": "TODO:",
-    "text": "TODO:\n\nGo over CARC tutortial + set up GPU\nPredict SVI (relationships, frustration, outcome, impasse)"
+    "text": "TODO:\n\nGo over CARC tutortial + set up GPU\nPredict SVI (relationships, frustration, outcome, impasse)\nEstablish goals for publicaiton + applicaitions of forecaster as next steps?"
   }
 ]
