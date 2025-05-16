@@ -67,14 +67,14 @@
     "href": "src/fine-tuning_analysis.html#improvement-considerations",
     "title": "Fine-Tuning Kodis Analysis",
     "section": "Improvement Considerations:",
-    "text": "Improvement Considerations:\n\nIncluding Learning‑rate scheduling or early stopping to stop training early when it converges to prevent overfitting/underfitting\nfull-end to end training with testing model_config parameters to improve metrics"
+    "text": "Improvement Considerations:\n\nIncluding Learning‑rate scheduling or early stopping to stop training early when it converges to prevent overfitting/underfitting\nFull-end to end training with testing model_config parameters to improve metrics"
   },
   {
     "objectID": "src/fine-tuning_analysis.html#design-decisions",
     "href": "src/fine-tuning_analysis.html#design-decisions",
     "title": "Fine-Tuning Kodis Analysis",
     "section": "Design Decisions:",
-    "text": "Design Decisions:\n\nDo we include submit agreements or no? Lose out on potential dispute dynamics with chains of submit agreements\ntest on ground kodis conversations?\nRevalant Analysis considerations?\nEstablishing a baseline for expcted predicted probability trends based on articats in success/dispute convos\nSentiment granularity: comparing utterance level predicitons with conversational-level self-report scores\npredicting SVI (self, fairness, outcome, relationships). Predict Frustration?"
+    "text": "Design Decisions:\n\nDo we include submit agreements or no? Lose out on potential dispute dynamics with chains of submit agreements\nTest on ground kodis conversations?\nRevalant Analysis considerations?\nEstablishing a baseline for expcted predicted probability trends based on articats in success/dispute convos\nSentiment granularity: comparing utterance level predicitons with conversational-level self-report scores\nPredicting SVI (self, fairness, outcome, relationships). Predict Frustration?"
   },
   {
     "objectID": "src/fine-tuning_analysis.html#todo",
