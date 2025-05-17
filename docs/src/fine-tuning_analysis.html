@@ -548,7 +548,18 @@ self._pos_weight = torch.tensor(num_neg / num_pos, device=self._device)</code></
 <h4 class="anchored" data-anchor-id="question-what-artifacts-is-forecaster-picking-up-as-signal-in-making-predicitons"><strong>Question: What Artifacts is Forecaster picking up as signal in making predicitons?</strong></h4>
 <ul>
 <li>look at fighting words between Correctly predicted True derailmenets (TP) and Falsely Predicited True Derailments (FN)</li>
-<li>How significant is repetitive token bias?</li>
+<li>How significant is repetitive token bias</li>
+</ul>
+</section>
+<section id="question-can-fine-tuned-kodis-models-pick-up-conversational-context-trends-as-well-as-ground-wiki-fine-tuned-model" class="level4">
+<h4 class="anchored" data-anchor-id="question-can-fine-tuned-kodis-models-pick-up-conversational-context-trends-as-well-as-ground-wiki-fine-tuned-model"><strong>Question: Can fine-tuned KODIS models pick up conversational context trends as well as ground wiki fine-tuned model?</strong></h4>
+<ul>
+<li>On wiki test set, the avg. utterance probabilities are more well defined
+<ul>
+<li>dip for success</li>
+<li>more upward for impasses</li>
+<li>both trend upwards at longer conversations lengths</li>
+</ul></li>
 </ul>
 </section>
 </section>
@@ -1799,7 +1810,7 @@ ngram zscores computed.</code></pre>
 </section>
 <section id="metric-and-plotting-functions" class="level3">
 <h3 class="anchored" data-anchor-id="metric-and-plotting-functions">Metric and Plotting Functions</h3>
-<div id="cell-48" class="cell" data-execution_count="9">
+<div id="cell-48" class="cell" data-execution_count="213">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
