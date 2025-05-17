@@ -309,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="data-splits"><strong>1. Data &amp; Splits</strong></h3>
 <ul>
 <li>Corpus: 2,107 buyer–seller disputes. No AI.</li>
-<li>Train/Val/Test: 60/20/20 split (≈ 1,264 / 421 / 421 conversations).
+<li>Train/Val/Test: 60/20/20 split (1,264 / 421 / 421 conversations).
 <ul>
 <li>random-seed: 42 (for reproducibility)</li>
 </ul></li>
@@ -450,17 +450,17 @@ self._pos_weight = torch.tensor(num_neg / num_pos, device=self._device)</code></
 <tr class="odd">
 <td><strong>Default</strong></td>
 <td>Standard binary cross‐entropy (BCE)</td>
-<td>Original class imbalance (~371 derail vs.&nbsp;1,734 clean)</td>
+<td>Train Set (1264): (1044 success, 220 impasse)</td>
 </tr>
 <tr class="even">
 <td><strong>Weighted</strong></td>
 <td>BCE with class‐weighted loss (higher weight on the minority “derail” class)</td>
-<td>Original class imbalance (~371 derail vs.&nbsp;1,734 clean)</td>
+<td>Train Set(1264) : (1044 success, 220 impasse)</td>
 </tr>
 <tr class="odd">
 <td><strong>Downsampled</strong></td>
 <td>BCE, but training set downsampled to a 1:1 class ratio</td>
-<td>371 / 371 train examples</td>
+<td>Train Set (1264): (220 success, 220 impasse)</td>
 </tr>
 </tbody>
 </table>
@@ -518,31 +518,39 @@ self._pos_weight = torch.tensor(num_neg / num_pos, device=self._device)</code></
 <li><strong>DV</strong>: Dispute Outcome: measured by success/impasse</li>
 </ul>
 </section>
-<section id="question-do-model-variants-affect-crafts-derailment-score" class="level4">
-<h4 class="anchored" data-anchor-id="question-do-model-variants-affect-crafts-derailment-score"><strong>Question: Do Model variants affect CRAFT’s derailment score?</strong></h4>
+<section id="question-do-fine-tuned-model-variants-affect-crafts-max-conversation-derailment-score" class="level4">
+<h4 class="anchored" data-anchor-id="question-do-fine-tuned-model-variants-affect-crafts-max-conversation-derailment-score"><strong>Question: Do fine-tuned Model variants affect CRAFT’s Max Conversation Derailment score?</strong></h4>
 <ul>
-<li><strong>DV</strong>: Model, variant for imbalance and utterance exposure -<strong>IV</strong>: Mean, variance of Max Derailment Score</li>
+<li><strong>DV</strong>: Model variant for imbalance and utterance exposure.
+<ul>
+<li>Variant Condition: Imbalance Technique</li>
+<li>Variant Condition: Utterances exposed -<strong>IV 1</strong>: Mean of Max Derailment probabilities for test conversations (Does one variant cause higher avg. max forecasts?) -<strong>IV 2</strong>: Variance of Max Derailment probabilities for test conversations (Does one variant cause higher avg. variances across all max convo forecasts?)</li>
+</ul></li>
 </ul>
 </section>
-<section id="question-do-submit-agreement-boxes-repetitve-signal-bias-fine-tuned-models-predicted-score" class="level4">
-<h4 class="anchored" data-anchor-id="question-do-submit-agreement-boxes-repetitve-signal-bias-fine-tuned-models-predicted-score"><strong>Question: Do Submit Agreement boxes (repetitve signal) bias fine-tuned models’ predicted score?</strong></h4>
+<section id="question-do-fine-tuned-model-variants-affect-crafts-avg.-forecasted-utterance-probablity" class="level4">
+<h4 class="anchored" data-anchor-id="question-do-fine-tuned-model-variants-affect-crafts-avg.-forecasted-utterance-probablity"><strong>Question: Do fine-tuned Model variants affect CRAFT’s avg. forecasted utterance probablity?</strong></h4>
 <ul>
-<li>May have repetittive signal picked up that make forecast variace less</li>
+<li><strong>DV</strong>: Model variant for imbalance and utterance exposure.
+<ul>
+<li>Variant Condition: Imbalance Technique</li>
+<li>Variant Condition: Utterances exposed -<strong>IV 1</strong>: Mean, variance of Max Derailment probabilities for test conversations</li>
+</ul></li>
 </ul>
 </section>
 <section id="question-what-artifacts-is-forecaster-picking-up-as-signal-in-making-predicitons" class="level4">
 <h4 class="anchored" data-anchor-id="question-what-artifacts-is-forecaster-picking-up-as-signal-in-making-predicitons"><strong>Question: What Artifacts is Forecaster picking up as signal in making predicitons?</strong></h4>
 <ul>
-<li>May have repetittive signal picked up that make forecast variace less</li>
+<li>look at fighting words between Correctly predicted True derailmenets (TP) and Falsely Predicited True Derailments (FN)</li>
 </ul>
 </section>
 </section>
 <section id="current-interpretation" class="level1">
 <h1>Current Interpretation:</h1>
-<p>In summary, even though we used the ground test set with the wiki fine-tuned model, there is more variability in the conversation probability as indicated by the probability distribution.</p>
-<p>Including the submit agreement boxes makes our models more prone to forecasting very similar scores for all conversations as indicated by the forecast score evolution and probabilitity distribution comparisons</p>
-<p>No last no submit downsampled gave the threshold closests to ground model.</p>
-<p>Is it more with trainng configuration or lack of robust trianign set size?</p>
+<p>In summary, even though we used the ground test set with the wiki fine-tuned model, there is more variability in the conversation probability as indicated by the probability distribution of max conversation predictions</p>
+<p>Including the submit agreement boxes makes our models more prone to forecasting very similar scores for all conversations as indicated by the forecast score evolution and probabilitity distribution comparisons. - Variance in the max predicted conversation derailment probability is near 0 - Hiding submission agreement gave more distinct dips in succesfull dispute avg. utterance probabilities as convo evolves, whereas impasse disuptes have more distinct upwards avg. utterance probabilities as convo evolves</p>
+<p>No last no submit downsampled (T =.75) gave the best threshold closests to ground model (T=.88)</p>
+<p>Is it more with trainng configuration or lack of robust training size?</p>
 <section id="questions" class="level2">
 <h2 class="anchored" data-anchor-id="questions">Questions</h2>
 <ul>
