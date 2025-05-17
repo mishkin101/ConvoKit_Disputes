@@ -59,8 +59,8 @@
     "objectID": "src/fine-tuning_analysis.html#questions",
     "href": "src/fine-tuning_analysis.html#questions",
     "title": "Fine-Tuning Kodis Analysis",
-    "section": "Questions",
-    "text": "Questions\n\nWant to know how to better analyze mispredictions\n\nFighting Words unclear still. Tried training vocabulary both on entire corpus and on just chosesn TP/FP/TN/FP Subsets. Vary n-gram (length of phrases). Unsure about whether or not to include stopping_words or use priors from entire corpus\n\nGround wiki picked up high best decision threshold (.88), while most others around .55-.75\nNo submit no last variants most similar to ground_wiki in terms of confusion matrix and metrics(theshold as well, .75)\nWeighted variants overfitting I think. All Impasse mispredicted as success.\nNo last no submit closest to ground wiki model. Also has similar utterance aggregtaed prediction score trends across impasse and success dialogues\nThe few downsampling training runs had high accuracy variablitiy (27% to 80%) meaning fine-tuning is not entirely reproducible despite controlling for same training/test/split\nAUC/PR curved looked good (better than baseline for all model)\nCaviates to having high prediction threshold?\nShould we use custom pre-trained vocabulary and try fine-tuning as well?\nK-cross fold validation on training set?"
+    "section": "Questions:",
+    "text": "Questions:\n\nWant to know how to better analyze mispredictions\n\nFighting Words unclear still. Tried training vocabulary both on entire corpus and on just chosesn TP/FP/TN/FP Subsets. Vary n-gram (length of phrases). Unsure about whether or not to include stopping_words or use priors from entire corpus\n\nGround wiki picked up high best decision threshold (.88), while most others around .55-.75\nNo submit no last variants most similar to ground_wiki in terms of confusion matrix and metrics(theshold as well, .75)\nWeighted variants overfitting I think. All Impasse mispredicted as success.\nNo last no submit closest to ground wiki model. Also has similar utterance aggregtaed prediction score trends across impasse and success dialogues\nThe few downsampling training runs had high accuracy variablitiy (27% to 80%) meaning fine-tuning is not entirely reproducible despite controlling for same training/test/split\nAUC/PR curved looked good (better than baseline for all model)\nCaviates to having high prediction threshold?\nShould we use custom pre-trained vocabulary and try fine-tuning as well?\nK-cross fold validation on training set?"
   },
   {
     "objectID": "src/fine-tuning_analysis.html#goals",
@@ -74,7 +74,7 @@
     "href": "src/fine-tuning_analysis.html#improvement-considerations",
     "title": "Fine-Tuning Kodis Analysis",
     "section": "Improvement Considerations:",
-    "text": "Improvement Considerations:\n\nIncluding Learning‑rate scheduling or early stopping to stop training early when it converges to prevent overfitting/underfitting\nFull-end to end training with testing model_config parameters to improve metrics\nk-fold cross validation\nuse custom vocabulary (word2vec, vec2word)"
+    "text": "Improvement Considerations:\n\nIncluding Learning‑rate scheduling or early stopping to stop training early when it converges to prevent overfitting/underfitting\nFull-end to end training with testing model_config parameters to improve metrics\nk-fold cross validation\nuse custom vocabulary and try fine-tuning(word2vec, vec2word)"
   },
   {
     "objectID": "src/fine-tuning_analysis.html#design-decisions",
